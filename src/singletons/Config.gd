@@ -1,7 +1,7 @@
 extends Node
 
-var active_camera	= null
-var world			= null
+#var active_camera	= null
+#var world			= null
 
 
 func _ready() -> void:
@@ -9,6 +9,7 @@ func _ready() -> void:
 	Engine.target_fps = 60
 
 
+# warning-ignore:unused_argument
 func _process(delta: float) -> void:
 	
 	if Input.is_key_pressed(KEY_ESCAPE) and OS.is_debug_build():

@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://src/game/battle/battle.gd" type="Script" id=1]
+[ext_resource path="res://assets/gfx/common/64x64_white.png" type="Texture" id=2]
+[ext_resource path="res://src/game/player/player.tscn" type="PackedScene" id=3]
+
+[node name="Battle" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="BG" type="Sprite" parent="."]
+modulate = Color( 0.027451, 0.00392157, 0.00392157, 1 )
+position = Vector2( 1236, 649 )
+scale = Vector2( 100, 100 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="Env" type="YSort" parent="."]
+
+[node name="wall" type="StaticBody2D" parent="Env"]
+position = Vector2( 636, 351 )
+
+[node name="Sprite" type="Sprite" parent="Env/wall"]
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/wall"]
+polygon = PoolVector2Array( 32, 32, -32, 32, -32, 2, 32, 3 )
+
+[node name="wall2" type="StaticBody2D" parent="Env"]
+position = Vector2( 1234, 414 )
+
+[node name="Sprite" type="Sprite" parent="Env/wall2"]
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/wall2"]
+polygon = PoolVector2Array( 32, 32, -32, 32, -32, 2, 32, 3 )
+
+[node name="Player" parent="Env" instance=ExtResource( 3 )]
+position = Vector2( 806, 597 )
+collision/safe_margin = 0.02
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]

@@ -9,40 +9,15 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Cell",
-"class": "BasicCell",
+"base": "KinematicBody2D",
+"class": "Enemy",
 "language": "GDScript",
-"path": "res://addons/resource_table/subscenes/cells/BasicCell.gd"
+"path": "res://src/game/enemies/enemy.gd"
 }, {
-"base": "Control",
-"class": "Cell",
+"base": "ProgressBar",
+"class": "HpBar",
 "language": "GDScript",
-"path": "res://addons/resource_table/subscenes/Cell.gd"
-}, {
-"base": "Resource",
-"class": "CellData",
-"language": "GDScript",
-"path": "res://addons/resource_table/CellData.gd"
-}, {
-"base": "Cell",
-"class": "EmptyCell",
-"language": "GDScript",
-"path": "res://addons/resource_table/subscenes/cells/EmptyCell.gd"
-}, {
-"base": "Row",
-"class": "EmptyRow",
-"language": "GDScript",
-"path": "res://addons/resource_table/subscenes/EmptyRow.gd"
-}, {
-"base": "Cell",
-"class": "ResourceCell",
-"language": "GDScript",
-"path": "res://addons/resource_table/subscenes/cells/ResourceCell.gd"
-}, {
-"base": "Control",
-"class": "Row",
-"language": "GDScript",
-"path": "res://addons/resource_table/subscenes/Row.gd"
+"path": "res://src/game/enemies/hp_bar.gd"
 }, {
 "base": "Resource",
 "class": "Snippet",
@@ -50,13 +25,8 @@ _global_script_classes=[ {
 "path": "res://addons/light_snippet/snippet.gd"
 } ]
 _global_script_class_icons={
-"BasicCell": "",
-"Cell": "",
-"CellData": "",
-"EmptyCell": "",
-"EmptyRow": "",
-"ResourceCell": "",
-"Row": "",
+"Enemy": "",
+"HpBar": "",
 "Snippet": ""
 }
 
@@ -68,9 +38,70 @@ config/icon="res://icon.png"
 
 [autoload]
 
-LOG="*res://src/singletons/Log.gd"
 UTILS="*res://src/singletons/Utils.gd"
 CONFIG="*res://src/singletons/Config.gd"
+LOG="*res://src/singletons/Log.gd"
+
+[debug]
+
+gdscript/warnings/treat_warnings_as_errors=true
+gdscript/warnings/unused_class_variable=true
+gdscript/warnings/unsafe_property_access=true
+gdscript/warnings/unsafe_method_access=true
+gdscript/warnings/unsafe_cast=true
+gdscript/warnings/unsafe_call_argument=true
+
+[display]
+
+window/size/width=1920
+window/size/height=1080
+window/size/borderless=true
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/light_snippet/plugin.cfg" )
+
+[input]
+
+ui_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777231,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":14,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+ui_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777233,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":15,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+ui_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777232,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":12,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+ui_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":13,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+shoot={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+
+[layer_names]
+
+2d_physics/layer_1="world"
+2d_physics/layer_5="player"
+2d_physics/layer_9="enemy"
 
 [physics]
 

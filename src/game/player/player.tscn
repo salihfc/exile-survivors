@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/gfx/common/64x64_white.png" type="Texture" id=1]
+[ext_resource path="res://src/game/player/player.gd" type="Script" id=2]
+
+[node name="Player" type="KinematicBody2D"]
+position = Vector2( 0, -32 )
+collision_layer = 16
+script = ExtResource( 2 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 22, 28, -22, 28, -22, 9, 22, 9 )
+
+[node name="Sprite" type="Sprite" parent="."]
+self_modulate = Color( 0.105882, 0.486275, 0.027451, 1 )
+texture = ExtResource( 1 )

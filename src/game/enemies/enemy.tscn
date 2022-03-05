@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://src/game/enemies/enemy.gd" type="Script" id=1]
+[ext_resource path="res://assets/gfx/common/64x64_white.png" type="Texture" id=2]
+[ext_resource path="res://src/game/enemies/hp_bar.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 12.0
+height = 34.0
+
+[node name="Enemy" type="KinematicBody2D"]
+collision_layer = 256
+collision_mask = 273
+script = ExtResource( 1 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( 0, -32 )
+scale = Vector2( 1.1, 1.1 )
+texture = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+self_modulate = Color( 0.580392, 0, 0, 1 )
+position = Vector2( 0, -32 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -15 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="Hp_bar" parent="." instance=ExtResource( 3 )]
+margin_left = -45.0
+margin_top = -85.0
+margin_right = 43.0
+margin_bottom = -73.0
