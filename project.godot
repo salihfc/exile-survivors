@@ -14,10 +14,30 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/game/enemies/enemy.gd"
 }, {
+"base": "Area2D",
+"class": "HitBox",
+"language": "GDScript",
+"path": "res://src/game/hitbox.gd"
+}, {
 "base": "ProgressBar",
 "class": "HpBar",
 "language": "GDScript",
 "path": "res://src/game/enemies/hp_bar.gd"
+}, {
+"base": "Area2D",
+"class": "HurtBox",
+"language": "GDScript",
+"path": "res://src/game/hurtbox.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://src/game/player/player.gd"
+}, {
+"base": "Sprite",
+"class": "Projectile",
+"language": "GDScript",
+"path": "res://src/game/projectile.gd"
 }, {
 "base": "Resource",
 "class": "Snippet",
@@ -26,7 +46,11 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Enemy": "",
+"HitBox": "",
 "HpBar": "",
+"HurtBox": "",
+"Player": "",
+"Projectile": "",
 "Snippet": ""
 }
 
@@ -55,7 +79,8 @@ gdscript/warnings/unsafe_call_argument=true
 
 window/size/width=1920
 window/size/height=1080
-window/size/borderless=true
+window/size/test_width=1728
+window/size/test_height=972
 
 [editor_plugins]
 
@@ -101,7 +126,11 @@ shoot={
 
 2d_physics/layer_1="world"
 2d_physics/layer_5="player"
+2d_physics/layer_6="player_hurtbox"
+2d_physics/layer_7="player_hitbox"
 2d_physics/layer_9="enemy"
+2d_physics/layer_10="enemy_hurtbox"
+2d_physics/layer_11="enemy_hitbox"
 
 [physics]
 

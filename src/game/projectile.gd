@@ -1,5 +1,5 @@
 extends Sprite
-
+class_name Projectile
 """
 
 """
@@ -14,6 +14,7 @@ extends Sprite
 const SPEED = 2000.0
 
 ### EXPORT ###
+# warning-ignore:unused_class_variable
 export(float) var projectile_damage := 10.0
 
 ### PUBLIC VAR ###
@@ -40,9 +41,3 @@ func set_dir(dir : Vector2) -> void:
 
 
 ### SIGNAL RESPONSES ###
-
-
-func _on_Area2D_body_entered(body: Node) -> void:
-	if body is Enemy:
-		var enemy := body as Enemy
-		enemy.take_damage(projectile_damage)

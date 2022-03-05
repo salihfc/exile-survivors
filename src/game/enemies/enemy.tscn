@@ -1,12 +1,20 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/game/enemies/enemy.gd" type="Script" id=1]
 [ext_resource path="res://assets/gfx/common/64x64_white.png" type="Texture" id=2]
 [ext_resource path="res://src/game/enemies/hp_bar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/game/hurtbox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/game/hitbox.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 12.0
 height = 34.0
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 35, 35 )
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 49.0102
 
 [node name="Enemy" type="KinematicBody2D"]
 collision_layer = 256
@@ -28,8 +36,32 @@ position = Vector2( 0, -15 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
+[node name="Hurtbox" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, -30 )
+collision_layer = 512
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2( 0, -2 )
+shape = SubResource( 2 )
+
 [node name="Hp_bar" parent="." instance=ExtResource( 3 )]
-margin_left = -45.0
+margin_left = -53.0
 margin_top = -85.0
-margin_right = 43.0
+margin_right = 52.0
 margin_bottom = -73.0
+
+[node name="HitBox" parent="." instance=ExtResource( 5 )]
+position = Vector2( 0, -14 )
+collision_layer = 1024
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource( 3 )
+
+[node name="HitTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
+[connection signal="timeout" from="HitTimer" to="." method="_on_HitTimer_timeout"]

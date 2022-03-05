@@ -36,7 +36,9 @@ __meta__ = {
 }
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/wall"]
+visible = false
 polygon = PoolVector2Array( 32, 32, -32, 32, -32, 2, 32, 3 )
+disabled = true
 
 [node name="wall2" type="StaticBody2D" parent="Env"]
 position = Vector2( 1234, 414 )
@@ -48,7 +50,9 @@ __meta__ = {
 }
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Env/wall2"]
+visible = false
 polygon = PoolVector2Array( 32, 32, -32, 32, -32, 2, 32, 3 )
+disabled = true
 
 [node name="Player" parent="Env" instance=ExtResource( 3 )]
 position = Vector2( 806, 597 )

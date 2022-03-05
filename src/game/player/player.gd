@@ -1,5 +1,5 @@
 extends KinematicBody2D
-
+class_name Player
 """
 
 """
@@ -18,25 +18,23 @@ const ACC = 200.0
 const DAMP = 0.80
 
 ### EXPORT ###
-# warning-ignore:unused_class_variable
-export(int, LAYERS_2D_PHYSICS) var hurt_box_layer = 0
+export(float) var max_hp := 100.0
 
 ### PUBLIC VAR ###
 
-
 ### PRIVATE VAR ###
 var _velocity := Vector2.ZERO
-
+var _hp := 1.0
 
 ### ONREADY VAR ###
-
+onready var hpBar = $Hp_bar
 
 
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 
 func _ready() -> void:
-	pass
+	_set_hp(max_hp)
 
 
 # warning-ignore:unused_argument
@@ -56,17 +54,27 @@ func _process(delta: float) -> void:
 		emit_signal("object_created", projectile)
 
 
-
 func _physics_process(delta: float) -> void:
 	_velocity = (_velocity) * DAMP
 	var collision = move_and_collide(_velocity * delta)
 	if collision:
 		_velocity = Vector2.ZERO
 
+
 ### PUBLIC FUNCTIONS ###
+func take_damage(amount : float) -> void:
+	_set_hp(_hp - amount)
+
+
+func alive() -> bool:
+	return _hp > 0.0
 
 
 ### PRIVATE FUNCTIONS ###
-
+func _set_hp(new_hp) -> void:
+	_hp = new_hp
+	hpBar.set_bar(_hp / max_hp)
+	if not alive():
+		queue_free()
 
 ### SIGNAL RESPONSES ###
