@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "KinematicBody2D",
+"base": "Node2D",
 "class": "Enemy",
 "language": "GDScript",
 "path": "res://src/game/enemies/enemy.gd"
@@ -29,7 +29,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/game/hurtbox.gd"
 }, {
-"base": "KinematicBody2D",
+"base": "Node2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://src/game/player/player.gd"
@@ -43,6 +43,11 @@ _global_script_classes=[ {
 "class": "Snippet",
 "language": "GDScript",
 "path": "res://addons/light_snippet/snippet.gd"
+}, {
+"base": "Area2D",
+"class": "SoftBody2D",
+"language": "GDScript",
+"path": "res://src/game/softbody2d.gd"
 } ]
 _global_script_class_icons={
 "Enemy": "",
@@ -51,7 +56,8 @@ _global_script_class_icons={
 "HurtBox": "",
 "Player": "",
 "Projectile": "",
-"Snippet": ""
+"Snippet": "",
+"SoftBody2D": ""
 }
 
 [application]

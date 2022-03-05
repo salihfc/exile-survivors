@@ -1,3 +1,4 @@
+tool
 extends Node
 
 var LEVEL :int= 1

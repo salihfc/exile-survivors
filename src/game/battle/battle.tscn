@@ -21,7 +21,6 @@ __meta__ = {
 }
 
 [node name="SpawnTimer" type="Timer" parent="."]
-wait_time = 3.0
 autostart = true
 
 [node name="Env" type="YSort" parent="."]
@@ -56,6 +55,5 @@ disabled = true
 
 [node name="Player" parent="Env" instance=ExtResource( 3 )]
 position = Vector2( 806, 597 )
-collision/safe_margin = 0.02
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]

@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Node2D
 class_name Enemy
 
 """
@@ -49,14 +49,16 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var collision = move_and_collide(_velocity * delta)
-	if collision:
-		pass
+	global_position += _velocity * delta
 
 
 ### PUBLIC FUNCTIONS ###
 func set_target(target) -> void:
 	_target = target
+
+
+func apply_force(force : Vector2) -> void:
+	_velocity += force
 
 
 func take_damage(amount : float) -> void:

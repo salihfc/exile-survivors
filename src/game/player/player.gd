@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Node2D
 class_name Player
 """
 
@@ -40,28 +40,31 @@ func _ready() -> void:
 # warning-ignore:unused_argument
 func _process(delta: float) -> void:
 
-	var dir := Vector2(
-			- Input.get_action_strength("ui_left") + Input.get_action_strength("ui_right"),
-			- Input.get_action_strength("ui_up") + Input.get_action_strength("ui_down")
-	)
-	_velocity += dir.normalized() * ACC
-	_velocity = _velocity.normalized() * min(_velocity.length(), MAX_VEL)
+	if not Engine.editor_hint:
+		var dir := Vector2(
+				- Input.get_action_strength("ui_left") + Input.get_action_strength("ui_right"),
+				- Input.get_action_strength("ui_up") + Input.get_action_strength("ui_down")
+		)
+		_velocity += dir.normalized() * ACC
+		_velocity = _velocity.normalized() * min(_velocity.length(), MAX_VEL)
 
-	if Input.is_action_just_pressed("shoot"):
-		var projectile = ProjectilePrefab.instance()
-		projectile.set_dir((get_global_mouse_position() - global_position).normalized())
-		projectile.global_position = global_position
-		emit_signal("object_created", projectile)
+		if Input.is_action_just_pressed("shoot"):
+			var projectile = ProjectilePrefab.instance()
+			projectile.set_dir((get_global_mouse_position() - global_position).normalized())
+			projectile.global_position = global_position
+			emit_signal("object_created", projectile)
 
 
 func _physics_process(delta: float) -> void:
 	_velocity = (_velocity) * DAMP
-	var collision = move_and_collide(_velocity * delta)
-	if collision:
-		_velocity = Vector2.ZERO
+	global_position += _velocity * delta
 
 
 ### PUBLIC FUNCTIONS ###
+func apply_force(force : Vector2) -> void:
+	_velocity += force
+
+
 func take_damage(amount : float) -> void:
 	_set_hp(_hp - amount)
 
