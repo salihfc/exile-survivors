@@ -1,0 +1,191 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/light_snippet/SnippetDock.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.133333, 0.0352941, 0.0352941, 1 )
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
+border_color = Color( 0.6, 0.6, 0.6, 1 )
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
+border_color = Color( 0.6, 0.6, 0.6, 1 )
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id=7]
+draw_center = false
+border_width_left = 8
+border_width_top = 12
+border_width_right = 8
+border_width_bottom = 12
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id=6]
+draw_center = false
+border_width_left = 4
+border_width_top = 6
+border_width_right = 4
+border_width_bottom = 6
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="Image" id=10]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=9]
+flags = 4
+flags = 4
+image = SubResource( 10 )
+size = Vector2( 16, 16 )
+
+[node name="SnippetDock" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuBar" type="Panel" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 0.143333
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SearchInput" type="LineEdit" parent="Panel/MenuBar"]
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.8
+anchor_bottom = 0.9
+custom_styles/read_only = SubResource( 3 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/normal = SubResource( 2 )
+max_length = 40
+placeholder_text = "snippet filename"
+caret_blink = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SearchTimer" type="Timer" parent="Panel/MenuBar/SearchInput"]
+one_shot = true
+
+[node name="AddButton" type="ToolButton" parent="Panel/MenuBar"]
+self_modulate = Color( 0, 0, 0, 1 )
+anchor_left = 0.864258
+anchor_top = 0.1
+anchor_right = 0.963867
+anchor_bottom = 0.9
+custom_styles/hover = SubResource( 7 )
+custom_styles/normal = SubResource( 6 )
+icon = SubResource( 9 )
+flat = false
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SnippetList" type="VBoxContainer" parent="Panel"]
+anchor_top = 0.143333
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SnippetInputDialog" type="WindowDialog" parent="."]
+visible = true
+anchor_left = 0.2
+anchor_top = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.8
+popup_exclusive = true
+window_title = "Create snippet"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SnippetNameInput" type="LineEdit" parent="SnippetInputDialog"]
+anchor_right = 1.0
+anchor_bottom = 0.0909091
+placeholder_text = "snippet name"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SnippetDataInput" type="TextEdit" parent="SnippetInputDialog"]
+anchor_top = 0.0909091
+anchor_right = 1.0
+anchor_bottom = 0.84
+highlight_current_line = true
+syntax_highlighting = true
+show_line_numbers = true
+draw_tabs = true
+draw_spaces = true
+highlight_all_occurrences = true
+smooth_scrolling = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="OkButton" type="Button" parent="SnippetInputDialog"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -108.0
+margin_top = -38.5
+margin_right = -30.0
+margin_bottom = -11.5
+text = "ok"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CancelButton" type="Button" parent="SnippetInputDialog"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 50.0
+margin_top = -38.5
+margin_right = 128.0
+margin_bottom = -11.5
+text = "cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="text_changed" from="Panel/MenuBar/SearchInput" to="." method="_on_SearchInput_text_changed"]
+[connection signal="timeout" from="Panel/MenuBar/SearchInput/SearchTimer" to="." method="_on_SearchTimer_timeout"]
+[connection signal="pressed" from="Panel/MenuBar/AddButton" to="." method="_on_AddButton_pressed"]
+[connection signal="pressed" from="SnippetInputDialog/OkButton" to="." method="_on_OkButton_pressed"]
+[connection signal="pressed" from="SnippetInputDialog/CancelButton" to="." method="_on_CancelButton_pressed"]

@@ -1,0 +1,233 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/resource_table/subscenes/ResourceCreationDialog.gd" type="Script" id=1]
+[ext_resource path="res://addons/resource_table/fonts/menu_font.tres" type="DynamicFont" id=2]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0901961, 0.0862745, 0.101961, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 2
+shadow_offset = Vector2( 2, 2 )
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.2, 0.2, 0.2, 1 )
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.639216, 0.160784, 0.160784, 1 )
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color( 0.341176, 0.0431373, 0.0431373, 0.835294 )
+border_blend = true
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.341176, 0, 0, 1 )
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color( 0.341176, 0.0431373, 0.0431373, 0.835294 )
+border_blend = true
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+
+[node name="ResourceCreationDialog" type="Control"]
+margin_right = 648.0
+margin_bottom = 399.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BaseClassSelection" type="HBoxContainer" parent="Panel/VBoxContainer"]
+margin_top = 29.0
+margin_right = 648.0
+margin_bottom = 149.0
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/VBoxContainer/BaseClassSelection"]
+margin_right = 322.0
+margin_bottom = 120.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 40
+custom_constants/margin_top = 20
+custom_constants/margin_left = 80
+custom_constants/margin_bottom = 20
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/BaseClassSelection/MarginContainer"]
+margin_left = 80.0
+margin_top = 20.0
+margin_right = 282.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 80 )
+custom_fonts/font = ExtResource( 2 )
+text = "Base Class"
+align = 1
+valign = 1
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer2" type="MarginContainer" parent="Panel/VBoxContainer/BaseClassSelection"]
+margin_left = 326.0
+margin_right = 648.0
+margin_bottom = 120.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 80
+custom_constants/margin_top = 20
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 20
+
+[node name="OptionButton" type="OptionButton" parent="Panel/VBoxContainer/BaseClassSelection/MarginContainer2"]
+margin_top = 20.0
+margin_right = 242.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Item 0"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ClassNameContainer" type="MarginContainer" parent="Panel/VBoxContainer"]
+margin_top = 153.0
+margin_right = 648.0
+margin_bottom = 221.0
+custom_constants/margin_right = 200
+custom_constants/margin_top = 4
+custom_constants/margin_left = 200
+custom_constants/margin_bottom = 4
+
+[node name="ClassNameText" type="LineEdit" parent="Panel/VBoxContainer/ClassNameContainer"]
+margin_left = 200.0
+margin_top = 4.0
+margin_right = 448.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 240, 60 )
+placeholder_text = "class_name"
+caret_blink = true
+
+[node name="PathMarginContainer" type="MarginContainer" parent="Panel/VBoxContainer"]
+margin_top = 225.0
+margin_right = 648.0
+margin_bottom = 285.0
+custom_constants/margin_right = 160
+custom_constants/margin_top = 10
+custom_constants/margin_left = 160
+custom_constants/margin_bottom = 10
+
+[node name="PathLabel" type="Label" parent="Panel/VBoxContainer/PathMarginContainer"]
+margin_left = 160.0
+margin_top = 10.0
+margin_right = 488.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 40 )
+custom_fonts/font = ExtResource( 2 )
+custom_styles/normal = SubResource( 1 )
+text = "Path"
+align = 1
+valign = 1
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SelectFile" type="Button" parent="Panel/VBoxContainer/PathMarginContainer/PathLabel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 2 )
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/VBoxContainer"]
+margin_top = 289.0
+margin_right = 648.0
+margin_bottom = 369.0
+custom_constants/margin_right = 280
+custom_constants/margin_top = 20
+custom_constants/margin_left = 280
+custom_constants/margin_bottom = 20
+
+[node name="CreateButton" type="Button" parent="Panel/VBoxContainer/MarginContainer"]
+margin_left = 280.0
+margin_top = 20.0
+margin_right = 368.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 40 )
+custom_fonts/font = ExtResource( 2 )
+text = "create"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Panel"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -37.0
+margin_bottom = 32.0
+focus_mode = 0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/normal = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FileDialog" type="FileDialog" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 100.0
+margin_top = 100.0
+margin_right = -100.0
+margin_bottom = -100.0
+input_pass_on_modal_close_click = false
+current_dir = "res://src"
+current_file = "script.gd"
+current_path = "res://src/script.gd"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="item_selected" from="Panel/VBoxContainer/BaseClassSelection/MarginContainer2/OptionButton" to="." method="_on_OptionButton_item_selected"]
+[connection signal="pressed" from="Panel/VBoxContainer/PathMarginContainer/PathLabel/SelectFile" to="." method="_on_SelectFile_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/MarginContainer/CreateButton" to="." method="_on_CreateButton_pressed"]
+[connection signal="pressed" from="Panel/Button" to="." method="_on_Button_pressed"]
+[connection signal="file_selected" from="Panel/FileDialog" to="." method="_on_FileDialog_file_selected"]

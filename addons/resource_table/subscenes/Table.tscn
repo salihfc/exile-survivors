@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/resource_table/subscenes/Table.gd" type="Script" id=1]
+[ext_resource path="res://addons/resource_table/subscenes/InputPopup.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/resource_table/subscenes/popups/QuickResourceSelection.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/resource_table/subscenes/Row.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/resource_table/resource_table.theme" type="Theme" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.705882, 0.705882, 0.705882, 0.25098 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_blend = true
+
+[node name="Table" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColNamesRow" parent="VBoxContainer" instance=ExtResource( 4 )]
+margin_right = 1024.0
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+margin_top = 124.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 5 )
+custom_styles/bg = SubResource( 1 )
+follow_focus = true
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 1020.0
+margin_bottom = 472.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InputPopup" parent="." instance=ExtResource( 2 )]
+visible = false
+
+[node name="LineEdit" parent="InputPopup/Panel" index="0"]
+text = "value"
+
+[node name="QuickResourceSelection" parent="." instance=ExtResource( 3 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -256.0
+margin_top = -172.5
+margin_right = 256.0
+margin_bottom = 172.5
+
+[connection signal="scroll_ended" from="VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_scroll_ended"]
+[connection signal="scroll_started" from="VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_scroll_started"]
+[connection signal="aborted" from="InputPopup" to="." method="_on_InputPopup_aborted"]
+[connection signal="input_entered" from="InputPopup" to="." method="_on_InputPopup_input_entered"]
+[connection signal="text_entered" from="InputPopup/Panel/LineEdit" to="." method="_on_LineEdit_text_entered"]
+[connection signal="aborted" from="QuickResourceSelection" to="." method="_on_QuickResourceSelection_aborted"]
+[connection signal="word_selected" from="QuickResourceSelection" to="." method="_on_QuickResourceSelection_word_selected"]
+
+[editable path="InputPopup"]

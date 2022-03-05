@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/SceneManager.gd" type="Script" id=1]
+
+[node name="SceneManager" type="CanvasLayer"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_vertical_guides_": [  ]
+}
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Foreground" type="ColorRect" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="Control"]
+
+[node name="FadeTimer" type="Timer" parent="Control"]
+one_shot = true
+
+[node name="RecoveryTimer" type="Timer" parent="Control"]
+one_shot = true
+
+[node name="CurrentSceneSlot" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="timeout" from="Control/FadeTimer" to="." method="_on_FadeTimer_timeout"]
+[connection signal="timeout" from="Control/RecoveryTimer" to="." method="_on_RecoveryTimer_timeout"]

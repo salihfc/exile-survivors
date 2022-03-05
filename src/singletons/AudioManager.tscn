@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/singletons/AudioManager.gd" type="Script" id=1]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource( 1 )
+sfx_player_count = 16
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -25.0
+
+[node name="SFXPlayers" type="Node" parent="."]
+
+[connection signal="finished" from="BGMPlayer" to="." method="_on_BGMPlayer_finished"]

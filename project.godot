@@ -1,0 +1,81 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Cell",
+"class": "BasicCell",
+"language": "GDScript",
+"path": "res://addons/resource_table/subscenes/cells/BasicCell.gd"
+}, {
+"base": "Control",
+"class": "Cell",
+"language": "GDScript",
+"path": "res://addons/resource_table/subscenes/Cell.gd"
+}, {
+"base": "Resource",
+"class": "CellData",
+"language": "GDScript",
+"path": "res://addons/resource_table/CellData.gd"
+}, {
+"base": "Cell",
+"class": "EmptyCell",
+"language": "GDScript",
+"path": "res://addons/resource_table/subscenes/cells/EmptyCell.gd"
+}, {
+"base": "Row",
+"class": "EmptyRow",
+"language": "GDScript",
+"path": "res://addons/resource_table/subscenes/EmptyRow.gd"
+}, {
+"base": "Cell",
+"class": "ResourceCell",
+"language": "GDScript",
+"path": "res://addons/resource_table/subscenes/cells/ResourceCell.gd"
+}, {
+"base": "Control",
+"class": "Row",
+"language": "GDScript",
+"path": "res://addons/resource_table/subscenes/Row.gd"
+}, {
+"base": "Resource",
+"class": "Snippet",
+"language": "GDScript",
+"path": "res://addons/light_snippet/snippet.gd"
+} ]
+_global_script_class_icons={
+"BasicCell": "",
+"Cell": "",
+"CellData": "",
+"EmptyCell": "",
+"EmptyRow": "",
+"ResourceCell": "",
+"Row": "",
+"Snippet": ""
+}
+
+[application]
+
+config/name="Exile_Survivors"
+run/main_scene="res://src/SceneManager.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+LOG="*res://src/singletons/Log.gd"
+UTILS="*res://src/singletons/Utils.gd"
+CONFIG="*res://src/singletons/Config.gd"
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"

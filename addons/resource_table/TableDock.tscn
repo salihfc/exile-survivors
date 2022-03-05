@@ -1,0 +1,148 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/resource_table/TableDock.gd" type="Script" id=1]
+[ext_resource path="res://addons/resource_table/assets/32x32_white.png" type="Texture" id=2]
+[ext_resource path="res://addons/resource_table/fonts/menu_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://addons/resource_table/StatusIndicator.gd" type="Script" id=4]
+[ext_resource path="res://addons/resource_table/subscenes/ResourceCreationDialog.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/resource_table/subscenes/ResourcesTab.tscn" type="PackedScene" id=6]
+
+[sub_resource type="StyleBoxFlat" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.0470588, 0.0941176, 0.152941, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0.168627, 0.168627, 0.168627, 1 )
+border_blend = true
+
+[node name="TableDock" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+margin_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="Panel" parent="Panel/VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 63.0
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReloadButton" type="Button" parent="Panel/VBoxContainer/Menu"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 27.0
+margin_top = -15.5
+margin_right = 107.0
+margin_bottom = 16.5
+focus_mode = 0
+custom_fonts/font = ExtResource( 3 )
+enabled_focus_mode = 0
+text = "reload"
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StatusIndicator" type="TextureRect" parent="Panel/VBoxContainer/Menu/ReloadButton"]
+modulate = Color( 0, 1, 0, 1 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 13.0
+margin_top = -16.0
+margin_right = 45.0
+margin_bottom = 16.0
+texture = ExtResource( 2 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="Panel/VBoxContainer/Menu/ReloadButton/StatusIndicator"]
+
+[node name="CreateClassButton" type="Button" parent="Panel/VBoxContainer/Menu"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 168.0
+margin_top = -16.0
+margin_right = 252.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 32, 32 )
+custom_fonts/font = ExtResource( 3 )
+text = "new class"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreateResourceButton" type="Button" parent="Panel/VBoxContainer/Menu"]
+visible = false
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 278.0
+margin_top = -16.5
+margin_right = 360.0
+margin_bottom = 16.5
+custom_fonts/font = ExtResource( 3 )
+text = "new resource"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreateResourceButton2" type="Button" parent="Panel/VBoxContainer/Menu"]
+visible = false
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 278.0
+margin_top = -16.5
+margin_right = 360.0
+margin_bottom = 16.5
+custom_fonts/font = ExtResource( 3 )
+text = "new resource"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResourcesTab" parent="Panel/VBoxContainer" instance=ExtResource( 6 )]
+
+[node name="ResourceCreationDialog" parent="." instance=ExtResource( 5 )]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 160.0
+margin_top = 120.0
+margin_right = -160.0
+margin_bottom = -120.0
+
+[connection signal="pressed" from="Panel/VBoxContainer/Menu/ReloadButton" to="." method="_on_ReloadButton_pressed"]
+[connection signal="status_busy" from="Panel/VBoxContainer/Menu/ReloadButton/StatusIndicator" to="." method="_on_StatusIndicator_status_busy"]
+[connection signal="pressed" from="Panel/VBoxContainer/Menu/CreateClassButton" to="." method="_on_CreateResourceClassButton_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Menu/CreateResourceButton" to="." method="_on_CreateResourceButton_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Menu/CreateResourceButton2" to="." method="_on_CreateResourceButton_pressed"]
