@@ -12,6 +12,7 @@ signal scene_loaded()
 
 ### CONST ###
 const EnemyPrefab = preload("res://src/game/enemies/enemy.tscn")
+const BatEyePrefab = preload("res://src/game/enemies/EnemyBatEye.tscn")
 
 ### EXPORT ###
 
@@ -45,7 +46,7 @@ func _ready() -> void:
 
 
 func _on_SpawnTimer_timeout() -> void:
-	var new_enemy = EnemyPrefab.instance()
+	var new_enemy = BatEyePrefab.instance()
 	$Env.add_child(new_enemy)
 	new_enemy.global_position = Vector2(200.0, 200.0)
 	new_enemy.set_target($Env/Player)

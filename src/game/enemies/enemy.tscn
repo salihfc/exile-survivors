@@ -8,7 +8,7 @@
 [ext_resource path="res://src/game/softbody2d.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 35, 35 )
+extents = Vector2( 44, 44 )
 
 [sub_resource type="CircleShape2D" id=3]
 radius = 49.0102
@@ -18,6 +18,10 @@ radius = 32.0
 
 [node name="Enemy" type="Node2D"]
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="Sprite2" type="Sprite" parent="."]
 position = Vector2( 0, -32 )
@@ -40,12 +44,11 @@ shape = SubResource( 2 )
 
 [node name="Hp_bar" parent="." instance=ExtResource( 3 )]
 margin_left = -53.0
-margin_top = -85.0
+margin_top = -89.0
 margin_right = 52.0
-margin_bottom = -73.0
+margin_bottom = -77.0
 
 [node name="HitBox" parent="." instance=ExtResource( 5 )]
-position = Vector2( 0, -14 )
 collision_layer = 1024
 collision_mask = 32
 
@@ -56,8 +59,10 @@ shape = SubResource( 3 )
 one_shot = true
 
 [node name="SoftBody2D" parent="." instance=ExtResource( 6 )]
-position = Vector2( 0, -14 )
 body_shape = SubResource( 4 )
+
+[node name="VisualBodyCenter" type="Position2D" parent="."]
+position = Vector2( 0, -32 )
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
 [connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]

@@ -13,7 +13,9 @@ signal object_created(obj)
 ### CONST ###
 const ProjectilePrefab = preload("res://src/game/projectile.tscn")
 
-const MAX_VEL = 800.0
+const IDLE_THRESHOLD = 10.0
+const MAX_VEL = 600.0
+const RUN_ANIM_SPEED_APPROX = 300.0
 const ACC = 200.0
 const DAMP = 0.80
 
@@ -28,13 +30,14 @@ var _hp := 1.0
 
 ### ONREADY VAR ###
 onready var hpBar = $Hp_bar
-
+onready var anim_sprite = $AnimatedSprite
 
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 
 func _ready() -> void:
 	_set_hp(max_hp)
+	anim_sprite.speed_scale = MAX_VEL / RUN_ANIM_SPEED_APPROX
 
 
 # warning-ignore:unused_argument
@@ -47,6 +50,10 @@ func _process(delta: float) -> void:
 		)
 		_velocity += dir.normalized() * ACC
 		_velocity = _velocity.normalized() * min(_velocity.length(), MAX_VEL)
+		
+		# Anim Update
+		anim_sprite.flip_h = _velocity.x < 0.0
+		anim_sprite.animation = "idle" if _velocity.length() < IDLE_THRESHOLD else "run"
 
 		if Input.is_action_just_pressed("shoot"):
 			var projectile = ProjectilePrefab.instance()
@@ -79,5 +86,6 @@ func _set_hp(new_hp) -> void:
 	hpBar.set_bar(_hp / max_hp)
 	if not alive():
 		queue_free()
+		get_tree().quit()
 
 ### SIGNAL RESPONSES ###
