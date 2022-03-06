@@ -40,6 +40,7 @@ onready var hitBox = $HitBox as HitBox
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 func _ready() -> void:
+	add_to_group("enemy", true)
 	_set_hp(max_hp)
 
 

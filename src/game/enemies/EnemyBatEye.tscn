@@ -98,6 +98,6 @@ body_shape = SubResource( 13 )
 position = Vector2( 0, -19 )
 frames = SubResource( 9 )
 animation = "fly"
-frame = 6
+frame = 4
 playing = true
 offset = Vector2( -4, -16 )

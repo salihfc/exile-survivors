@@ -29,15 +29,16 @@ var _velocity := Vector2.ZERO
 var _hp := 1.0
 
 ### ONREADY VAR ###
-onready var hpBar = $Hp_bar
-onready var anim_sprite = $AnimatedSprite
-
+onready var hpBar = $Hp_bar as HpBar
+onready var anim_sprite = $AnimatedSprite as AnimatedSprite
+onready var arc = $Arc as Arc
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 
 func _ready() -> void:
 	_set_hp(max_hp)
 	anim_sprite.speed_scale = MAX_VEL / RUN_ANIM_SPEED_APPROX
+	arc.start()
 
 
 # warning-ignore:unused_argument

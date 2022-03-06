@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Skill",
+"class": "Arc",
+"language": "GDScript",
+"path": "res://src/game/skills/arc/arc.gd"
+}, {
 "base": "Node2D",
 "class": "Enemy",
 "language": "GDScript",
@@ -44,6 +49,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/game/projectile.gd"
 }, {
+"base": "Node2D",
+"class": "Skill",
+"language": "GDScript",
+"path": "res://src/game/skill.gd"
+}, {
 "base": "Resource",
 "class": "Snippet",
 "language": "GDScript",
@@ -53,8 +63,14 @@ _global_script_classes=[ {
 "class": "SoftBody2D",
 "language": "GDScript",
 "path": "res://src/game/softbody2d.gd"
+}, {
+"base": "Node",
+"class": "Utils",
+"language": "GDScript",
+"path": "res://src/singletons/Utils.gd"
 } ]
 _global_script_class_icons={
+"Arc": "",
 "Enemy": "",
 "EnemyBatEye": "",
 "HitBox": "",
@@ -62,8 +78,10 @@ _global_script_class_icons={
 "HurtBox": "",
 "Player": "",
 "Projectile": "",
+"Skill": "",
 "Snippet": "",
-"SoftBody2D": ""
+"SoftBody2D": "",
+"Utils": ""
 }
 
 [application]
@@ -74,8 +92,8 @@ config/icon="res://icon.png"
 
 [autoload]
 
-UTILS="*res://src/singletons/Utils.gd"
 CONFIG="*res://src/singletons/Config.gd"
+UTILS="*res://src/singletons/Utils.tscn"
 LOG="*res://src/singletons/Log.gd"
 
 [debug]
