@@ -88,7 +88,7 @@ func _set_hp(new_hp) -> void:
 	_hp = new_hp
 	hpBar.set_bar(_hp / max_hp)
 	if not alive():
-		queue_free()
+#		queue_free()
 		get_tree().quit()
 
 ### SIGNAL RESPONSES ###

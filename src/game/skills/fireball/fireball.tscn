@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://src/game/skills/fireball/fireball.gd" type="Script" id=1]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 10000.0
 
 [node name="Fireball" type="Node2D"]
 script = ExtResource( 1 )
@@ -10,4 +13,13 @@ one_shot = true
 
 [node name="CreatedProjectiles" type="Node2D" parent="."]
 
+[node name="ProjectileMaxRange" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ProjectileMaxRange"]
+shape = SubResource( 1 )
+
 [connection signal="timeout" from="CdTimer" to="." method="_on_CdTimer_timeout"]
+[connection signal="area_exited" from="ProjectileMaxRange" to="." method="_on_ProjectileMaxRange_area_exited"]

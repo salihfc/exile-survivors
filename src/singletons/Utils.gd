@@ -49,6 +49,22 @@ func create_delayed_call(caller, function, args, delay):
 	add_child(new_call)
 
 
+func get_closest_node(node : Node2D, other_nodes : Array):
+	if node in other_nodes:
+		other_nodes.erase(node)
+	
+	var closest = null
+	var min_dist = INF
+	
+	for other_node in other_nodes:
+		var dist = node.global_position.distance_to(other_node.global_position)
+		if dist < min_dist:
+			min_dist = dist
+			closest = other_node
+
+	return closest
+
+
 ### MST FUNCTIONS ###
 class MST_solver:
 	

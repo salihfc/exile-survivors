@@ -52,7 +52,7 @@ func get_projectile_damage():
 
 func hit_target() -> void:
 	if _remaining_pierce < 0:
-		collision.disabled = true
+		collision.set_deferred("disabled", true)
 		queue_free()
 		return
 	_remaining_pierce -= 1
@@ -60,6 +60,7 @@ func hit_target() -> void:
 
 ### PRIVATE FUNCTIONS ###
 func _destroy() -> void:
+	LOG.pr(1, "Projectile Destroyed")
 	animSprite.animation = "end"
 
 ### SIGNAL RESPONSES ###

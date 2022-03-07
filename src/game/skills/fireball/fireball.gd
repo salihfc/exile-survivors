@@ -51,7 +51,11 @@ func _cast() -> void:
 
 
 func _get_projectile_velocity() -> Vector2:
-	return UTILS.random_unit_vec2() * speed
+	# Send a fireball towards closest enemy
+	var enemies = get_tree().get_nodes_in_group("enemy")
+	var closest_enemy = UTILS.get_closest_node(self, enemies)
+	var dir : Vector2 = closest_enemy.global_position - self.global_position
+	return dir.normalized() * speed
 
 
 ### SIGNAL RESPONSES ###
@@ -60,3 +64,9 @@ func _get_projectile_velocity() -> Vector2:
 func _on_CdTimer_timeout() -> void:
 	_cast()
 	cdTimer.start(cd)
+
+
+func _on_ProjectileMaxRange_area_exited(area: Area2D) -> void:
+	var entity = area.get_parent()
+	if entity is Projectile:
+		entity._destroy()
