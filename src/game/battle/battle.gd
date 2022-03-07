@@ -33,8 +33,6 @@ func _ready() -> void:
 	LOG.pr(1, "BATTLE READY")
 	emit_signal("scene_loaded")
 	
-	UTILS.bind($Env/Player, "object_created", self, "_on_object_created")
-	
 	# _exp_system -> expDisplay
 	UTILS.bind(_exp_system, "exp_changed", expDisplay, "_on_exp_changed")
 	UTILS.bind(_exp_system, "level_up", expDisplay, "_on_level_up")
@@ -56,10 +54,6 @@ func _on_SpawnTimer_timeout() -> void:
 	new_enemy.global_position = Vector2(200.0, 200.0)
 	new_enemy.set_target($Env/Player)
 	UTILS.bind(new_enemy, "died", self, "_on_enemy_died")
-
-
-func _on_object_created(obj) -> void:
-	$Env.add_child(obj)
 
 
 

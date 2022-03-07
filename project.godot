@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/resource_classes/exp_system.gd"
 }, {
+"base": "Skill",
+"class": "Fireball",
+"language": "GDScript",
+"path": "res://src/game/skills/fireball/fireball.gd"
+}, {
 "base": "Area2D",
 "class": "HitBox",
 "language": "GDScript",
@@ -54,10 +59,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/game/player/player.gd"
 }, {
-"base": "Sprite",
+"base": "Node2D",
 "class": "Projectile",
 "language": "GDScript",
-"path": "res://src/game/projectile.gd"
+"path": "res://src/game/skills/fireball/fireball_projectile.gd"
 }, {
 "base": "Node2D",
 "class": "Skill",
@@ -78,6 +83,11 @@ _global_script_classes=[ {
 "class": "Utils",
 "language": "GDScript",
 "path": "res://src/singletons/Utils.gd"
+}, {
+"base": "Resource",
+"class": "WeightedRandom",
+"language": "GDScript",
+"path": "res://src/resource_classes/weighted_random.gd"
 } ]
 _global_script_class_icons={
 "Arc": "",
@@ -85,6 +95,7 @@ _global_script_class_icons={
 "EnemyBatEye": "",
 "ExpDisplay": "",
 "ExpSystem": "",
+"Fireball": "",
 "HitBox": "",
 "HpBar": "",
 "HurtBox": "",
@@ -93,7 +104,8 @@ _global_script_class_icons={
 "Skill": "",
 "Snippet": "",
 "SoftBody2D": "",
-"Utils": ""
+"Utils": "",
+"WeightedRandom": ""
 }
 
 [application]

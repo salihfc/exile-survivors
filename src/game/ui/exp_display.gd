@@ -42,7 +42,7 @@ func _ready() -> void:
 
 ### SIGNAL RESPONSES ###
 func _on_exp_changed(new_exp, max_exp) -> void:
-	LOG.pr(1, "(%s) / (%s)" % [new_exp, max_exp])
+#	LOG.pr(1, "(%s) / (%s)" % [new_exp, max_exp])
 	progressBar.value = new_exp / max_exp * 100.0
 
 

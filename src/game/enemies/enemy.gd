@@ -143,5 +143,5 @@ func _on_HitTimer_timeout() -> void:
 func _on_Hurtbox_area_entered(area: Area2D) -> void:
 	var entity = area.get_parent()
 	if entity is Projectile:
-		take_damage(entity.projectile_damage)
-
+		take_damage(entity.get_projectile_damage())
+		entity.hit_target()

@@ -7,7 +7,7 @@
 [ext_resource path="res://src/game/softbody2d.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/gfx/game/player/Wizard Pack/Idle.png" type="Texture" id=6]
 [ext_resource path="res://assets/gfx/game/player/Wizard Pack/Run.png" type="Texture" id=7]
-[ext_resource path="res://src/game/skills/arc/arc.tscn" type="PackedScene" id=8]
+[ext_resource path="res://src/game/skills/fireball/fireball.tscn" type="PackedScene" id=9]
 
 [sub_resource type="AtlasTexture" id=4]
 flags = 4
@@ -128,7 +128,6 @@ texture = ExtResource( 1 )
 position = Vector2( 7, -13 )
 frames = SubResource( 10 )
 animation = "idle"
-frame = 1
 playing = true
 
 [node name="Hurtbox" parent="." instance=ExtResource( 3 )]
@@ -150,8 +149,10 @@ custom_styles/fg = SubResource( 2 )
 position = Vector2( 0, 20 )
 body_shape = SubResource( 3 )
 
-[node name="Arc" parent="." instance=ExtResource( 8 )]
-cd = 2.0
+[node name="Fireball" parent="." instance=ExtResource( 9 )]
+z_index = 2
+speed = 800.0
+cd = 1.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true

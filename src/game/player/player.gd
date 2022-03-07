@@ -5,14 +5,12 @@ class_name Player
 """
 
 ### SIGNAL ###
-signal object_created(obj)
+
 
 ### ENUM ###
 
 
 ### CONST ###
-const ProjectilePrefab = preload("res://src/game/projectile.tscn")
-
 const IDLE_THRESHOLD = 10.0
 const MAX_VEL = 600.0
 const RUN_ANIM_SPEED_APPROX = 300.0
@@ -31,7 +29,8 @@ var _hp := 1.0
 ### ONREADY VAR ###
 onready var hpBar = $Hp_bar as HpBar
 onready var anim_sprite = $AnimatedSprite as AnimatedSprite
-onready var arc = $Arc as Arc
+#onready var arc = $Arc as Arc
+onready var fireball = $Fireball as Fireball
 onready var camera = $Camera2D as Camera2D
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
@@ -39,8 +38,10 @@ onready var camera = $Camera2D as Camera2D
 func _ready() -> void:
 	_set_hp(max_hp)
 	anim_sprite.speed_scale = MAX_VEL / RUN_ANIM_SPEED_APPROX
-	arc.start()
+#	arc.start()
+	fireball.start()
 	camera.current = true
+
 
 
 # warning-ignore:unused_argument
@@ -59,12 +60,10 @@ func _process(delta: float) -> void:
 		anim_sprite.animation = "idle" if _velocity.length() < IDLE_THRESHOLD else "run"
 
 		if Input.is_action_just_pressed("shoot"):
-			var projectile = ProjectilePrefab.instance()
-			projectile.set_dir((get_global_mouse_position() - global_position).normalized())
-			projectile.global_position = global_position
-			emit_signal("object_created", projectile)
+			pass
 		
-		LOG.pr(1, "(%s)" % [camera.global_position])
+#		LOG.pr(1, "(%s)" % [camera.global_position])
+
 
 func _physics_process(delta: float) -> void:
 	_velocity = (_velocity) * DAMP

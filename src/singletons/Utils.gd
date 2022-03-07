@@ -17,11 +17,26 @@ func clamp01(value):
 	return clamp(value, 0.0, 1.0)
 
 
+func test_random_unit_vec2() -> void:
+	var q = 1000000
+	var quad_freq = [0, 0, 0, 0, 0, 0]
+	
+	for _i in q:
+		var unit = random_unit_vec2()
+		var quadrant = 5
+		if sign(unit.y) > 0: # Upper half
+			quadrant = 1 + int(unit.x < 0)
+		else:
+			quadrant = 4 - int(unit.x < 0)
+		
+		quad_freq[quadrant] += 1
+	print (quad_freq)
+	get_tree().quit()
+
+
 func random_unit_vec2() -> Vector2:
 	var theta = rand_range(0, 2 * PI)
-	var cs = cos(theta)
-	var vec = Vector2(cs, 1.0 - cs * cs)
-	return vec
+	return Vector2(cos(theta), sin(theta))
 
 
 func create_delayed_call(caller, function, args, delay):
