@@ -128,7 +128,7 @@ texture = ExtResource( 1 )
 position = Vector2( 7, -13 )
 frames = SubResource( 10 )
 animation = "idle"
-frame = 2
+frame = 5
 playing = true
 
 [node name="Hurtbox" parent="." instance=ExtResource( 3 )]
@@ -154,9 +154,8 @@ body_shape = SubResource( 3 )
 
 [node name="Fireball" parent="Skills" instance=ExtResource( 9 )]
 z_index = 2
-speed = 800.0
 base_damage = 50.0
-cd = 1.0
+cd = 3.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true

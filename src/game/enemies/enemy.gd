@@ -20,12 +20,12 @@ const MAX_STEER_FORCE = 1000.0
 const ATTACK_CD = 1.0
 
 ### EXPORT ###
-export(float) var max_hp := 100.0
+export(float) var base_max_hp := 100.0
 export(float) var base_damage := 10.0
 export(float) var base_exp := 2.0
 
 ### PUBLIC VAR ###
-
+var max_hp
 
 ### PRIVATE VAR ###
 # Physics
@@ -42,7 +42,6 @@ onready var hitBox = $HitBox as HitBox
 ### VIRTUAL FUNCTIONS (_init ...) ###
 func _ready() -> void:
 	add_to_group("enemy", true)
-	_set_hp(max_hp)
 
 
 func _process(delta: float) -> void:
@@ -57,6 +56,12 @@ func _physics_process(delta: float) -> void:
 ### PUBLIC FUNCTIONS ###
 func set_target(target) -> void:
 	_target = target
+
+
+func set_scaled_hp(player_level) -> void:
+	max_hp = base_max_hp * _get_hp_scaling(player_level)
+	_set_hp(max_hp)
+	LOG.pr(1, "Enemy with (%s) created" % [max_hp])
 
 
 func apply_force(force : Vector2) -> void:
@@ -119,6 +124,11 @@ func _get_entities_in_hitbox() -> Array:
 		if entity:
 			entities.append(entity)
 	return entities
+
+
+func _get_hp_scaling(level) -> float:
+	return pow(level, 2.0) / 40.0 + 1
+
 
 ### SIGNAL RESPONSES ###
 

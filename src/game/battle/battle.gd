@@ -72,6 +72,7 @@ func _on_SpawnTimer_timeout() -> void:
 	$Env.add_child(new_enemy)
 	new_enemy.global_position = Vector2(200.0, 200.0)
 	new_enemy.set_target($Env/Player)
+	new_enemy.set_scaled_hp(_exp_system.get_level()) 
 	UTILS.bind(new_enemy, "died", self, "_on_enemy_died")
 
 
