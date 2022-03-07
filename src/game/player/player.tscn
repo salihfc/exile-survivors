@@ -128,7 +128,7 @@ texture = ExtResource( 1 )
 position = Vector2( 7, -13 )
 frames = SubResource( 10 )
 animation = "idle"
-frame = 3
+frame = 2
 playing = true
 
 [node name="Hurtbox" parent="." instance=ExtResource( 3 )]

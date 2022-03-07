@@ -24,6 +24,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/game/enemies/EnemyBatEye.gd"
 }, {
+"base": "Control",
+"class": "ExpDisplay",
+"language": "GDScript",
+"path": "res://src/game/ui/exp_display.gd"
+}, {
+"base": "Resource",
+"class": "ExpSystem",
+"language": "GDScript",
+"path": "res://src/resource_classes/exp_system.gd"
+}, {
 "base": "Area2D",
 "class": "HitBox",
 "language": "GDScript",
@@ -73,6 +83,8 @@ _global_script_class_icons={
 "Arc": "",
 "Enemy": "",
 "EnemyBatEye": "",
+"ExpDisplay": "",
+"ExpSystem": "",
 "HitBox": "",
 "HpBar": "",
 "HurtBox": "",

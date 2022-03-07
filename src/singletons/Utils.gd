@@ -3,6 +3,15 @@ class_name Utils
 
 const DelayedCall = preload("res://src/delayed_call.tscn")
 
+func bind(
+		source_node : Node, signal_name : String,
+		target_node : Node, method_name : String,
+		binds := []) -> void:
+
+	var err = source_node.connect(signal_name, target_node, method_name, binds)
+	if err != OK:
+		push_error("CANNOT BIND SIGNAL")
+
 
 func clamp01(value):
 	return clamp(value, 0.0, 1.0)
@@ -25,6 +34,7 @@ func create_delayed_call(caller, function, args, delay):
 	add_child(new_call)
 
 
+### MST FUNCTIONS ###
 class MST_solver:
 	
 	var _starting_entity = null
@@ -68,3 +78,4 @@ class MST_solver:
 			edges.append([origin, closest, entity_depth[closest]])
 		
 		return edges
+### MST FUNCTIONS ### END
