@@ -1,12 +1,11 @@
 extends Panel
-class_name SkillSelectionSkillDisplay
-
+class_name AugmentSelectionAugmentDisplay
 """
 
 """
 
 ### SIGNAL ###
-signal display_pressed(skill)
+signal display_pressed(augment)
 
 ### ENUM ###
 
@@ -21,7 +20,7 @@ signal display_pressed(skill)
 
 
 ### PRIVATE VAR ###
-var _skill_weakref 
+var _augment_weakref
 
 ### ONREADY VAR ###
 onready var textureRect = $TextureButton/TextureRect as TextureRect
@@ -33,13 +32,14 @@ onready var richLabel = $TextureButton/RichTextLabel as RichTextLabel
 
 
 ### PUBLIC FUNCTIONS ###
-func set_skill(skill : Skill) -> void:
-	_skill_weakref = weakref(skill)
+func set_augment(augment : Augment) -> void:
+	_augment_weakref = weakref(augment)
 # warning-ignore:unsafe_property_access
-	textureRect.texture = skill.icon
+	textureRect.texture = augment.icon
 # warning-ignore:unsafe_property_access
-	richLabel.text = skill.skill_description
-
+	richLabel.bbcode_text = """
+		[center] %s [/center]
+	""" % [augment.augment_description]
 
 ### PRIVATE FUNCTIONS ###
 
@@ -48,4 +48,4 @@ func set_skill(skill : Skill) -> void:
 
 
 func _on_TextureButton_pressed() -> void:
-	emit_signal("display_pressed", _skill_weakref.get_ref())
+	emit_signal("display_pressed", _augment_weakref.get_ref())

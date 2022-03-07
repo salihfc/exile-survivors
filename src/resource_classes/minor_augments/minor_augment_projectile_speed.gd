@@ -1,6 +1,5 @@
 extends MinorAugment
-class_name MinorAugmentDamage
-
+class_name MinorAugmentProjectileSpeed
 """
 
 """
@@ -16,7 +15,7 @@ class_name MinorAugmentDamage
 
 ### EXPORT ###
 # warning-ignore:unused_class_variable
-export(float) var damage_increase_amount
+export(float) var projectile_speed_increase_amount
 
 ### PUBLIC VAR ###
 

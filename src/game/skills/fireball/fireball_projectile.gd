@@ -41,9 +41,11 @@ func _physics_process(delta: float) -> void:
 	
 ### PUBLIC FUNCTIONS ###
 func init(velocity, damage, max_pierce) -> void:
+	LOG.pr(1, "New Fireball proj (%s) (%s, %s)" % [velocity, damage, max_pierce])
 	_velocity = velocity
 	_damage = damage
 	_max_pierce = max_pierce
+	_remaining_pierce = max_pierce
 
 
 func get_projectile_damage():
@@ -51,7 +53,7 @@ func get_projectile_damage():
 
 
 func hit_target() -> void:
-	if _remaining_pierce < 0:
+	if _remaining_pierce <= 0:
 		collision.set_deferred("disabled", true)
 		queue_free()
 		return

@@ -1,4 +1,4 @@
-extends Resource
+extends Augment
 class_name MinorAugment
 """
 
@@ -14,8 +14,7 @@ class_name MinorAugment
 
 
 ### EXPORT ###
-# warning-ignore:unused_class_variable
-export(Texture) var icon
+
 
 ### PUBLIC VAR ###
 

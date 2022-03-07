@@ -21,11 +21,14 @@ const BatEyePrefab = preload("res://src/game/enemies/EnemyBatEye.tscn")
 
 
 ### PRIVATE VAR ###
+var _last_selected_skill_for_augmentation : Skill
 var _exp_system := ExpSystem.new(100)
 
 ### ONREADY VAR ###
 onready var expDisplay = $UILayer/ExpDisplay as ExpDisplay
 onready var skillSelectionDialog = $UILayer/SkillSelectionDialog as SkillSelectionDialog
+onready var augmentSelectionDialog = $UILayer/AugmentSelectionDialog as AugmentSelectionDialog
+
 onready var player = $Env/Player as Player
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
@@ -41,6 +44,8 @@ func _ready() -> void:
 	# Skill Selection Dialog
 	UTILS.bind(skillSelectionDialog, "skill_selected", self, "_on_skill_selected_for_upgrade")
 
+	# Augment Selection Dialog
+	UTILS.bind(augmentSelectionDialog, "augment_selected", self, "_on_augment_selected_for_skill")
 
 # warning-ignore:unused_argument
 func _process(delta: float) -> void:
@@ -79,6 +84,7 @@ func _on_enemy_died(exp_reward) -> void:
 func _on_player_level_up(_new_level) -> void:
 	_pause()
 	var skills = player.get_skills()
+#	LOG.pr(1, "player skills (%s)" % [skills])
 	while skills.size() < 3:
 		skills.append(Arc.new())
 
@@ -88,5 +94,24 @@ func _on_player_level_up(_new_level) -> void:
 
 # warning-ignore:unused_argument
 func _on_skill_selected_for_upgrade(skill : Skill) -> void:
-	_pause()
+#	LOG.pr(1, "Skill selected for upgrade (%s)" % [skill])
 	skillSelectionDialog.hide()
+	_last_selected_skill_for_augmentation = skill
+	
+# warning-ignore:unsafe_property_access
+	var augments = skill.possible_minor_augments.duplicate()
+#	LOG.pr(1, "player skills (%s)" % [skills])
+	while augments.size() < 3:
+		augments.append(Augment.new())
+
+	augmentSelectionDialog.set_augments(augments)
+	augmentSelectionDialog.show()
+
+
+func _on_augment_selected_for_skill(augment : Augment) -> void:
+	augmentSelectionDialog.hide()
+	LOG.pr(1, "Apply augment(%s) to skill(%s)" % [augment, _last_selected_skill_for_augmentation])
+	_last_selected_skill_for_augmentation.apply_augment(augment)
+
+	# Unpausing
+	_pause()

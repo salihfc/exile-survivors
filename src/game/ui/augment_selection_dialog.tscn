@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://src/game/ui/augment_selection_dialog.gd" type="Script" id=1]
+[ext_resource path="res://src/game/ui/augment_selection_augment_display.tscn" type="PackedScene" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.584314, 0.466667, 0.964706, 1 )
+
+[node name="AugmentSelectionDialog" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 0.2
+anchor_top = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.8
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AugmentSelectionAugmentDisplay" parent="Panel" instance=ExtResource( 2 )]
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.35
+anchor_bottom = 0.9
+
+[node name="AugmentSelectionAugmentDisplay2" parent="Panel" instance=ExtResource( 2 )]
+anchor_left = 0.375
+anchor_top = 0.1
+anchor_right = 0.625
+anchor_bottom = 0.9
+
+[node name="AugmentSelectionAugmentDisplay3" parent="Panel" instance=ExtResource( 2 )]
+anchor_left = 0.65
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9

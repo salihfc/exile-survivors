@@ -1,6 +1,5 @@
 extends MinorAugment
-class_name MinorAugmentDamage
-
+class_name MinorAugmentPierce
 """
 
 """
@@ -16,7 +15,7 @@ class_name MinorAugmentDamage
 
 ### EXPORT ###
 # warning-ignore:unused_class_variable
-export(float) var damage_increase_amount
+export(int) var pierce_increase_amount
 
 ### PUBLIC VAR ###
 
