@@ -4,8 +4,8 @@ class_name Utils
 const DelayedCall = preload("res://src/delayed_call.tscn")
 
 func bind(
-		source_node : Node, signal_name : String,
-		target_node : Node, method_name : String,
+		source_node : Object, signal_name : String,
+		target_node : Object, method_name : String,
 		binds := []) -> void:
 
 	var err = source_node.connect(signal_name, target_node, method_name, binds)

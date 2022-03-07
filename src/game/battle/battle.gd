@@ -21,10 +21,10 @@ const BatEyePrefab = preload("res://src/game/enemies/EnemyBatEye.tscn")
 
 
 ### PRIVATE VAR ###
-
+var _exp_system := ExpSystem.new(100)
 
 ### ONREADY VAR ###
-
+onready var expDisplay = $UILayer/ExpDisplay as ExpDisplay
 
 
 
@@ -32,9 +32,14 @@ const BatEyePrefab = preload("res://src/game/enemies/EnemyBatEye.tscn")
 func _ready() -> void:
 	LOG.pr(1, "BATTLE READY")
 	emit_signal("scene_loaded")
-	var err = $Env/Player.connect("object_created", self, "_on_object_created")
-	if err != OK:
-		push_error("Cannot connect signal (%s)" % [err])
+	
+	UTILS.bind($Env/Player, "object_created", self, "_on_object_created")
+	
+	# _exp_system -> expDisplay
+	UTILS.bind(_exp_system, "exp_changed", expDisplay, "_on_exp_changed")
+	UTILS.bind(_exp_system, "level_up", expDisplay, "_on_level_up")
+
+
 
 ### PUBLIC FUNCTIONS ###
 
@@ -46,12 +51,17 @@ func _ready() -> void:
 
 
 func _on_SpawnTimer_timeout() -> void:
-	return
-#	var new_enemy = BatEyePrefab.instance()
-#	$Env.add_child(new_enemy)
-#	new_enemy.global_position = Vector2(200.0, 200.0)
-#	new_enemy.set_target($Env/Player)
+	var new_enemy = BatEyePrefab.instance()
+	$Env.add_child(new_enemy)
+	new_enemy.global_position = Vector2(200.0, 200.0)
+	new_enemy.set_target($Env/Player)
+	UTILS.bind(new_enemy, "died", self, "_on_enemy_died")
 
 
 func _on_object_created(obj) -> void:
 	$Env.add_child(obj)
+
+
+
+func _on_enemy_died(exp_reward) -> void:
+	_exp_system.gain_exp(exp_reward)

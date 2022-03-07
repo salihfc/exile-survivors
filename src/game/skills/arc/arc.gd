@@ -52,8 +52,8 @@ func _cast_starting_from(closest):
 
 	edges.push_front([self, closest, 0])
 	
-	var appearing_time = 0.2
-	var disappering_time = 0.2
+	var appearing_time = 0.05
+	var disappering_time = 0.1
 	var single_line_completion_time = appearing_time
 	# Create Lines from edges
 	for edge in edges:

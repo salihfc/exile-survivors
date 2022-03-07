@@ -3,6 +3,7 @@
 [ext_resource path="res://src/SceneManager.gd" type="Script" id=1]
 
 [node name="SceneManager" type="CanvasLayer"]
+follow_viewport_enable = true
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_vertical_guides_": [  ]

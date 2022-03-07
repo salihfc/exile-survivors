@@ -6,7 +6,7 @@ class_name Enemy
 """
 
 ### SIGNAL ###
-
+signal died(exp_rewarded_to_player)
 
 ### ENUM ###
 
@@ -22,6 +22,7 @@ const ATTACK_CD = 1.0
 ### EXPORT ###
 export(float) var max_hp := 100.0
 export(float) var base_damage := 10.0
+export(float) var base_exp := 2.0
 
 ### PUBLIC VAR ###
 
@@ -85,7 +86,12 @@ func _set_hp(new_hp) -> void:
 	_hp = new_hp
 	hpBar.set_bar(_hp / max_hp)
 	if not alive():
-		queue_free()
+		_die()
+
+
+func _die():
+	emit_signal("died", base_exp)
+	queue_free()
 
 
 func _seek(pos, delta) -> void:

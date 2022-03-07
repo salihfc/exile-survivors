@@ -128,7 +128,7 @@ texture = ExtResource( 1 )
 position = Vector2( 7, -13 )
 frames = SubResource( 10 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="Hurtbox" parent="." instance=ExtResource( 3 )]
@@ -152,3 +152,11 @@ body_shape = SubResource( 3 )
 
 [node name="Arc" parent="." instance=ExtResource( 8 )]
 cd = 2.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = true
+offset_v = 1.0
+editor_draw_drag_margin = true

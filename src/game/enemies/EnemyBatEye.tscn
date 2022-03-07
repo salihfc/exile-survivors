@@ -98,6 +98,8 @@ body_shape = SubResource( 13 )
 position = Vector2( 0, -19 )
 frames = SubResource( 9 )
 animation = "fly"
-frame = 4
+frame = 3
 playing = true
 offset = Vector2( -4, -16 )
+
+[node name="AnimTween" type="Tween" parent="." index="9"]

@@ -32,6 +32,7 @@ var _hp := 1.0
 onready var hpBar = $Hp_bar as HpBar
 onready var anim_sprite = $AnimatedSprite as AnimatedSprite
 onready var arc = $Arc as Arc
+onready var camera = $Camera2D as Camera2D
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 
@@ -39,6 +40,7 @@ func _ready() -> void:
 	_set_hp(max_hp)
 	anim_sprite.speed_scale = MAX_VEL / RUN_ANIM_SPEED_APPROX
 	arc.start()
+	camera.current = true
 
 
 # warning-ignore:unused_argument
@@ -61,7 +63,8 @@ func _process(delta: float) -> void:
 			projectile.set_dir((get_global_mouse_position() - global_position).normalized())
 			projectile.global_position = global_position
 			emit_signal("object_created", projectile)
-
+		
+		LOG.pr(1, "(%s)" % [camera.global_position])
 
 func _physics_process(delta: float) -> void:
 	_velocity = (_velocity) * DAMP
