@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/game/battle/battle.gd" type="Script" id=1]
 [ext_resource path="res://assets/gfx/common/64x64_white.png" type="Texture" id=2]
 [ext_resource path="res://src/game/player/player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/game/ui/skill_selection_dialog.tscn" type="PackedScene" id=4]
 [ext_resource path="res://src/game/ui/exp_display.tscn" type="PackedScene" id=5]
 
 [node name="Battle" type="Node2D"]
@@ -20,6 +21,9 @@ margin_left = 163.0
 margin_top = 49.0
 margin_right = 1095.0
 margin_bottom = 76.0
+
+[node name="SkillSelectionDialog" parent="UILayer" instance=ExtResource( 4 )]
+visible = false
 
 [node name="BG" type="Sprite" parent="."]
 modulate = Color( 0.0588235, 0.227451, 0.109804, 1 )

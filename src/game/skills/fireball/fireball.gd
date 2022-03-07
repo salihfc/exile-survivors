@@ -20,8 +20,10 @@ export(float) var base_damage := 20.0
 export(float) var cd := 5.0 
 export(int) var max_pierce := 0
 
-### PUBLIC VAR ###
+# warning-ignore:unused_class_variable
+export(Array, Resource) var possible_minor_augments = []
 
+### PUBLIC VAR ###
 
 
 ### PRIVATE VAR ###
@@ -64,6 +66,7 @@ func _get_projectile_velocity() -> Vector2:
 func _on_CdTimer_timeout() -> void:
 	_cast()
 	cdTimer.start(cd)
+
 
 
 func _on_ProjectileMaxRange_area_exited(area: Area2D) -> void:

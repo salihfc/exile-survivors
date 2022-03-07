@@ -1,5 +1,5 @@
-extends Node2D
-class_name Skill
+extends MinorAugment
+class_name MinorAugmentChain
 
 """
 
@@ -15,10 +15,7 @@ class_name Skill
 
 
 ### EXPORT ###
-# warning-ignore:unused_class_variable
-export(Texture) var icon
-# warning-ignore:unused_class_variable
-export(String) var skill_description
+
 
 ### PUBLIC VAR ###
 

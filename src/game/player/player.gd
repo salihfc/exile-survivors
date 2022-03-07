@@ -29,9 +29,10 @@ var _hp := 1.0
 ### ONREADY VAR ###
 onready var hpBar = $Hp_bar as HpBar
 onready var anim_sprite = $AnimatedSprite as AnimatedSprite
-#onready var arc = $Arc as Arc
-onready var fireball = $Fireball as Fireball
+#onready var arc = $a as Arc
+onready var fireball = $Skills/Fireball as Fireball
 onready var camera = $Camera2D as Camera2D
+onready var skillContainer = $Skills as Node2D
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 
@@ -47,7 +48,7 @@ func _ready() -> void:
 # warning-ignore:unused_argument
 func _process(delta: float) -> void:
 
-	if not Engine.editor_hint:
+	if Engine.time_scale > 0.0: # Active
 		var dir := Vector2(
 				- Input.get_action_strength("ui_left") + Input.get_action_strength("ui_right"),
 				- Input.get_action_strength("ui_up") + Input.get_action_strength("ui_down")
@@ -81,6 +82,10 @@ func take_damage(amount : float) -> void:
 
 func alive() -> bool:
 	return _hp > 0.0
+
+
+func get_skills() -> Array:
+	return skillContainer.get_children()
 
 
 ### PRIVATE FUNCTIONS ###
