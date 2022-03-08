@@ -16,8 +16,6 @@ const ProjectilePrefab = preload("res://src/game/skills/fireball/fireball_projec
 
 ### EXPORT ###
 export(float) var speed := 400.0
-export(float) var base_damage := 20.0 
-export(float) var cd := 5.0 
 export(int) var max_pierce := 0
 
 
@@ -58,13 +56,6 @@ func _get_projectile_velocity() -> Vector2:
 	return dir.normalized() * _get_speed()
 
 
-func _get_damage() -> float:
-	var damage = base_damage
-	for augment in _applied_augments:
-		if augment is MinorAugmentDamage:
-			LOG.pr(1, "augment(%s) is MinorAugmentDamage" % [augment])
-			damage += augment.damage_increase_amount
-	return damage
 
 
 func _get_max_pierce() -> int:

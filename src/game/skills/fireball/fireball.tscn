@@ -22,7 +22,7 @@ one_shot = true
 [node name="ProjectileMaxRange" type="Area2D" parent="."]
 visible = false
 collision_layer = 0
-collision_mask = 64
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ProjectileMaxRange"]
 shape = SubResource( 1 )

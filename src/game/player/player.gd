@@ -30,7 +30,7 @@ var _hp := 1.0
 onready var hpBar = $Hp_bar as HpBar
 onready var anim_sprite = $AnimatedSprite as AnimatedSprite
 #onready var arc = $a as Arc
-onready var fireball = $Skills/Fireball as Fireball
+#onready var fireball = $Skills/Fireball as Fireball
 onready var camera = $Camera2D as Camera2D
 onready var skillContainer = $Skills as Node2D
 
@@ -39,8 +39,10 @@ onready var skillContainer = $Skills as Node2D
 func _ready() -> void:
 	_set_hp(max_hp)
 	anim_sprite.speed_scale = MAX_VEL / RUN_ANIM_SPEED_APPROX
-#	arc.start()
-	fireball.start()
+	
+	for skill in skillContainer.get_children():
+		skill.start()
+	
 	camera.current = true
 
 
@@ -57,7 +59,9 @@ func _process(delta: float) -> void:
 		_velocity = _velocity.normalized() * min(_velocity.length(), MAX_VEL)
 		
 		# Anim Update
-		anim_sprite.flip_h = _velocity.x < 0.0
+		anim_sprite.scale.x = -1.0 if (_velocity.x < 0.0) else 1.0
+		
+		#
 		anim_sprite.animation = "idle" if _velocity.length() < IDLE_THRESHOLD else "run"
 
 		if Input.is_action_just_pressed("shoot"):

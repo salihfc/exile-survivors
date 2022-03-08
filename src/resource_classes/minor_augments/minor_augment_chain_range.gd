@@ -1,6 +1,5 @@
 extends MinorAugment
-class_name MinorAugmentChain
-
+class_name MinorAugmentChainRange
 """
 
 """
@@ -16,7 +15,7 @@ class_name MinorAugmentChain
 
 ### EXPORT ###
 # warning-ignore:unused_class_variable
-export(int) var chain_increase_amount
+export(float) var chain_range_increase
 
 ### PUBLIC VAR ###
 

@@ -85,7 +85,7 @@ func _on_enemy_died(exp_reward) -> void:
 func _on_player_level_up(_new_level) -> void:
 	_pause()
 	var skills = player.get_skills()
-#	LOG.pr(1, "player skills (%s)" % [skills])
+	LOG.pr(1, "player skills (%s)" % [skills])
 	while skills.size() < 3:
 		skills.append(Arc.new())
 

@@ -1,13 +1,23 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/game/skill.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/game/skills/arc/arc.gd" type="Script" id=2]
+[ext_resource path="res://tres/skill_augments/minor/arc/minor_damage_augment.tres" type="Resource" id=3]
+[ext_resource path="res://tres/skill_augments/minor/arc/minor_chain_range_augment.tres" type="Resource" id=4]
+[ext_resource path="res://tres/skill_augments/minor/arc/minor_chain_augment.tres" type="Resource" id=5]
+[ext_resource path="res://assets/gfx/ui/skill_icons/96x96/skill_icons23.png" type="Texture" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 600.0
 
 [node name="Arc" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+icon = ExtResource( 6 )
+possible_minor_augments = [ ExtResource( 3 ), ExtResource( 5 ), ExtResource( 4 ) ]
+base_damage = 10.0
+cd = 1.0
+chain_range = 100.0
+max_chain = 2.0
 
 [node name="RangeArea" type="Area2D" parent="." index="0"]
 collision_layer = 64

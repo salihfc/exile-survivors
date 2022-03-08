@@ -5,7 +5,6 @@
 
 [node name="FadingLine" type="Line2D"]
 points = PoolVector2Array( 20, 4, 232, -4 )
-width = 20.0
 default_color = Color( 0.509804, 0.898039, 0.92549, 1 )
 texture = ExtResource( 2 )
 texture_mode = 2

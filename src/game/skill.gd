@@ -22,6 +22,10 @@ export(String) var skill_description
 # warning-ignore:unused_class_variable
 export(Array, Resource) var possible_minor_augments = []
 
+#
+export(float) var base_damage := 20.0 
+# warning-ignore:unused_class_variable
+export(float) var cd := 5.0 
 ### PUBLIC VAR ###
 
 
@@ -42,6 +46,12 @@ func apply_augment(augment : Augment) -> void:
 
 
 ### PRIVATE FUNCTIONS ###
-
+func _get_damage() -> float:
+	var damage = base_damage
+	for augment in _applied_augments:
+		if augment is MinorAugmentDamage:
+			LOG.pr(1, "augment(%s) is MinorAugmentDamage" % [augment])
+			damage += augment.damage_increase_amount
+	return damage
 
 ### SIGNAL RESPONSES ###
