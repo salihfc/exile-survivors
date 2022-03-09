@@ -26,7 +26,6 @@ export(float) var max_chain := 5.0
 
 ### ONREADY VAR ###
 onready var area = $RangeArea as Area2D
-onready var cdTimer = $CdTimer as Timer
 onready var lineContainer = $VisualLines as Node2D
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
@@ -36,9 +35,6 @@ func _ready() -> void:
 
 
 ### PUBLIC FUNCTIONS ###
-func start() -> void:
-	cdTimer.start(cd)
-
 
 
 ### PRIVATE FUNCTIONS ###

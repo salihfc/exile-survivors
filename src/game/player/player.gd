@@ -81,7 +81,8 @@ func apply_force(force : Vector2) -> void:
 
 
 func take_damage(amount : float) -> void:
-	_set_hp(_hp - amount)
+	if not CONFIG.PLAYER_INVINCIBLE:
+		_set_hp(_hp - amount)
 
 
 func alive() -> bool:

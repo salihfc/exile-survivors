@@ -25,10 +25,13 @@ var _last_selected_skill_for_augmentation : Skill
 var _exp_system := ExpSystem.new(100)
 
 ### ONREADY VAR ###
+# UI
 onready var expDisplay = $UILayer/ExpDisplay as ExpDisplay
 onready var skillSelectionDialog = $UILayer/SkillSelectionDialog as SkillSelectionDialog
 onready var augmentSelectionDialog = $UILayer/AugmentSelectionDialog as AugmentSelectionDialog
 
+# Game
+onready var enemySpawnPos = $EnemySpawnPositions as Node2D
 onready var player = $Env/Player as Player
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
@@ -64,13 +67,25 @@ func _pause() -> void:
 		Engine.time_scale = 1.0
 
 
+func _get_random_spawn_pos() -> Vector2:
+	var R = 200.0
+
+	var all_pos = enemySpawnPos.get_children()
+	var pos = all_pos[(randi() % all_pos.size())].global_position
+	var rand_vec = UTILS.random_unit_vec2()
+	var rand_rad = rand_range(0.0, R)
+	var spawn = pos + rand_vec * rand_rad
+
+	return spawn
+
+
 ### SIGNAL RESPONSES ###
 
 
 func _on_SpawnTimer_timeout() -> void:
 	var new_enemy = BatEyePrefab.instance()
 	$Env.add_child(new_enemy)
-	new_enemy.global_position = Vector2(200.0, 200.0)
+	new_enemy.global_position = _get_random_spawn_pos()
 	new_enemy.set_target($Env/Player)
 	new_enemy.set_scaled_hp(_exp_system.get_level()) 
 	UTILS.bind(new_enemy, "died", self, "_on_enemy_died")

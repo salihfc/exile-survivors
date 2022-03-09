@@ -1,0 +1,138 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://assets/gfx/common/16x16_orange.png" type="Texture" id=1]
+[ext_resource path="res://assets/gfx/game/player/skills/mine/mine.png" type="Texture" id=2]
+[ext_resource path="res://src/game/skills/mine/mine.gd" type="Script" id=3]
+[ext_resource path="res://src/game/hitbox.tscn" type="PackedScene" id=4]
+
+[sub_resource type="Shader" id=1]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.4.stable's CanvasItemMaterial.
+
+shader_type canvas_item;
+render_mode blend_mix;
+
+uniform mat4 global_transform;
+varying vec2 world_position;
+
+void vertex(){
+    world_position = (global_transform * vec4(VERTEX, 0.0, 1.0)).xy;
+}
+
+uniform vec4 add_color : hint_color;
+
+void fragment()
+{
+	vec4 base_color = texture(TEXTURE, UV);
+	vec3 color = (mix(base_color.rgb, add_color.rgb, 0.5) * 2.5);
+	vec2 uv = UV - vec2(0.5);
+	float dist = length(uv);
+//	float a = base_color.a * (0.7 - pow(dist, 0.5));
+	float a = base_color.a * (0.7 - pow(dist, 0.5));
+	a = max(0., a);
+	a = pow(a, 0.5);
+	
+
+	COLOR = vec4(color, a);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/global_transform = null
+shader_param/add_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 0.984091 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.147727 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=4]
+colors = PoolColorArray( 1, 0.498039, 0, 1, 1, 0.498039, 0, 0.486275 )
+
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 11.5
+height = 12.0
+
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "buildup"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.717647, 0.294118, 0.294118, 1 ), Color( 0.99412, 0.921925, 0.921925, 1 ), Color( 0.898039, 0, 0, 1 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "_explode"
+} ]
+}
+
+[node name="Mine" type="Node2D"]
+scale = Vector2( 10, 10 )
+script = ExtResource( 3 )
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+material = SubResource( 2 )
+scale = Vector2( 1, 0.4 )
+emitting = false
+amount = 256
+lifetime = 0.4
+one_shot = true
+explosiveness = 0.7
+lifetime_randomness = 0.74
+local_coords = false
+draw_order = 1
+texture = ExtResource( 1 )
+direction = Vector2( 0, -1 )
+spread = 180.0
+gravity = Vector2( 0, 200 )
+initial_velocity = 100.0
+tangential_accel = 100.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 3 )
+color = Color( 1, 0.647059, 0.0941176, 1 )
+color_ramp = SubResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -3 )
+scale = Vector2( 0.2, 0.13125 )
+texture = ExtResource( 2 )
+
+[node name="HitBox" parent="." instance=ExtResource( 4 )]
+collision_layer = 64
+collision_mask = 512
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+rotation = 1.5708
+shape = SubResource( 7 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 6 )
+anims/buildup = SubResource( 5 )

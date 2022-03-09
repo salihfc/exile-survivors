@@ -1,5 +1,7 @@
 extends Node
 
+const SHOW_HEALTH_BARS := true
+const PLAYER_INVINCIBLE := true
 #var active_camera	= null
 #var world			= null
 
@@ -7,6 +9,7 @@ extends Node
 func _ready() -> void:
 	OS.center_window()
 	Engine.target_fps = 60
+	randomize()
 
 
 # warning-ignore:unused_argument

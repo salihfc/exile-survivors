@@ -43,7 +43,7 @@ func set_bar(new_value : float) -> void:
 	)
 	tween.start()
 	
-	if new_value < 100.0:
+	if CONFIG.SHOW_HEALTH_BARS and new_value < 100.0:
 		show()
 
 ### PRIVATE FUNCTIONS ###

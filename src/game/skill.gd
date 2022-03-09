@@ -33,7 +33,7 @@ export(float) var cd := 5.0
 var _applied_augments = []
 
 ### ONREADY VAR ###
-
+onready var cdTimer = $CdTimer as Timer
 
 
 
@@ -41,6 +41,10 @@ var _applied_augments = []
 
 
 ### PUBLIC FUNCTIONS ###
+func start() -> void:
+	cdTimer.start(cd)
+
+
 func apply_augment(augment : Augment) -> void:
 	_applied_augments.append(augment)
 
@@ -55,3 +59,7 @@ func _get_damage() -> float:
 	return damage
 
 ### SIGNAL RESPONSES ###
+
+
+func _on_CdTimer_timeout() -> void:
+	pass # Replace with function body.

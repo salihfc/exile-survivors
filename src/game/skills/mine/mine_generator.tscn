@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://src/game/skill.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/game/skills/mine/mine_generator.gd" type="Script" id=2]
+[ext_resource path="res://assets/gfx/ui/skill_icons/96x96/skill_icons24.png" type="Texture" id=3]
+
+[node name="MineGenerator" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+icon = ExtResource( 3 )
+
+[node name="MineContainer" type="Node2D" parent="." index="1"]

@@ -74,4 +74,21 @@ disabled = true
 [node name="Player" parent="Env" instance=ExtResource( 3 )]
 position = Vector2( 964, 540 )
 
+[node name="EnemySpawnPositions" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Position2D" type="Position2D" parent="EnemySpawnPositions"]
+position = Vector2( -46, -2 )
+
+[node name="Position2D2" type="Position2D" parent="EnemySpawnPositions"]
+position = Vector2( -74, 1104 )
+
+[node name="Position2D3" type="Position2D" parent="EnemySpawnPositions"]
+position = Vector2( 1950, 1154 )
+
+[node name="Position2D4" type="Position2D" parent="EnemySpawnPositions"]
+position = Vector2( 1990, -80 )
+
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]

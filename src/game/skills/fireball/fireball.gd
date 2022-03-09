@@ -26,7 +26,6 @@ export(int) var max_pierce := 0
 
 
 ### ONREADY VAR ###
-onready var cdTimer = $CdTimer as Timer
 onready var createdProjectiles = $CreatedProjectiles as Node2D
 
 
@@ -34,8 +33,7 @@ onready var createdProjectiles = $CreatedProjectiles as Node2D
 
 
 ### PUBLIC FUNCTIONS ###
-func start() -> void:
-	cdTimer.start(cd)
+
 
 
 ### PRIVATE FUNCTIONS ###
