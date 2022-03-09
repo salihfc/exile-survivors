@@ -130,6 +130,7 @@ texture = ExtResource( 1 )
 position = Vector2( 1, -16 )
 frames = SubResource( 10 )
 animation = "idle"
+frame = 5
 playing = true
 offset = Vector2( 6, 3 )
 
@@ -162,17 +163,19 @@ editor_draw_drag_margin = true
 
 [node name="Skills" type="Node2D" parent="."]
 
-[node name="MineGenerator" parent="Skills" instance=ExtResource( 10 )]
-mine_explosion_delay = 3.0
+[node name="Arc" parent="Skills" instance=ExtResource( 8 )]
+base_damage = 40.0
+chain_range = 200.0
+max_chain = 4.0
 
 [node name="InactiveSkills" type="Node2D" parent="."]
 
 [node name="Fireball" parent="InactiveSkills" instance=ExtResource( 9 )]
+visible = false
 z_index = 2
 base_damage = 50.0
 cd = 3.0
 
-[node name="Arc" parent="InactiveSkills" instance=ExtResource( 8 )]
+[node name="MineGenerator" parent="InactiveSkills" instance=ExtResource( 10 )]
 visible = false
-chain_range = 200.0
-max_chain = 4.0
+mine_explosion_delay = 3.0

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://src/resource_classes/major_augments/major_augment_arc_end_of_chain_explosion.gd" type="Script" id=1]
+[ext_resource path="res://assets/gfx/ui/skill_icons/96x96/skill_icons3.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+icon = ExtResource( 2 )
+augment_description = ""

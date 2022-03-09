@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://assets/gfx/common/16x16_orange.png" type="Texture" id=1]
 [ext_resource path="res://assets/gfx/game/player/skills/mine/mine.png" type="Texture" id=2]
 [ext_resource path="res://src/game/skills/mine/mine.gd" type="Script" id=3]
 [ext_resource path="res://src/game/hitbox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/gfx/common/16x16_white.png" type="Texture" id=5]
 
 [sub_resource type="Shader" id=1]
 code = "// NOTE: Shader automatically converted from Godot Engine 3.4.stable's CanvasItemMaterial.
@@ -45,6 +46,24 @@ _data = [ Vector2( 0, 0.984091 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.147727 ), 0.0, 0
 
 [sub_resource type="Gradient" id=4]
 colors = PoolColorArray( 1, 0.498039, 0, 1, 1, 0.498039, 0, 0.486275 )
+
+[sub_resource type="Shader" id=8]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.4.stable's CanvasItemMaterial.
+
+shader_type canvas_item;
+render_mode blend_mix;
+
+
+void fragment()
+{
+	vec2 uv = UV - vec2(.5);
+	float dist = length(uv);
+	float a = smoothstep(0.48, 0.47, dist);
+	COLOR.a = a;
+}"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
 
 [sub_resource type="CapsuleShape2D" id=7]
 radius = 11.5
@@ -93,6 +112,30 @@ tracks/1/keys = {
 "method": "_explode"
 } ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Telegraph:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Telegraph:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1, 1.1 ),
+"transitions": PoolRealArray( 0.329877, 1.36604, 1 ),
+"update": 0,
+"values": [ Vector2( 0.4, 0.28 ), Vector2( 2, 1.4 ), Vector2( 0.4, 0.28 ) ]
+}
 
 [node name="Mine" type="Node2D"]
 scale = Vector2( 10, 10 )
@@ -120,6 +163,12 @@ scale_amount_curve = SubResource( 3 )
 color = Color( 1, 0.647059, 0.0941176, 1 )
 color_ramp = SubResource( 4 )
 
+[node name="Telegraph" type="Sprite" parent="."]
+modulate = Color( 0.631373, 0.247059, 0.247059, 0.415686 )
+material = SubResource( 9 )
+scale = Vector2( 0.4, 0.28 )
+texture = ExtResource( 5 )
+
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -3 )
 scale = Vector2( 0.2, 0.13125 )
@@ -131,6 +180,7 @@ collision_mask = 512
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 rotation = 1.5708
+scale = Vector2( 1, 1 )
 shape = SubResource( 7 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

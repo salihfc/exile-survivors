@@ -115,10 +115,13 @@ func _on_skill_selected_for_upgrade(skill : Skill) -> void:
 	_last_selected_skill_for_augmentation = skill
 	
 # warning-ignore:unsafe_property_access
-	var augments = skill.possible_minor_augments.duplicate()
+	var augments = skill.get_possible_augments()
 #	LOG.pr(1, "player skills (%s)" % [skills])
 	while augments.size() < 3:
 		augments.append(Augment.new())
+
+	if augments.size() > 3:
+		augments = UTILS.get_random_subset(augments, 3)
 
 	augmentSelectionDialog.set_augments(augments)
 	augmentSelectionDialog.show()

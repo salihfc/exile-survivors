@@ -46,7 +46,6 @@ func _ready() -> void:
 	camera.current = true
 
 
-
 # warning-ignore:unused_argument
 func _process(delta: float) -> void:
 

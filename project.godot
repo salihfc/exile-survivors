@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/game/ui/augment_selection_dialog.gd"
 }, {
+"base": "Resource",
+"class": "BasicCache",
+"language": "GDScript",
+"path": "res://src/resource_classes/basic_cache.gd"
+}, {
 "base": "Node2D",
 "class": "Enemy",
 "language": "GDScript",
@@ -68,6 +73,16 @@ _global_script_classes=[ {
 "class": "HurtBox",
 "language": "GDScript",
 "path": "res://src/game/hurtbox.gd"
+}, {
+"base": "Augment",
+"class": "MajorAugment",
+"language": "GDScript",
+"path": "res://src/resource_classes/major_augment.gd"
+}, {
+"base": "MajorAugment",
+"class": "MajorAugmentArcEndOfChainExplosion",
+"language": "GDScript",
+"path": "res://src/resource_classes/major_augments/major_augment_arc_end_of_chain_explosion.gd"
 }, {
 "base": "Augment",
 "class": "MinorAugment",
@@ -149,6 +164,7 @@ _global_script_class_icons={
 "Augment": "",
 "AugmentSelectionAugmentDisplay": "",
 "AugmentSelectionDialog": "",
+"BasicCache": "",
 "Enemy": "",
 "EnemyBatEye": "",
 "ExpDisplay": "",
@@ -157,6 +173,8 @@ _global_script_class_icons={
 "HitBox": "",
 "HpBar": "",
 "HurtBox": "",
+"MajorAugment": "",
+"MajorAugmentArcEndOfChainExplosion": "",
 "MinorAugment": "",
 "MinorAugmentChain": "",
 "MinorAugmentChainRange": "",

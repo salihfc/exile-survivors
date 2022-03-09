@@ -38,31 +38,74 @@ func _ready() -> void:
 
 
 ### PRIVATE FUNCTIONS ###
+func _is_changed_to_chain():
+	var cached_value = _property_cache.get_cached("behaviour_chain_and_explosion")
+	if cached_value:
+		return cached_value
+	
+	var chain = false
+	for augment in _applied_augments:
+		if augment is MajorAugmentArcEndOfChainExplosion:
+			chain = true
+			break
+	_property_cache.cache("behaviour_chain_and_explosion", chain)
+	return chain
+
+
 func _get_max_chain() -> int:
+	var cached_value = _property_cache.get_cached("max_chain")
+	if cached_value:
+		return cached_value
+	
 	var chain = max_chain
 	for augment in _applied_augments:
 		if augment is MinorAugmentChain:
 #			LOG.pr(1, "augment(%s) is MinorAugmentChain" % [augment])
 			chain += augment.chain_increase_amount
+	
+	_property_cache.cache("max_chain", chain)
 	return chain
 
 
 func _get_chain_range() -> float:
+	var cached_value = _property_cache.get_cached("chain_range")
+	if cached_value:
+		return cached_value
+	
 	var _range = chain_range
 	for augment in _applied_augments:
 		if augment is MinorAugmentChainRange:
 #			LOG.pr(1, "augment(%s) is MinorAugmentChain" % [augment])
 			_range += augment.chain_range_increase
+	_property_cache.cache("chain_range", _range)
 	return _range
 
 
-func _cast_starting_from(closest):
+func _get_edges(closest) -> Array:
 	var all_enemies = get_tree().get_nodes_in_group("enemy")
 	var mst_solver = (UTILS as Utils).MST_solver.new(closest, all_enemies)
 	var edges = mst_solver.get_mst_edges_with(_get_max_chain(), _get_chain_range())
-#	LOG.pr(1, "ARC CASTED WITH LINES: (%s) -> (%s)" % [all_enemies.size(), edges.size()])
+	return edges
 
+
+func _get_chain(closest) -> Array:
+	var all_enemies = get_tree().get_nodes_in_group("enemy")
+	var chain_solver = (UTILS as Utils).Chain_solver.new(closest, all_enemies)
+	var edges = chain_solver.get_chain(_get_max_chain(), _get_chain_range())
+	return edges
+
+
+func _cast_starting_from(closest):
+	var edges
+	
+	if _is_changed_to_chain():
+		edges = _get_chain(closest)
+	else:
+		edges = _get_edges(closest)
+	
 	edges.push_front([self, closest, 0])
+
+#	LOG.pr(1, "ARC CASTED WITH LINES: (%s) -> (%s)" % [all_enemies.size(), edges.size()])
 	
 	var appearing_time = 0.02
 	var disappering_time = 0.03
@@ -102,7 +145,7 @@ func _get_entities_in_range() -> Array:
 
 
 func _on_CdTimer_timeout() -> void:
-	LOG.pr(1, "TRY CASTING ARC")
+#	LOG.pr(1, "TRY CASTING ARC")
 	var entities = _get_entities_in_range()
 	var closest = null
 	var dist := INF

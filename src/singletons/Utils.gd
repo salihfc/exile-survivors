@@ -39,6 +39,11 @@ func random_unit_vec2() -> Vector2:
 	return Vector2(cos(theta), sin(theta))
 
 
+func get_random_subset(set : Array, ct : int) -> Array:
+	set.shuffle()
+	return set.slice(0, ct - 1)
+
+
 func create_delayed_call(caller, function, args, delay):
 	if is_zero_approx(delay):
 		caller.callv(function, args)
@@ -64,6 +69,47 @@ func get_closest_node(node : Node2D, other_nodes : Array):
 
 	return closest
 
+
+### CHAIN CLASS ###
+class Chain_solver:
+	var _starting_entity = null
+	var _entities = []
+	
+	func _init(starting_entity, remaning_entities) -> void:
+		_starting_entity = starting_entity
+		_entities = remaning_entities
+		
+		if _starting_entity in _entities:
+			_entities.erase(_starting_entity)
+
+	func get_chain(chain_count, chain_range) -> Array:
+		var edges = []
+		var current = _starting_entity
+		var entity_depth = {
+			_starting_entity : 0,
+		}
+		
+		for _i in range(chain_count):
+			var min_dist = INF
+			var closest = null
+			
+			for entity in _entities:
+				var dist = entity.global_position.distance_to(current.global_position)
+				if min_dist > dist:
+					min_dist = dist
+					closest = entity
+			
+			if closest == null or min_dist > chain_range:
+				break
+			
+			entity_depth[closest] = entity_depth[current] + 1
+			_entities.erase(closest)
+			edges.append([current, closest, entity_depth[closest]])
+			current = closest
+		
+		return edges
+
+### CHAIN CLASS END ###
 
 ### MST FUNCTIONS ###
 class MST_solver:

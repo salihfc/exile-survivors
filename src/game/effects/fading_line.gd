@@ -83,7 +83,7 @@ func init(
 	add_point(start_pos)
 	add_point(end_pos)
 	
-	LOG.pr(1, "FadingLine(%s, %s)" % [start_pos, end_pos])
+#	LOG.pr(1, "FadingLine(%s, %s)" % [start_pos, end_pos])
 
 
 ### PRIVATE FUNCTIONS ###
