@@ -28,6 +28,10 @@ onready var animTween = $AnimTween as Tween
 
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
+func _ready() -> void:
+	_main_sprite = animSprite
+
+
 # warning-ignore:unused_argument
 func _process(delta: float) -> void:
 	if abs(_velocity.x) > FLIP_THRESHOLD:
@@ -43,18 +47,19 @@ func take_damage(amount : float) -> void:
 
 	var to_red_duration = 0.1
 	var to_white_duration = 0.1
+	var current_modulate = animSprite.modulate
 	
 	# Flash to red then back to white
 	animTween.interpolate_property(
 			animSprite, "modulate",
-			Color.white, Color.red,
+			current_modulate, Color.red,
 			to_red_duration,
 			Tween.TRANS_QUART, Tween.EASE_IN_OUT
 	)
 
 	animTween.interpolate_property(
 			animSprite, "modulate",
-			Color.red, Color.white,
+			Color.red, current_modulate,
 			to_white_duration,
 			Tween.TRANS_QUART, Tween.EASE_IN_OUT,
 			to_red_duration
@@ -65,6 +70,13 @@ func take_damage(amount : float) -> void:
 	
 
 ### PRIVATE FUNCTIONS ###
+func _on_freeze_for(time : float) -> void:
+	._on_freeze_for(time)
+	animSprite.playing = false
 
+
+func _on_unfreeze(before_freeze_modulate) -> void:
+	._on_unfreeze(before_freeze_modulate)
+	animSprite.playing = true
 
 ### SIGNAL RESPONSES ###

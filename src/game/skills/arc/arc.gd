@@ -127,6 +127,9 @@ func _cast_starting_from(closest):
 		)
 		
 		lineContainer.add_child(fading_line)
+		if UTILS.check(user.get_chance_to_freeze()):
+			(UTILS as Utils).create_delayed_call(end, "_on_freeze_for", [1.0], delay)
+
 		(UTILS as Utils).create_delayed_call(end, "take_damage", [arc_damage], delay)
 		LOG.pr(1, "(%s) should be hit in (%s) secs with (%s)" % [end, delay, arc_damage])
 

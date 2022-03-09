@@ -69,12 +69,6 @@ animations = [ {
 [node name="EnemyBatEye" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 
-[node name="Sprite2" parent="." index="0"]
-visible = false
-
-[node name="Sprite" parent="." index="1"]
-visible = false
-
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
 visible = false
 position = Vector2( 0, 15 )
@@ -98,7 +92,7 @@ body_shape = SubResource( 13 )
 position = Vector2( 0, -19 )
 frames = SubResource( 9 )
 animation = "fly"
-frame = 3
+frame = 4
 playing = true
 offset = Vector2( -4, -16 )
 

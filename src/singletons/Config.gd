@@ -5,6 +5,9 @@ const PLAYER_INVINCIBLE := true
 #var active_camera	= null
 #var world			= null
 
+# COLORS
+const FROZEN_ENEMY_MODULATE_COLOR = Color("#003676")
+
 
 func _ready() -> void:
 	OS.center_window()

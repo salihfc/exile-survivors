@@ -32,7 +32,12 @@ var max_hp
 var _velocity := Vector2.ZERO
 # Battle
 var _hp := 1.0
+# warning-ignore:unused_class_variable
+var _main_sprite : CanvasItem
 var _target = null
+
+# FLAG
+var _frozen := false
 
 ### ONREADY VAR ###
 onready var hpBar = $Hp_bar as HpBar
@@ -50,7 +55,8 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	global_position += _velocity * delta
+	if not _frozen:
+		global_position += _velocity * delta
 
 
 ### PUBLIC FUNCTIONS ###
@@ -99,6 +105,23 @@ func _die():
 	queue_free()
 
 
+func _on_freeze_for(time : float) -> void:
+	assert(_main_sprite)
+	var saved_modulate = _main_sprite.modulate
+	_main_sprite.modulate = CONFIG.FROZEN_ENEMY_MODULATE_COLOR
+	_frozen = true
+	
+	yield(get_tree().create_timer(time), "timeout")
+	if self:
+		_on_unfreeze(saved_modulate)
+
+
+func _on_unfreeze(before_freeze_modulate) -> void:
+	_main_sprite.modulate = before_freeze_modulate
+	_frozen = false
+
+
+# AI
 func _seek(pos, delta) -> void:
 	if global_position.distance_to(pos) < CONVERGENCE_THRESHOLD:
 		_converge(pos)
@@ -113,6 +136,7 @@ func _seek(pos, delta) -> void:
 func _converge(pos : Vector2) -> void:
 	var desired := (pos - global_position) * CONVERGENCE_SPEED_FACTOR
 	_velocity = desired.normalized() * min(desired.length(), MAX_VEL)
+##
 
 
 func _get_entities_in_hitbox() -> Array:

@@ -51,5 +51,7 @@ func _ready() -> void:
 
 
 func _on_DelayedCall_timeout() -> void:
-	_caller.callv(_function, _args)
+	if _caller:
+		_caller.callv(_function, _args)
+	
 	queue_free()

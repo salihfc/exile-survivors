@@ -27,8 +27,9 @@ export(Array, Resource) var possible_major_augments = []
 export(float) var base_damage := 20.0 
 # warning-ignore:unused_class_variable
 export(float) var cd := 5.0 
-### PUBLIC VAR ###
 
+### PUBLIC VAR ###
+var user : Player
 
 ### PRIVATE VAR ###
 var _property_cache = BasicCache.new()

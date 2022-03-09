@@ -39,6 +39,10 @@ func random_unit_vec2() -> Vector2:
 	return Vector2(cos(theta), sin(theta))
 
 
+func check(p : float) -> bool:
+	return randf() <= p
+
+
 func get_random_subset(set : Array, ct : int) -> Array:
 	set.shuffle()
 	return set.slice(0, ct - 1)

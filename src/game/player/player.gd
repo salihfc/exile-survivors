@@ -41,6 +41,7 @@ func _ready() -> void:
 	anim_sprite.speed_scale = MAX_VEL / RUN_ANIM_SPEED_APPROX
 	
 	for skill in skillContainer.get_children():
+		skill.user = self
 		skill.start()
 	
 	camera.current = true
@@ -90,6 +91,10 @@ func alive() -> bool:
 
 func get_skills() -> Array:
 	return skillContainer.get_children()
+
+
+func get_chance_to_freeze() -> float:
+	return 1.0
 
 
 ### PRIVATE FUNCTIONS ###
