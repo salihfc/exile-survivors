@@ -12,11 +12,18 @@ signal died(exp_rewarded_to_player)
 
 
 ### CONST ###
+# VISUAL
+const FLIP_THRESHOLD = 20.0
+
+# AI
 const CONVERGENCE_THRESHOLD = 100.0
 const CONVERGENCE_SPEED_FACTOR = 4.0
 
+# PHYS
 const MAX_VEL	  	  = 200.0
 const MAX_STEER_FORCE = 1000.0
+
+# GAME
 const ATTACK_CD = 1.0
 
 ### EXPORT ###
@@ -40,8 +47,8 @@ var _target = null
 var _frozen := false
 
 ### ONREADY VAR ###
-onready var hpBar = $Hp_bar as HpBar
-onready var hitBox = $HitBox as HitBox
+onready var hpBar = $UiElements/Hp_bar as HpBar
+onready var hitBox = $Areas/HitBox as HitBox
 
 onready var hitTimer = $Timers/HitTimer as Timer
 onready var freezeTimer = $Timers/FreezeTimer as Timer
@@ -54,6 +61,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if _target:
 		_seek(_target.global_position, delta)
+
+
 
 
 func _physics_process(delta: float) -> void:

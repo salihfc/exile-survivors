@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://assets/gfx/common/64x64_white.png" type="Texture" id=1]
 [ext_resource path="res://src/game/player/player.gd" type="Script" id=2]
@@ -10,6 +10,43 @@
 [ext_resource path="res://src/game/skills/arc/arc.tscn" type="PackedScene" id=8]
 [ext_resource path="res://src/game/skills/fireball/fireball.tscn" type="PackedScene" id=9]
 [ext_resource path="res://src/game/skills/mine/mine_generator.tscn" type="PackedScene" id=10]
+
+[sub_resource type="Shader" id=19]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.4.stable's CanvasItemMaterial.
+
+shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec4 outline_color : hint_color = vec4(0.0);
+
+float outline(sampler2D tex, vec2 uv)
+{
+	float thick = 0.0005;
+	float a = 1.0;
+	
+	for (float x = -1.0; x < 1.01; x += 1.0)
+	{
+		for (float y = -1.0; y < 1.01; y += 1.0)
+		{
+			float pa = texture(tex, uv + vec2(x, y) * thick).a;
+			a *= pa;
+		}
+	}
+	
+	return 1.0 - a;
+}
+
+void fragment()
+{
+	vec4 base_color = texture(TEXTURE, UV);
+	float out_weight = outline(TEXTURE, UV);
+	base_color.rgb = mix(base_color, outline_color, out_weight * (outline_color.a)).rgb;
+	COLOR = base_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=20]
+shader = SubResource( 19 )
+shader_param/outline_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="AtlasTexture" id=4]
 flags = 4
@@ -127,10 +164,10 @@ self_modulate = Color( 0.105882, 0.486275, 0.027451, 1 )
 texture = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+material = SubResource( 20 )
 position = Vector2( 1, -16 )
 frames = SubResource( 10 )
 animation = "idle"
-frame = 3
 playing = true
 offset = Vector2( 6, 3 )
 
@@ -138,6 +175,7 @@ offset = Vector2( 6, 3 )
 position = Vector2( 0, 20 )
 collision_layer = 32
 collision_mask = 1024
+parent_path = NodePath("..")
 
 [node name="HurtboxCollision" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource( 1 )
@@ -151,6 +189,7 @@ custom_styles/fg = SubResource( 2 )
 
 [node name="SoftBody2D" parent="." instance=ExtResource( 5 )]
 position = Vector2( 0, 20 )
+parent_path = NodePath("..")
 body_shape = SubResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]

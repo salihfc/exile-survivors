@@ -14,7 +14,8 @@ class_name HitBox
 
 
 ### EXPORT ###
-
+# warning-ignore:unused_class_variable
+export(NodePath) var parent_path
 
 ### PUBLIC VAR ###
 

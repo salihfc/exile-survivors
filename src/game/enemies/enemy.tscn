@@ -1,17 +1,16 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/game/enemies/enemy.gd" type="Script" id=1]
-[ext_resource path="res://assets/gfx/common/64x64_white.png" type="Texture" id=2]
 [ext_resource path="res://src/game/enemies/hp_bar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/game/hurtbox.tscn" type="PackedScene" id=4]
 [ext_resource path="res://src/game/hitbox.tscn" type="PackedScene" id=5]
 [ext_resource path="res://src/game/softbody2d.tscn" type="PackedScene" id=6]
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 44, 44 )
+[sub_resource type="CircleShape2D" id=5]
+radius = 49.0102
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 49.0102
+radius = 42.0119
 
 [sub_resource type="CircleShape2D" id=4]
 radius = 32.0
@@ -23,41 +22,28 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Sprite2" type="Sprite" parent="."]
-visible = false
-position = Vector2( 0, -32 )
-scale = Vector2( 1.1, 1.1 )
-texture = ExtResource( 2 )
+[node name="Areas" type="Node2D" parent="."]
 
-[node name="Sprite" type="Sprite" parent="."]
-visible = false
-self_modulate = Color( 0.580392, 0, 0, 1 )
-position = Vector2( 0, -32 )
-texture = ExtResource( 2 )
-
-[node name="Hurtbox" parent="." instance=ExtResource( 4 )]
+[node name="Hurtbox" parent="Areas" instance=ExtResource( 4 )]
 position = Vector2( 0, -30 )
 collision_layer = 512
 collision_mask = 0
+parent_path = NodePath("../..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2( 0, -2 )
-shape = SubResource( 2 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/Hurtbox"]
+position = Vector2( 0, 30 )
+shape = SubResource( 5 )
 
-[node name="Hp_bar" parent="." instance=ExtResource( 3 )]
-margin_left = -53.0
-margin_top = -89.0
-margin_right = 52.0
-margin_bottom = -77.0
-
-[node name="HitBox" parent="." instance=ExtResource( 5 )]
+[node name="HitBox" parent="Areas" instance=ExtResource( 5 )]
 collision_layer = 1024
 collision_mask = 32
+parent_path = NodePath("../..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/HitBox"]
 shape = SubResource( 3 )
 
-[node name="SoftBody2D" parent="." instance=ExtResource( 6 )]
+[node name="SoftBody2D" parent="Areas" instance=ExtResource( 6 )]
+parent_path = NodePath("../..")
 body_shape = SubResource( 4 )
 
 [node name="VisualBodyCenter" type="Position2D" parent="."]
@@ -70,7 +56,20 @@ one_shot = true
 
 [node name="FreezeTimer" type="Timer" parent="Timers"]
 
-[connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
-[connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
+[node name="UiElements" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hp_bar" parent="UiElements" instance=ExtResource( 3 )]
+margin_left = -53.0
+margin_top = -89.0
+margin_right = 52.0
+margin_bottom = -77.0
+
+[connection signal="area_entered" from="Areas/Hurtbox" to="." method="_on_Hurtbox_area_entered"]
+[connection signal="area_entered" from="Areas/HitBox" to="." method="_on_HitBox_area_entered"]
 [connection signal="timeout" from="Timers/HitTimer" to="." method="_on_HitTimer_timeout"]
 [connection signal="timeout" from="Timers/FreezeTimer" to="." method="_on_FreezeTimer_timeout"]

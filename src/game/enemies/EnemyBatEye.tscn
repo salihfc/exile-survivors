@@ -1,130 +1,21 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/game/enemies/enemy.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/gfx/game/enemy/BatEye/Flight.png" type="Texture" id=2]
+[ext_resource path="res://src/game/enemies/enemy.gdshader" type="Shader" id=2]
 [ext_resource path="res://src/game/enemies/EnemyBatEye.gd" type="Script" id=3]
-
-[sub_resource type="RectangleShape2D" id=11]
-extents = Vector2( 24, 24 )
-
-[sub_resource type="CircleShape2D" id=12]
-radius = 24.0
-
-[sub_resource type="CircleShape2D" id=13]
-radius = 14.0
-
-[sub_resource type="Shader" id=14]
-code = "// NOTE: Shader automatically converted from Godot Engine 3.4.stable's CanvasItemMaterial.
-
-shader_type canvas_item;
-render_mode blend_mix;
-
-uniform vec4 damage_taken_modulate : hint_color = vec4(1.0);
-uniform vec4 frozen_modulate : hint_color = vec4(1.0);
-
-uniform vec4 outline_color : hint_color;
-
-float white_dist(vec4 col)
-{
-	return 3.0 - (col.r + col.b + col.g);
-}
-
-float outline(sampler2D tex, vec2 uv)
-{
-	float thick = 0.0001;
-	float a = 1.0;
-	
-	for (float x = -1.0; x < 1.01; x += 1.0)
-	{
-		for (float y = -1.0; y < 1.01; y += 1.0)
-		{
-			float pa = texture(tex, uv + vec2(x, y) * thick).a;
-			a *= pa;
-		}
-	}
-	
-	return 1.0 - a;
-}
-
-// This values animated outside shader and given shader
-void fragment()
-{
-	vec4 base_color = texture(TEXTURE, UV);
-	
-	if (white_dist(damage_taken_modulate) > 0.3)
-		base_color *= damage_taken_modulate;
-	else
-		base_color *= frozen_modulate;
-	
-	float out_weight = outline(TEXTURE, UV);
-	base_color.rgb = mix(base_color, outline_color, out_weight * (outline_color.a)).rgb;
-	COLOR = base_color;
-}"
+[ext_resource path="res://tres/enemies/bateye/EnemyBatEye.tres" type="SpriteFrames" id=4]
 
 [sub_resource type="ShaderMaterial" id=19]
-shader = SubResource( 14 )
+shader = ExtResource( 2 )
 shader_param/damage_taken_modulate = Color( 1, 1, 1, 1 )
 shader_param/frozen_modulate = Color( 1, 1, 1, 1 )
-shader_param/outline_color = Color( 0, 0, 0, 0 )
-
-[sub_resource type="AtlasTexture" id=1]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 150, 150 )
-
-[sub_resource type="AtlasTexture" id=2]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 150, 0, 150, 150 )
-
-[sub_resource type="AtlasTexture" id=3]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 300, 0, 150, 150 )
-
-[sub_resource type="AtlasTexture" id=4]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 450, 0, 150, 150 )
-
-[sub_resource type="AtlasTexture" id=5]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 600, 0, 150, 150 )
-
-[sub_resource type="AtlasTexture" id=6]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 750, 0, 150, 150 )
-
-[sub_resource type="AtlasTexture" id=7]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 900, 0, 150, 150 )
-
-[sub_resource type="AtlasTexture" id=8]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 1050, 0, 150, 150 )
-
-[sub_resource type="SpriteFrames" id=9]
-animations = [ {
-"frames": [  ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
-"loop": true,
-"name": "fly",
-"speed": 16.0
-} ]
+shader_param/outline_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="Animation" id=16]
 resource_name = "damage_taken_test"
 length = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedSprite:material:shader_param/DAMAGE_TAKEN_COLOR")
+tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/DAMAGE_TAKEN_COLOR")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -139,7 +30,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=18]
 resource_name = "frozen_test"
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedSprite:material:shader_param/FROZEN_COLOR")
+tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/FROZEN_COLOR")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -156,37 +47,23 @@ script = ExtResource( 3 )
 frozen_modulate = Color( 0.227451, 0.772549, 0.862745, 1 )
 damage_taken_modulate = Color( 1, 0.0313726, 0.0313726, 1 )
 
-[node name="CollisionShape2D" parent="Hurtbox" index="0"]
-visible = false
-position = Vector2( 0, 15 )
-shape = SubResource( 11 )
+[node name="SoftBody2D" parent="Areas" index="2"]
+parent_path = NodePath("../..")
 
-[node name="Hp_bar" parent="." index="3"]
-margin_left = -28.0
-margin_top = -62.0
-margin_right = 27.0
-margin_bottom = -52.0
+[node name="VisualBodyCenter" parent="." index="1"]
+position = Vector2( 0, -15 )
 
-[node name="CollisionShape2D" parent="HitBox" index="0"]
-position = Vector2( -2, 5 )
-shape = SubResource( 12 )
-
-[node name="SoftBody2D" parent="." index="5"]
-position = Vector2( -2, 5 )
-body_shape = SubResource( 13 )
-
-[node name="AnimatedSprite" type="AnimatedSprite" parent="." index="7"]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="VisualBodyCenter" index="0"]
 material = SubResource( 19 )
-position = Vector2( 0, -19 )
-frames = SubResource( 9 )
+frames = ExtResource( 4 )
 animation = "fly"
-frame = 7
+frame = 3
 playing = true
 offset = Vector2( -4, -16 )
 
-[node name="AnimTween" type="Tween" parent="." index="9"]
+[node name="AnimTween" type="Tween" parent="." index="4"]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="10"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5"]
 anims/damage_taken_test = SubResource( 16 )
 anims/frozen_test = SubResource( 18 )
 

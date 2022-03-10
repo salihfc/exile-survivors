@@ -11,15 +11,21 @@ class_name EnemyBatEye
 
 
 ### CONST ###
-const FLIP_THRESHOLD = 20.0
-const TIER_COLORS = [
-	Color.transparent,
+var TIER_COLORS = [
+	Color.black,
 	Color.aquamarine,
 	Color.greenyellow,
-	Color.rebeccapurple,
+	Color.orangered,
 ]
 
-var tier_selection_weighted_random = WeightedRandom.new([4.0, 3.0, 2.0, 1.0])
+const TIER_SCALES = [
+	1.0,
+	1.1,
+	1.3,
+	1.6,
+]
+
+var tier_selection_weighted_random = WeightedRandom.new([10.0, 2.0, 1.0, 1.1])
 
 
 ### EXPORT ###
@@ -35,7 +41,7 @@ export(int) var tier := 0 # 0 is normal 1,2,3.. -> elite enemies with tiers
 
 
 ### ONREADY VAR ###
-onready var animSprite = $AnimatedSprite as AnimatedSprite
+onready var animSprite = $VisualBodyCenter/AnimatedSprite as AnimatedSprite
 onready var animTween = $AnimTween as Tween
 
 
@@ -48,11 +54,9 @@ func _ready() -> void:
 	tier = tier_selection_weighted_random.rand()
 	
 	# Give Elite enemy outlines via shader
-	animSprite.material.set_shader_param("outline_color", TIER_COLORS[tier])
 	_set_scaled_stats()
 
 	LOG.pr(1, "Enemy (%s) created" % [tier])
-
 
 # warning-ignore:unused_argument
 func _process(delta: float) -> void:
@@ -88,7 +92,8 @@ func _set_scaled_stats() -> void:
 	base_max_hp = base_max_hp * pow(1.25, tier)
 	base_damage = base_damage * pow(1.1, tier)
 	base_exp = base_exp * tier
-
+	animSprite.material.set_shader_param("outline_color", TIER_COLORS[tier])
+	scale *= Vector2.ONE * TIER_SCALES[tier]
 
 
 ### SIGNAL RESPONSES ###

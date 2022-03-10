@@ -16,7 +16,10 @@ const BODY_RANGE = 100.0
 const MAX_PUSH_FORCE = 20.0
 
 ### EXPORT ###
+export(NodePath) var parent_path
 export(Shape2D) var body_shape setget set_shape
+
+
 func set_shape(new_shape) -> void:
 	body_shape = new_shape
 	var collision_shape = ($CollisionShape2D as CollisionShape2D)
@@ -33,7 +36,6 @@ func set_shape(new_shape) -> void:
 
 
 
-
 ### VIRTUAL FUNCTIONS (_init ...) ###
 #func _ready() -> void:
 	
@@ -47,7 +49,7 @@ func _physics_process(delta: float) -> void:
 
 ### PUBLIC FUNCTIONS ###
 func apply_force(force : Vector2) -> void:
-	var parent = get_parent()
+	var parent = get_node(parent_path)
 	if parent:
 		parent.apply_force(force)
 

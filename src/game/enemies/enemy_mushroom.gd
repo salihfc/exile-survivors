@@ -1,5 +1,5 @@
-extends Area2D
-class_name HurtBox
+extends Enemy
+
 """
 
 """
@@ -14,8 +14,7 @@ class_name HurtBox
 
 
 ### EXPORT ###
-# warning-ignore:unused_class_variable
-export(NodePath) var parent_path
+
 
 ### PUBLIC VAR ###
 
@@ -24,12 +23,15 @@ export(NodePath) var parent_path
 
 
 ### ONREADY VAR ###
-
+onready var animSprite = $AnimatedSprite as AnimatedSprite
 
 
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
-
+# warning-ignore:unused_argument
+func _process(delta: float) -> void:
+	if abs(_velocity.x) > FLIP_THRESHOLD:
+		animSprite.flip_h = _velocity.x < 0.0
 
 ### PUBLIC FUNCTIONS ###
 

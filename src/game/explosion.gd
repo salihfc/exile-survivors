@@ -41,7 +41,7 @@ func hit(damage : float) -> void:
 
 	var overlap = hitBox.get_overlapping_areas()
 	for area in overlap:
-		var entity = area.get_parent()
+		var entity = area.get_node(area.parent_path)
 		entity.take_damage(damage)
 
 	queue_free()
