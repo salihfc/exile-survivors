@@ -36,7 +36,7 @@ func init(area_radius : float, hit_mask) -> void:
 
 
 func hit(damage : float) -> void:
-	effect.start()
+	effect.start(scale.x)
 	yield(get_tree().create_timer(0.1), "timeout")
 
 	var overlap = hitBox.get_overlapping_areas()

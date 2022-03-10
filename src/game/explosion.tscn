@@ -19,4 +19,3 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="ExplosionEffect" parent="." instance=ExtResource( 3 )]
-scale = Vector2( 0.5, 0.5 )

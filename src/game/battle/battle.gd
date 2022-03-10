@@ -102,7 +102,8 @@ func _on_player_level_up(_new_level) -> void:
 	var skills = player.get_skills()
 	LOG.pr(1, "player skills (%s)" % [skills])
 	while skills.size() < 3:
-		skills.append(Arc.new())
+		var new_skill = Arc.new()
+		skills.append(new_skill)
 
 	skillSelectionDialog.set_skills(skills)
 	skillSelectionDialog.show()
@@ -118,7 +119,8 @@ func _on_skill_selected_for_upgrade(skill : Skill) -> void:
 	var augments = skill.get_possible_augments()
 #	LOG.pr(1, "player skills (%s)" % [skills])
 	while augments.size() < 3:
-		augments.append(Augment.new())
+		var aug = Augment.new()
+		augments.append(aug)
 
 	if augments.size() > 3:
 		augments = UTILS.get_random_subset(augments, 3)

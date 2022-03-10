@@ -41,8 +41,10 @@ var _frozen := false
 
 ### ONREADY VAR ###
 onready var hpBar = $Hp_bar as HpBar
-onready var hitTimer = $HitTimer as Timer
 onready var hitBox = $HitBox as HitBox
+
+onready var hitTimer = $Timers/HitTimer as Timer
+onready var freezeTimer = $Timers/FreezeTimer as Timer
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 func _ready() -> void:
@@ -107,19 +109,8 @@ func _die():
 
 func _on_freeze_for(time : float) -> void:
 	assert(_main_sprite)
-	var saved_modulate = _main_sprite.modulate
-#	_main_sprite.modulate = CONFIG.FROZEN_ENEMY_MODULATE_COLOR
 	_frozen = true
-	
-	yield(get_tree().create_timer(time), "timeout")
-	if self:
-		_on_unfreeze(saved_modulate)
-
-
-# warning-ignore:unused_argument
-func _on_unfreeze(before_freeze_modulate) -> void:
-#	_main_sprite.modulate = before_freeze_modulate
-	_frozen = false
+	freezeTimer.start(time)
 
 
 # AI
@@ -180,3 +171,7 @@ func _on_Hurtbox_area_entered(area: Area2D) -> void:
 	if entity is Projectile:
 		take_damage(entity.get_projectile_damage())
 		entity.hit_target()
+
+
+func _on_FreezeTimer_timeout() -> void:
+	_frozen = false

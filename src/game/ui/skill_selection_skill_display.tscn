@@ -39,5 +39,3 @@ selection_enabled = true
 __meta__ = {
 "_edit_use_anchors_": true
 }
-
-[connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]

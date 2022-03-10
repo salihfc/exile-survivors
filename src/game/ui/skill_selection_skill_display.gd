@@ -21,12 +21,12 @@ signal display_pressed(skill)
 
 
 ### PRIVATE VAR ###
-var _skill_weakref 
+
 
 ### ONREADY VAR ###
 onready var textureRect = $TextureButton/TextureRect as TextureRect
 onready var richLabel = $TextureButton/RichTextLabel as RichTextLabel
-
+onready var textureButton = $TextureButton as TextureButton
 
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
@@ -34,11 +34,15 @@ onready var richLabel = $TextureButton/RichTextLabel as RichTextLabel
 
 ### PUBLIC FUNCTIONS ###
 func set_skill(skill : Skill) -> void:
-	_skill_weakref = weakref(skill)
 # warning-ignore:unsafe_property_access
 	textureRect.texture = skill.icon
 # warning-ignore:unsafe_property_access
 	richLabel.text = skill.skill_description
+	
+	if textureButton.is_connected("pressed", self, "_on_TextureButton_pressed"):
+		textureButton.disconnect("pressed", self, "_on_TextureButton_pressed")
+	
+	textureButton.connect("pressed", self, "_on_TextureButton_pressed", [weakref(skill)])
 
 
 ### PRIVATE FUNCTIONS ###
@@ -47,5 +51,7 @@ func set_skill(skill : Skill) -> void:
 ### SIGNAL RESPONSES ###
 
 
-func _on_TextureButton_pressed() -> void:
-	emit_signal("display_pressed", _skill_weakref.get_ref())
+func _on_TextureButton_pressed(_skill_weakref) -> void:
+	if _skill_weakref and _skill_weakref.get_ref():
+		emit_signal("display_pressed", _skill_weakref.get_ref())
+	

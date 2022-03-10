@@ -11,7 +11,8 @@ extends Node2D
 
 
 ### CONST ###
-
+const BASE_LIFETIME = 0.2
+const BASE_SPEED = 1.0
 
 ### EXPORT ###
 
@@ -30,7 +31,10 @@ onready var particles2d = $Particles2D as Particles2D
 
 
 ### PUBLIC FUNCTIONS ###
-func start() -> void:
+# warning-ignore:unused_argument
+func start(lifetime_scale := 1.0) -> void:
+	particles2d.lifetime = BASE_LIFETIME * lifetime_scale
+	particles2d.speed_scale = BASE_SPEED * sqrt(lifetime_scale)
 	particles2d.emitting = true
 
 

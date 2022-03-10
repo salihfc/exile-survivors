@@ -1,18 +1,11 @@
-[gd_resource type="ParticlesMaterial" load_steps=9 format=2]
+[gd_resource type="ParticlesMaterial" load_steps=7 format=2]
 
 [sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0, 0.324272, 0.576699, 0.885437 )
-colors = PoolColorArray( 0.821777, 0.792887, 0.792887, 1, 0.970215, 0.853224, 0.144016, 1, 0.989746, 0.0231972, 0.0231972, 1, 0, 0, 0, 1 )
+offsets = PoolRealArray( 0, 0.201835, 0.426605, 0.788991, 1 )
+colors = PoolColorArray( 0.821777, 0.792887, 0.792887, 1, 0.970215, 0.853224, 0.144016, 1, 0.989746, 0.0231972, 0.0231972, 1, 0, 0, 0, 1, 0, 0, 0, 0.0745098 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
-
-[sub_resource type="Curve" id=11]
-min_value = -1.0
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="CurveTexture" id=10]
-curve = SubResource( 11 )
 
 [sub_resource type="Curve" id=6]
 _data = [ Vector2( 0, 0.334091 ), 0.0, 0.0, 0, 0, Vector2( 0.243494, 0.552273 ), 0.0, 0.0, 0, 0, Vector2( 0.388476, 0.970455 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.125 ), 0.0, 0.0, 0, 0 ]
@@ -44,6 +37,3 @@ damping = 300.0
 scale_random = 0.3
 scale_curve = SubResource( 7 )
 color_ramp = SubResource( 2 )
-hue_variation = 1.0
-hue_variation_random = 0.02
-hue_variation_curve = SubResource( 10 )

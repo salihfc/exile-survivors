@@ -13,6 +13,15 @@ func bind(
 		push_error("CANNOT BIND SIGNAL")
 
 
+func eval(expression_string, param_names, param_values):
+	var expression = Expression.new()
+	expression.parse(expression_string, param_names)
+	var result = expression.execute(param_values)
+	if result:
+		return result
+	return -1
+
+
 func interpolate_method_to_and_back(
 		tween : Tween,
 		object : Object, method : String,

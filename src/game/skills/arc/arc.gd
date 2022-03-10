@@ -16,6 +16,9 @@ const FadingLinePrefab = preload("res://src/game/effects/fading_line.tscn")
 const ExplosionPrefab = preload("res://src/game/explosion.tscn")
 
 ### EXPORT ###
+export(String) var area_damage_expression
+export(String) var area_radius_expression
+
 export(float) var chain_range := 400.0
 export(float) var max_chain := 5.0
 
@@ -23,7 +26,7 @@ export(float) var max_chain := 5.0
 
 
 ### PRIVATE VAR ###
-var _radius = 3.0
+var _radius = 6.0
 var _area_damage = 40.0
 
 
@@ -38,11 +41,60 @@ func _ready() -> void:
 	lineContainer.set_as_toplevel(true)
 	explosionContainer.set_as_toplevel(true)
 
+# warning-ignore:unused_argument
+func _process(delta: float) -> void:
+	
+	if Input.is_action_just_pressed("debug_e"):
+		var aug = MajorAugmentArcEndOfChainExplosion.new()
+		apply_augment(aug)
+
 
 ### PUBLIC FUNCTIONS ###
 
 
 ### PRIVATE FUNCTIONS ###
+func _get_augment_count() -> int:
+	var cached_value = _property_cache.get_cached("behaviour_chain_and_explosion_ct")
+	if cached_value:
+		return cached_value
+
+	var augment_ct := 0
+	for augment in _applied_augments:
+		if augment is MajorAugmentArcEndOfChainExplosion:
+			augment_ct += 1
+	_property_cache.cache("behaviour_chain_and_explosion_ct", augment_ct)
+	
+	LOG.pr(1, "Augment CT: (%s)" % [augment_ct])
+	return augment_ct
+
+
+func _get_explosion_area_damage() -> float:
+	var cached_value = _property_cache.get_cached("area_damage")
+	if cached_value:
+		return cached_value
+	var augment_ct := _get_augment_count()
+	var extra = UTILS.eval(area_damage_expression, ["x"], [augment_ct])
+	var calculated = _area_damage * sqrt(extra)
+	_property_cache.cache("area_damage", calculated)
+	return _property_cache.get_cached("area_damage")
+
+
+func _get_explosion_area_radius() -> float:
+	var cached_value = _property_cache.get_cached("area_radius")
+	if cached_value:
+		return cached_value
+	var augment_ct := _get_augment_count()
+	var extra = UTILS.eval(area_radius_expression, ["x"], [augment_ct])
+	var calculated = _radius * (_get_radius_scaling(extra))
+	_property_cache.cache("area_radius", calculated)
+	return _property_cache.get_cached("area_radius")
+
+
+func _get_radius_scaling(x) -> float:
+	return x + 4.0
+#	return pow(x, 0.90) / 2.0 + 4.0
+
+
 func _is_changed_to_chain():
 	var cached_value = _property_cache.get_cached("behaviour_chain_and_explosion")
 	if cached_value:
@@ -65,7 +117,6 @@ func _get_max_chain() -> int:
 	var chain = max_chain
 	for augment in _applied_augments:
 		if augment is MinorAugmentChain:
-#			LOG.pr(1, "augment(%s) is MinorAugmentChain" % [augment])
 			chain += augment.chain_increase_amount
 	
 	_property_cache.cache("max_chain", chain)
@@ -142,9 +193,14 @@ func _cast_starting_from(closest):
 			var explosion_position = end.global_position
 			var new_explosion = ExplosionPrefab.instance()
 			explosionContainer.add_child(new_explosion)
-			new_explosion.init(_radius * 50.0, area.collision_mask)
+			var explosion_radius = _get_explosion_area_radius()
+			var explosion_damage = _get_explosion_area_damage()
+			
+			LOG.pr(1, "Explosion(%s) with r:%s, d:%s" % [new_explosion, explosion_radius, explosion_damage])
+			
+			new_explosion.init(explosion_radius, area.collision_mask)
 			new_explosion.global_position = explosion_position
-			new_explosion.hit(_area_damage)
+			new_explosion.hit(explosion_damage)
 
 
 func _get_entities_in_range() -> Array:

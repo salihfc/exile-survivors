@@ -1,4 +1,3 @@
-tool
 extends Enemy
 class_name EnemyBatEye
 """
@@ -13,11 +12,22 @@ class_name EnemyBatEye
 
 ### CONST ###
 const FLIP_THRESHOLD = 20.0
+const TIER_COLORS = [
+	Color.transparent,
+	Color.aquamarine,
+	Color.greenyellow,
+	Color.rebeccapurple,
+]
+
+var tier_selection_weighted_random = WeightedRandom.new([4.0, 3.0, 2.0, 1.0])
+
 
 ### EXPORT ###
 export(Color) var frozen_modulate;
 export(Color) var damage_taken_modulate;
 
+# warning-ignore:unused_class_variable
+export(int) var tier := 0 # 0 is normal 1,2,3.. -> elite enemies with tiers
 ### PUBLIC VAR ###
 
 
@@ -33,6 +43,15 @@ onready var animTween = $AnimTween as Tween
 func _ready() -> void:
 	_main_sprite = animSprite
 	animSprite.material = animSprite.material.duplicate()
+	
+	# set random tier
+	tier = tier_selection_weighted_random.rand()
+	
+	# Give Elite enemy outlines via shader
+	animSprite.material.set_shader_param("outline_color", TIER_COLORS[tier])
+	_set_scaled_stats()
+
+	LOG.pr(1, "Enemy (%s) created" % [tier])
 
 
 # warning-ignore:unused_argument
@@ -65,6 +84,14 @@ func set_shader_damage_taken_color(color) -> void:
 
 
 ### PRIVATE FUNCTIONS ###
+func _set_scaled_stats() -> void:
+	base_max_hp = base_max_hp * pow(1.25, tier)
+	base_damage = base_damage * pow(1.1, tier)
+	base_exp = base_exp * tier
+
+
+
+### SIGNAL RESPONSES ###
 func _on_freeze_for(time : float) -> void:
 	._on_freeze_for(time)
 	var to_white_duration = 0.1
@@ -80,11 +107,9 @@ func _on_freeze_for(time : float) -> void:
 	animSprite.playing = false
 
 
-func _on_unfreeze(before_freeze_modulate) -> void:
-	._on_unfreeze(before_freeze_modulate)
+func _on_FreezeTimer_timeout() -> void:
+	._on_FreezeTimer_timeout()
 	animSprite.playing = true
-
-### SIGNAL RESPONSES ###
 
 
 func _on_AnimTween_tween_completed(object: Object, key: NodePath) -> void:
