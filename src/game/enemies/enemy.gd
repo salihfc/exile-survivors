@@ -108,7 +108,7 @@ func _die():
 func _on_freeze_for(time : float) -> void:
 	assert(_main_sprite)
 	var saved_modulate = _main_sprite.modulate
-	_main_sprite.modulate = CONFIG.FROZEN_ENEMY_MODULATE_COLOR
+#	_main_sprite.modulate = CONFIG.FROZEN_ENEMY_MODULATE_COLOR
 	_frozen = true
 	
 	yield(get_tree().create_timer(time), "timeout")
@@ -116,8 +116,9 @@ func _on_freeze_for(time : float) -> void:
 		_on_unfreeze(saved_modulate)
 
 
+# warning-ignore:unused_argument
 func _on_unfreeze(before_freeze_modulate) -> void:
-	_main_sprite.modulate = before_freeze_modulate
+#	_main_sprite.modulate = before_freeze_modulate
 	_frozen = false
 
 

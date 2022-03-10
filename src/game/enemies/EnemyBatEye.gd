@@ -1,3 +1,4 @@
+tool
 extends Enemy
 class_name EnemyBatEye
 """
@@ -14,7 +15,8 @@ class_name EnemyBatEye
 const FLIP_THRESHOLD = 20.0
 
 ### EXPORT ###
-
+export(Color) var frozen_modulate;
+export(Color) var damage_taken_modulate;
 
 ### PUBLIC VAR ###
 
@@ -30,6 +32,7 @@ onready var animTween = $AnimTween as Tween
 ### VIRTUAL FUNCTIONS (_init ...) ###
 func _ready() -> void:
 	_main_sprite = animSprite
+	animSprite.material = animSprite.material.duplicate()
 
 
 # warning-ignore:unused_argument
@@ -43,35 +46,37 @@ func _process(delta: float) -> void:
 func take_damage(amount : float) -> void:
 	_set_hp(_hp - amount)
 	
-	animTween.remove_all()
+#	animTween.remove_all()
 
 	var to_red_duration = 0.1
 	var to_white_duration = 0.1
-	var current_modulate = animSprite.modulate
 	
-	# Flash to red then back to white
-	animTween.interpolate_property(
-			animSprite, "modulate",
-			current_modulate, Color.red,
-			to_red_duration,
-			Tween.TRANS_QUART, Tween.EASE_IN_OUT
+	UTILS.interpolate_method_to_and_back(
+		animTween,
+		self, "set_shader_damage_taken_color",
+		Color.white, damage_taken_modulate,
+		to_red_duration, to_white_duration
 	)
 
-	animTween.interpolate_property(
-			animSprite, "modulate",
-			Color.red, current_modulate,
-			to_white_duration,
-			Tween.TRANS_QUART, Tween.EASE_IN_OUT,
-			to_red_duration
-	)
-	
-	animTween.start()
-	
-	
+
+func set_shader_damage_taken_color(color) -> void:
+	animSprite.material.set_shader_param("DAMAGE_TAKEN_COLOR", color)
+	print ("called set shader param")
+
 
 ### PRIVATE FUNCTIONS ###
 func _on_freeze_for(time : float) -> void:
 	._on_freeze_for(time)
+	var to_white_duration = 0.1
+	var to_frozen_color_duration = time - to_white_duration
+	
+	UTILS.interpolate_method_to_and_back(
+		animTween,
+		self, "set_shader_damage_taken_color",
+		Color.white, frozen_modulate,
+		to_frozen_color_duration, to_white_duration
+	)
+	
 	animSprite.playing = false
 
 
@@ -80,3 +85,7 @@ func _on_unfreeze(before_freeze_modulate) -> void:
 	animSprite.playing = true
 
 ### SIGNAL RESPONSES ###
+
+
+func _on_AnimTween_tween_completed(object: Object, key: NodePath) -> void:
+	animTween.remove(object, key)

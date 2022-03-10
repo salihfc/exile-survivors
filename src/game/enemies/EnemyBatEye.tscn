@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://src/game/enemies/enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/gfx/game/enemy/BatEye/Flight.png" type="Texture" id=2]
@@ -12,6 +12,38 @@ radius = 24.0
 
 [sub_resource type="CircleShape2D" id=13]
 radius = 14.0
+
+[sub_resource type="Shader" id=14]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.4.stable's CanvasItemMaterial.
+
+shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec4 DAMAGE_TAKEN_COLOR : hint_color;
+uniform vec4 FROZEN_COLOR : hint_color;
+
+float white_dist(vec4 col)
+{
+	return 3.0 - (col.r + col.b + col.g);
+}
+
+// This values animated outside shader and given shader
+void fragment()
+{
+	vec4 base_color = texture(TEXTURE, UV);
+	
+	if (white_dist(DAMAGE_TAKEN_COLOR) > 0.3)
+		base_color *= DAMAGE_TAKEN_COLOR;
+	else
+		base_color *= FROZEN_COLOR;
+	
+	COLOR = base_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=19]
+shader = SubResource( 14 )
+shader_param/DAMAGE_TAKEN_COLOR = Color( 1, 1, 1, 1 )
+shader_param/FROZEN_COLOR = Color( 1, 1, 1, 1 )
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -66,8 +98,41 @@ animations = [ {
 "speed": 16.0
 } ]
 
-[node name="EnemyBatEye" instance=ExtResource( 1 )]
+[sub_resource type="Animation" id=16]
+resource_name = "damage_taken_test"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:material:shader_param/DAMAGE_TAKEN_COLOR")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 0.258816, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.890196, 0.0196078, 0.0196078, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=18]
+resource_name = "frozen_test"
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:material:shader_param/FROZEN_COLOR")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 1 ),
+"transitions": PoolRealArray( 0.0647041, 2.2974, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.156863, 0.301961, 0.870588, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="EnemyBatEye" groups=["enemy"] instance=ExtResource( 1 )]
 script = ExtResource( 3 )
+frozen_modulate = Color( 0.227451, 0.772549, 0.862745, 1 )
+damage_taken_modulate = Color( 1, 0.0313726, 0.0313726, 1 )
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
 visible = false
@@ -89,11 +154,18 @@ position = Vector2( -2, 5 )
 body_shape = SubResource( 13 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="." index="7"]
+material = SubResource( 19 )
 position = Vector2( 0, -19 )
 frames = SubResource( 9 )
 animation = "fly"
-frame = 4
+frame = 1
 playing = true
 offset = Vector2( -4, -16 )
 
 [node name="AnimTween" type="Tween" parent="." index="9"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="10"]
+anims/damage_taken_test = SubResource( 16 )
+anims/frozen_test = SubResource( 18 )
+
+[connection signal="tween_completed" from="AnimTween" to="." method="_on_AnimTween_tween_completed"]

@@ -13,6 +13,31 @@ func bind(
 		push_error("CANNOT BIND SIGNAL")
 
 
+func interpolate_method_to_and_back(
+		tween : Tween,
+		object : Object, method : String,
+		start_value, mid_value,
+		part1_duration, part2_duration) -> void:
+	
+# warning-ignore:return_value_discarded
+	tween.interpolate_method(
+			object, method,
+			start_value, mid_value,
+			part1_duration, Tween.TRANS_QUART, Tween.EASE_IN_OUT
+	)
+
+# warning-ignore:return_value_discarded
+	tween.interpolate_method(
+			object, method,
+			mid_value, start_value,
+			part2_duration, Tween.TRANS_QUART, Tween.EASE_IN_OUT,
+			part1_duration
+	)
+
+# warning-ignore:return_value_discarded
+	tween.start()
+
+
 func clamp01(value):
 	return clamp(value, 0.0, 1.0)
 
