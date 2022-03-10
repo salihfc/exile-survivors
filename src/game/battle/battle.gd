@@ -53,8 +53,8 @@ func _ready() -> void:
 # warning-ignore:unused_argument
 func _process(delta: float) -> void:
 	pass
-#	if Input.is_action_just_pressed("shoot"):
-#		_pause()
+	if Input.is_action_just_pressed("pause"):
+		_pause()
 
 ### PUBLIC FUNCTIONS ###
 

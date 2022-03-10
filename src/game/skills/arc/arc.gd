@@ -13,6 +13,7 @@ class_name Arc
 
 ### CONST ###
 const FadingLinePrefab = preload("res://src/game/effects/fading_line.tscn")
+const ExplosionPrefab = preload("res://src/game/explosion.tscn")
 
 ### EXPORT ###
 export(float) var chain_range := 400.0
@@ -22,16 +23,20 @@ export(float) var max_chain := 5.0
 
 
 ### PRIVATE VAR ###
+var _radius = 3.0
+var _area_damage = 40.0
 
 
 ### ONREADY VAR ###
 onready var area = $RangeArea as Area2D
 onready var lineContainer = $VisualLines as Node2D
+onready var explosionContainer = $Explosions as Node2D
+
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 func _ready() -> void:
-	pass
 	lineContainer.set_as_toplevel(true)
+	explosionContainer.set_as_toplevel(true)
 
 
 ### PUBLIC FUNCTIONS ###
@@ -132,6 +137,14 @@ func _cast_starting_from(closest):
 
 		(UTILS as Utils).create_delayed_call(end, "take_damage", [arc_damage], delay)
 		LOG.pr(1, "(%s) should be hit in (%s) secs with (%s)" % [end, delay, arc_damage])
+
+		if _is_changed_to_chain() and edge == edges.back(): # explosion on Last edge if behaviour set
+			var explosion_position = end.global_position
+			var new_explosion = ExplosionPrefab.instance()
+			explosionContainer.add_child(new_explosion)
+			new_explosion.init(_radius * 50.0, area.collision_mask)
+			new_explosion.global_position = explosion_position
+			new_explosion.hit(_area_damage)
 
 
 func _get_entities_in_range() -> Array:

@@ -64,8 +64,6 @@ func _process(delta: float) -> void:
 		#
 		anim_sprite.animation = "idle" if _velocity.length() < IDLE_THRESHOLD else "run"
 
-		if Input.is_action_just_pressed("shoot"):
-			pass
 		
 #		LOG.pr(1, "(%s)" % [camera.global_position])
 
@@ -94,7 +92,7 @@ func get_skills() -> Array:
 
 
 func get_chance_to_freeze() -> float:
-	return 1.0
+	return 0.1
 
 
 ### PRIVATE FUNCTIONS ###

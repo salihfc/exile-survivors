@@ -61,7 +61,7 @@ func take_damage(amount : float) -> void:
 
 func set_shader_damage_taken_color(color) -> void:
 	animSprite.material.set_shader_param("DAMAGE_TAKEN_COLOR", color)
-	print ("called set shader param")
+#	print ("called set shader param")
 
 
 ### PRIVATE FUNCTIONS ###
