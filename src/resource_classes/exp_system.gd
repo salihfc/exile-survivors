@@ -38,6 +38,7 @@ func _init(max_level :int= 100) -> void:
 
 ### PUBLIC FUNCTIONS ###
 func gain_exp(amount) -> void:
+#	LOG.pr(1, "Player exp gain (%s)" % [amount])
 	_current_exp += amount
 	
 	if _current_exp >= _required_exp_cache[_current_level]:

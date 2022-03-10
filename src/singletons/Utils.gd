@@ -47,6 +47,7 @@ func interpolate_method_to_and_back(
 	tween.start()
 
 
+
 func clamp01(value):
 	return clamp(value, 0.0, 1.0)
 
@@ -84,6 +85,7 @@ func get_random_subset(set : Array, ct : int) -> Array:
 
 func create_delayed_call(caller, function, args, delay):
 	if is_zero_approx(delay):
+#		LOG.pr(1, "calling rigsaht away: %s.%s(%s) after %s" % [caller.name, function, args, delay])
 		caller.callv(function, args)
 		return
 	

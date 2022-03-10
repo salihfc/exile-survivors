@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/game/skills/fireball/fireball.gd"
 }, {
+"base": "Node2D",
+"class": "FloatingText",
+"language": "GDScript",
+"path": "res://src/game/effects/floating_text.gd"
+}, {
 "base": "Area2D",
 "class": "HitBox",
 "language": "GDScript",
@@ -176,6 +181,7 @@ _global_script_class_icons={
 "ExpSystem": "",
 "Explosion": "",
 "Fireball": "",
+"FloatingText": "",
 "HitBox": "",
 "HpBar": "",
 "HurtBox": "",

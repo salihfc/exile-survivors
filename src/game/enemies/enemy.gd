@@ -7,7 +7,7 @@ class_name Enemy
 
 ### SIGNAL ###
 signal died(exp_rewarded_to_player)
-
+signal damage_taken(amount)
 ### ENUM ###
 
 
@@ -86,6 +86,7 @@ func apply_force(force : Vector2) -> void:
 
 
 func take_damage(amount : float) -> void:
+	emit_signal("damage_taken", global_position, amount)
 	_set_hp(_hp - amount)
 
 
@@ -176,10 +177,12 @@ func _on_HitTimer_timeout() -> void:
 
 
 func _on_Hurtbox_area_entered(area: Area2D) -> void:
-	var entity = area.get_parent()
-	if entity is Projectile:
-		take_damage(entity.get_projectile_damage())
-		entity.hit_target()
+	if area is HitBox:
+		var hitbox = area as HitBox
+		var entity = hitbox.get_node(hitbox.parent_path)
+		if entity is Projectile:
+			take_damage(entity.get_projectile_damage())
+			entity.hit_target()
 
 
 func _on_FreezeTimer_timeout() -> void:

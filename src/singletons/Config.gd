@@ -2,8 +2,9 @@ extends Node
 
 const SHOW_HEALTH_BARS := true
 const PLAYER_INVINCIBLE := true
-#var active_camera	= null
-#var world			= null
+const AUTO_RANDOM_UPDATE := true
+# warning-ignore:unused_class_variable
+var SHOW_DAMAGE_NUMBERS := false
 
 # COLORS
 const FROZEN_ENEMY_MODULATE_COLOR = Color("#003676")

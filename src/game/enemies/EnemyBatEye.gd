@@ -67,7 +67,7 @@ func _process(delta: float) -> void:
 ### PUBLIC FUNCTIONS ###
 # Overriding Enemy.take_damage
 func take_damage(amount : float) -> void:
-	_set_hp(_hp - amount)
+	.take_damage(amount)
 	
 #	animTween.remove_all()
 
@@ -91,7 +91,7 @@ func set_shader_damage_taken_color(color) -> void:
 func _set_scaled_stats() -> void:
 	base_max_hp = base_max_hp * pow(1.25, tier)
 	base_damage = base_damage * pow(1.1, tier)
-	base_exp = base_exp * tier
+	base_exp = base_exp * (float(tier) + 1.0)
 	animSprite.material.set_shader_param("outline_color", TIER_COLORS[tier])
 	scale *= Vector2.ONE * TIER_SCALES[tier]
 

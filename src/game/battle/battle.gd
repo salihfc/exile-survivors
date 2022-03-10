@@ -11,9 +11,11 @@ signal scene_loaded()
 
 
 ### CONST ###
+# Enemy
 const EnemyPrefab = preload("res://src/game/enemies/enemy.tscn")
 const BatEyePrefab = preload("res://src/game/enemies/EnemyBatEye.tscn")
 
+const FloatingTextPrefab = preload("res://src/game/effects/floating_text.tscn")
 ### EXPORT ###
 
 
@@ -31,6 +33,8 @@ onready var skillSelectionDialog = $UILayer/SkillSelectionDialog as SkillSelecti
 onready var augmentSelectionDialog = $UILayer/AugmentSelectionDialog as AugmentSelectionDialog
 
 # Game
+onready var floatingTextContainer = $FloatingTextContainer as Node2D
+
 onready var enemySpawnPos = $EnemySpawnPositions as Node2D
 onready var player = $Env/Player as Player
 
@@ -89,12 +93,22 @@ func _on_SpawnTimer_timeout() -> void:
 	new_enemy.set_target($Env/Player)
 	new_enemy.set_scaled_hp(_exp_system.get_level()) 
 	UTILS.bind(new_enemy, "died", self, "_on_enemy_died")
+	UTILS.bind(new_enemy, "damage_taken", self, "_on_enemy_damage_taken")
 
 
 
 func _on_enemy_died(exp_reward) -> void:
 	_exp_system.gain_exp(exp_reward)
 
+
+func _on_enemy_damage_taken(pos, amount) -> void:
+	if CONFIG.SHOW_DAMAGE_NUMBERS:
+		var random_vel = UTILS.random_unit_vec2() * rand_range(40.0, 100.0)
+		random_vel.y = -abs(random_vel.y)
+
+		var floating_text = FloatingTextPrefab.instance()
+		floating_text.init(str(amount), pos + Vector2.UP * 100.0, random_vel, 0.5)
+		floatingTextContainer.add_child(floating_text)
 
 
 func _on_player_level_up(_new_level) -> void:
@@ -105,13 +119,13 @@ func _on_player_level_up(_new_level) -> void:
 		var new_skill = Arc.new()
 		skills.append(new_skill)
 
-	skillSelectionDialog.set_skills(skills)
 	skillSelectionDialog.show()
+	skillSelectionDialog.set_skills(skills)
 
 
 # warning-ignore:unused_argument
 func _on_skill_selected_for_upgrade(skill : Skill) -> void:
-#	LOG.pr(1, "Skill selected for upgrade (%s)" % [skill])
+	LOG.pr(1, "Skill selected for upgrade (%s)" % [skill])
 	skillSelectionDialog.hide()
 	_last_selected_skill_for_augmentation = skill
 	
@@ -125,8 +139,8 @@ func _on_skill_selected_for_upgrade(skill : Skill) -> void:
 	if augments.size() > 3:
 		augments = UTILS.get_random_subset(augments, 3)
 
-	augmentSelectionDialog.set_augments(augments)
 	augmentSelectionDialog.show()
+	augmentSelectionDialog.set_augments(augments)
 
 
 func _on_augment_selected_for_skill(augment : Augment) -> void:

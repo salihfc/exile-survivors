@@ -36,6 +36,11 @@ func set_augments(possible_augments : Array) -> void:
 	var displays = panel.get_children()
 	assert(possible_augments.size() == displays.size())
 	
+	if CONFIG.AUTO_RANDOM_UPDATE:
+		_on_display_pressed(UTILS.get_random_subset(possible_augments, 1)[0])
+		return
+	
+	
 	for idx in displays.size():
 # warning-ignore:unsafe_cast
 		var display = displays[idx] as AugmentSelectionAugmentDisplay

@@ -208,7 +208,12 @@ func _get_entities_in_range() -> Array:
 	var entities = []
 	
 	for entity_area in overlap:
-		var entity = entity_area.get_parent()
+		var entity = null
+		if entity_area.get("parent_path"):
+			entity = entity_area.get_node(entity_area.get("parent_path"))
+		else:
+			entity = entity_area.get_parent()
+			
 		if entity:
 			entities.append(entity)
 	return entities
