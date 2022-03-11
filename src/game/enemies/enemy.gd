@@ -114,6 +114,7 @@ func _set_hp(new_hp) -> void:
 
 func _die():
 	emit_signal("died", base_exp)
+	base_exp = 0.0
 	queue_free()
 
 

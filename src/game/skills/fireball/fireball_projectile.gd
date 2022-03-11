@@ -11,7 +11,7 @@ class_name Projectile
 
 
 ### CONST ###
-
+const FADE_DURATION = 0.4
 
 ### EXPORT ###
 
@@ -27,7 +27,8 @@ var _remaining_pierce := 0
 
 ### ONREADY VAR ###
 onready var animSprite = $Rotation/AnimatedSprite as AnimatedSprite
-onready var collision = $Area2D/CollisionShape2D as CollisionShape2D
+onready var collision = $HitBox/CollisionShape2D as CollisionShape2D
+onready var tween = $Tween as Tween
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 
@@ -55,7 +56,7 @@ func get_projectile_damage():
 func hit_target() -> void:
 	if _remaining_pierce <= 0:
 		collision.set_deferred("disabled", true)
-		queue_free()
+		_destroy()
 		return
 	_remaining_pierce -= 1
 
@@ -64,12 +65,17 @@ func hit_target() -> void:
 func _destroy() -> void:
 	LOG.pr(1, "Projectile Destroyed")
 	animSprite.animation = "end"
+	_velocity *= 0.01
+	
+	tween.interpolate_property(
+			self, "modulate",
+			modulate, Color.transparent,
+			FADE_DURATION,
+			Tween.TRANS_QUART, Tween.EASE_IN_OUT
+	)
+	
+	tween.interpolate_callback(self, FADE_DURATION, "queue_free")
+
+	tween.start()
 
 ### SIGNAL RESPONSES ###
-
-
-func _on_AnimatedSprite_animation_finished() -> void:
-	if animSprite.animation == "end":
-		queue_free()
-	else:
-		animSprite.animation = "loop"

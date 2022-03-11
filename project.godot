@@ -94,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/resource_classes/major_augments/major_augment_arc_end_of_chain_explosion.gd"
 }, {
+"base": "MajorAugment",
+"class": "MajorAugmentFireballProjectileCount",
+"language": "GDScript",
+"path": "res://src/resource_classes/major_augments/major_augment_fireball_projectile_count.gd"
+}, {
 "base": "Augment",
 "class": "MinorAugment",
 "language": "GDScript",
@@ -187,6 +192,7 @@ _global_script_class_icons={
 "HurtBox": "",
 "MajorAugment": "",
 "MajorAugmentArcEndOfChainExplosion": "",
+"MajorAugmentFireballProjectileCount": "",
 "MinorAugment": "",
 "MinorAugmentChain": "",
 "MinorAugmentChainRange": "",

@@ -36,7 +36,8 @@ func _ready() -> void:
 ### PUBLIC FUNCTIONS ###
 func set_skills(possible_skills : Array) -> void:
 	if CONFIG.AUTO_RANDOM_UPDATE:
-		_on_display_pressed(UTILS.get_random_subset(possible_skills, 1)[0])
+#		_on_display_pressed(UTILS.get_random_subset(possible_skills, 1)[0])
+		_on_display_pressed(possible_skills[0])
 		return
 
 	var displays = panel.get_children()
