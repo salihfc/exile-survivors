@@ -1,0 +1,250 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://src/game/skill.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/game/skills/circling_laser/circling_laser.gd" type="Script" id=2]
+[ext_resource path="res://src/game/skills/circling_laser/laser.gd" type="Script" id=3]
+[ext_resource path="res://src/game/hitbox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/gfx/ui/skill_icons/96x96/skill_icons18.png" type="Texture" id=5]
+[ext_resource path="res://assets/gfx/common/16x16_white.png" type="Texture" id=6]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+const float PI = 3.1415926535;
+
+uniform vec4 base_color : hint_color;
+uniform sampler2D noise;
+uniform sampler2D rand_noise;
+uniform sampler2D rand_noise2;
+uniform float total_length;
+uniform float width;
+uniform float wavelength;
+uniform float amplitude;
+uniform float rot_speed;
+uniform float move_speed;
+uniform float scroll_speed = 1.0;
+uniform bool  simple;
+
+float side(vec2 p0, vec2 p1, vec2 q)
+{
+	return (p0.x - q.x) * (p1.y - q.y) - (p1.x - q.x) * (p0.y - q.y); 
+}
+
+bool is_in_triangle(vec2 p0, vec2 p1, vec2 p2, vec2 q)
+{
+	float d0, d1, d2;
+	bool pos, neg;
+	
+	d0 = side(q, p0, p1);
+	d1 = side(q, p1, p2);
+	d2 = side(q, p2, p0);
+	
+	pos = (d0 > 0.) || (d1 > 0.) || (d2 > 0.);
+	neg = (d0 < 0.) || (d1 < 0.) || (d2 < 0.);
+	
+	return !neg || !pos;
+}
+
+vec2 circle_from_x(float sphere_x, float sphere_size)
+{
+	return vec2(sphere_x, 
+	width/2. + sin(2. * PI * sphere_x / wavelength) * 
+	(
+//		amplitude
+		min(amplitude, width/4. - sphere_size/2.)
+	) * 2.);
+}
+
+vec2 circle_2(float sphere_x, float sphere_size)
+{
+	return vec2(sphere_x, 
+	width/2. + cos(2. * PI * sphere_x / wavelength) * 
+	(
+//		amplitude
+		min(amplitude, width/4. - sphere_size/2.)
+	) * 2.);
+}
+
+bool is_close(float x, float y, float margin)
+{
+	float dist = abs(x - y);
+	return dist <= margin;
+}
+
+bool is_border(vec2 uv)
+{
+	float border_thick = 0.01;
+	return (uv.x <= border_thick || (1.0 - uv.x) <= border_thick) 
+	|| (uv.y <= border_thick || (1.0 - uv.y) <= border_thick); 
+}
+
+float trailed_circle(vec2 sphere_pos, vec2 frag, float sphere_size, bool alt)
+{
+	float res = 0.;
+	if (distance(sphere_pos, frag) <= sphere_size)
+	{
+		float sa = 1.0 - distance(sphere_pos, frag) / sphere_size;
+		res = max(res, sa);
+	}
+	else
+	{
+		float trail_size = 2.5;
+		float trail_x = sphere_pos.x - 2.0;
+		vec2 trail_pos;
+		if (alt)
+			trail_pos = circle_2(trail_x, trail_size);
+		else
+			trail_pos = circle_from_x(trail_x, trail_size);
+	
+		float dist = distance(sphere_pos, frag) / distance(sphere_pos, trail_pos);
+		
+		vec2 dir = sphere_pos - trail_pos;
+		dir = normalize(dir);
+		vec2 p0 = sphere_pos + dir * vec2(1., -1.) * sphere_size;
+		vec2 p1 = sphere_pos + dir * vec2(-1., 1.) * sphere_size;
+		
+		if (is_in_triangle(p0, p1, trail_pos, frag))
+		{
+			res = max(res, 1.2 - dist);
+		}
+		else if (distance(trail_pos, frag) <= trail_size)
+		{
+			float sa = 1.0 - distance(trail_pos, frag) / trail_size * 2.;
+			res = max(res, sa);
+		}
+	}
+	return res;
+}
+
+void fragment()
+{
+	vec4 col = base_color;
+	float rand = texture(rand_noise, UV + vec2(1., 0.) * TIME).r / 4.;
+	float rand2 = texture(rand_noise2, UV + vec2(1., 0.) * TIME).r / 4.;
+	float n = texture(noise, UV + vec2(-TIME * scroll_speed, rand2 * rand * TIME * 0.0)).r;
+	col.a = 0.0;
+	
+	float size = 0.1;
+	float center_size = 0.5;
+	float center_dist = abs(UV.y - 0.5);
+	float noise_offset = n / 1.5;
+	// Center blur
+	if (center_dist < center_size)
+	{
+		float l0 = sqrt((center_dist) / center_size);
+		float l1 = 1. - l0 + noise_offset;
+		l1 = pow(l1, 2.0);
+		col.a = mix(0., 1., l1);
+		col.a = smoothstep(0.1, 1.0, col.a);
+	}
+	
+	// Rotating spheres
+	float sphere_size = width / 6.;
+	float sphere_x = mod(TIME * rot_speed, wavelength * 1.);
+
+	vec2 sphere_pos = circle_from_x(sphere_x, sphere_size);
+	vec2 alt_sp_pos = circle_from_x(sphere_x + wavelength / 2., sphere_size);
+	// check if this fragcoord is in any of the spheres
+	vec2 frag = vec2(UV.x, 1.0 - UV.y) * vec2(total_length, width) + TIME * vec2(-move_speed, 0.0);
+//	// rebase the domain
+	float index = frag.x / wavelength;
+	frag.x = mod(frag.x, wavelength);
+
+////
+	if (!simple)
+	{
+		float x;
+		x = trailed_circle(sphere_pos, frag, sphere_size, false);
+		col.a = max(col.a, x);
+		x = trailed_circle(sphere_pos, frag + vec2(wavelength, 0.0), sphere_size, false);
+		col.a = max(col.a, x);
+		x = trailed_circle(sphere_pos, frag - vec2(wavelength, 0.0), sphere_size, false);
+		col.a = max(col.a, x);
+	//
+		x = trailed_circle(alt_sp_pos, frag, sphere_size, false);
+		col.a = max(col.a, x);
+		x = trailed_circle(alt_sp_pos, frag + vec2(wavelength, 0.0), sphere_size, false);
+		col.a = max(col.a, x);
+		x = trailed_circle(alt_sp_pos, frag - vec2(wavelength, 0.0), sphere_size, false);
+		col.a = max(col.a, x);
+	}
+
+
+//	col.xya = vec3(UV.xy, 1.0);
+	bool border_active = false;
+	if (border_active && is_border(UV)) // border overwrite
+		col = vec4(0.0, 1.0, .0, 1.);
+	col.a *= 2.4;
+	COLOR = col;
+}"
+
+[sub_resource type="OpenSimplexNoise" id=5]
+seed = 42
+
+[sub_resource type="NoiseTexture" id=6]
+seamless = true
+noise = SubResource( 5 )
+
+[sub_resource type="OpenSimplexNoise" id=7]
+seed = 19
+
+[sub_resource type="NoiseTexture" id=8]
+seamless = true
+noise = SubResource( 7 )
+
+[sub_resource type="OpenSimplexNoise" id=9]
+seed = 24
+
+[sub_resource type="NoiseTexture" id=10]
+seamless = true
+noise = SubResource( 9 )
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/base_color = Color( 62.3922, 0, 0, 1 )
+shader_param/total_length = 12.0
+shader_param/width = 12.0
+shader_param/wavelength = 40.0
+shader_param/amplitude = 32.0
+shader_param/rot_speed = 40.0
+shader_param/move_speed = 100.0
+shader_param/scroll_speed = 2.0
+shader_param/simple = true
+shader_param/noise = SubResource( 6 )
+shader_param/rand_noise = SubResource( 8 )
+shader_param/rand_noise2 = SubResource( 10 )
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CircleShape2D" id=2]
+
+[node name="CirclingLaser" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+icon = ExtResource( 5 )
+cd = 3.0
+
+[node name="Pivot" type="Node2D" parent="." index="1"]
+
+[node name="Laser" type="Line2D" parent="Pivot" index="0"]
+material = SubResource( 4 )
+points = PoolVector2Array( 0, 0, 184, 0 )
+width = 12.0
+width_curve = SubResource( 1 )
+default_color = Color( 0.74902, 0, 0, 1 )
+texture = ExtResource( 6 )
+texture_mode = 2
+script = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="Pivot/Laser" index="0"]
+
+[node name="HitBox" parent="Pivot/Laser" index="1" instance=ExtResource( 4 )]
+collision_layer = 0
+collision_mask = 512
+parent_path = NodePath("../../..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pivot/Laser/HitBox" index="0"]
+shape = SubResource( 2 )
+
+[connection signal="tween_completed" from="Pivot/Laser/Tween" to="Pivot/Laser" method="_on_Tween_tween_completed"]
+[connection signal="area_entered" from="Pivot/Laser/HitBox" to="." method="_on_HitBox_area_entered"]

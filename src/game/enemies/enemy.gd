@@ -63,8 +63,6 @@ func _process(delta: float) -> void:
 		_seek(_target.global_position, delta)
 
 
-
-
 func _physics_process(delta: float) -> void:
 	if not _frozen:
 		global_position += _velocity * delta
@@ -82,10 +80,12 @@ func set_scaled_hp(player_level) -> void:
 
 
 func apply_force(force : Vector2) -> void:
+	# Normally force should be divided by mass, currently every object has same mass
 	_velocity += force
 
 
-func take_damage(amount : float) -> void:
+func take_damage(amount : float, push_force := Vector2.ZERO) -> void:
+	apply_force(push_force)
 	emit_signal("damage_taken", global_position, amount)
 	_set_hp(_hp - amount)
 
@@ -180,10 +180,10 @@ func _on_HitTimer_timeout() -> void:
 func _on_Hurtbox_area_entered(area: Area2D) -> void:
 	if area is HitBox:
 		var hitbox = area as HitBox
-		var entity = hitbox.get_node(hitbox.parent_path)
-		if entity is Projectile:
-			take_damage(entity.get_projectile_damage())
-			entity.hit_target()
+		var projectile = hitbox.get_node(hitbox.parent_path)
+		if projectile is Projectile:
+			take_damage(projectile.get_projectile_damage(), projectile.get_push_force())
+			projectile.hit_target()
 
 
 func _on_FreezeTimer_timeout() -> void:

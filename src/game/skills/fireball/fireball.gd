@@ -50,9 +50,10 @@ func _cast() -> void:
 	var base_velocity = _get_projectile_velocity()
 	var damage = _get_damage()
 	var pierce = _get_max_pierce()
+	var force = _get_push_force()
 	
 	if proj_count > 0:
-		_create_projectile(base_velocity, damage, pierce)
+		_create_projectile(base_velocity, damage, pierce, force)
 
 	var base_rotation = deg2rad(spread_angle)
 	
@@ -63,12 +64,12 @@ func _cast() -> void:
 			var idx = (i+1) / 2
 			var rotation_amount = float(1 - 2 * side) * idx * base_rotation
 			var vel = base_velocity.rotated(rotation_amount)
-			_create_projectile(vel, damage, pierce)
+			_create_projectile(vel, damage, pierce, force)
 
 
-func _create_projectile(projectile_velocity, damage, pierce) -> void:
+func _create_projectile(projectile_velocity, damage, pierce, force) -> void:
 	var new_projectile = ProjectilePrefab.instance()
-	new_projectile.init(projectile_velocity, damage, pierce)
+	new_projectile.init(projectile_velocity, damage, pierce, force)
 	new_projectile.set_as_toplevel(true)
 	new_projectile.global_position = global_position
 	createdProjectiles.add_child(new_projectile)

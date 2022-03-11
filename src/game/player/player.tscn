@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://assets/gfx/common/64x64_white.png" type="Texture" id=1]
 [ext_resource path="res://src/game/player/player.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://src/game/skills/arc/arc.tscn" type="PackedScene" id=8]
 [ext_resource path="res://src/game/skills/fireball/fireball.tscn" type="PackedScene" id=9]
 [ext_resource path="res://src/game/skills/mine/mine_generator.tscn" type="PackedScene" id=10]
+[ext_resource path="res://src/game/skills/circling_laser/circling_laser.tscn" type="PackedScene" id=11]
 
 [sub_resource type="Shader" id=19]
 code = "// NOTE: Shader automatically converted from Godot Engine 3.4.stable's CanvasItemMaterial.
@@ -203,14 +204,17 @@ editor_draw_drag_margin = true
 
 [node name="Skills" type="Node2D" parent="."]
 
-[node name="Fireball" parent="Skills" instance=ExtResource( 9 )]
+[node name="CirclingLaser" parent="Skills" instance=ExtResource( 11 )]
+position = Vector2( 0, -113 )
+
+[node name="InactiveSkills" type="Node2D" parent="."]
+
+[node name="Fireball" parent="InactiveSkills" instance=ExtResource( 9 )]
 z_index = 2
 base_damage = 75.0
 cd = 3.0
 speed = 800.0
 max_pierce = 1
-
-[node name="InactiveSkills" type="Node2D" parent="."]
 
 [node name="Arc" parent="InactiveSkills" instance=ExtResource( 8 )]
 visible = false

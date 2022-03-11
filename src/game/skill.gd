@@ -27,6 +27,7 @@ export(Array, Resource) var possible_major_augments = []
 export(float) var base_damage := 20.0 
 # warning-ignore:unused_class_variable
 export(float) var cd := 5.0 
+export(float) var base_push_force := 4.0
 
 ### PUBLIC VAR ###
 var user : Player
@@ -75,8 +76,14 @@ func _get_damage() -> float:
 	_property_cache.cache("damage", damage)
 	return damage
 
+
+func _get_push_force() -> float:
+	return base_push_force
+
+
 ### SIGNAL RESPONSES ###
 
 
 func _on_CdTimer_timeout() -> void:
+	push_error("NO ACTION DEFINED FOR SKILL")
 	pass # Replace with function body.

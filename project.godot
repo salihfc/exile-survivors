@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/resource_classes/basic_cache.gd"
 }, {
+"base": "Skill",
+"class": "CirclingLaser",
+"language": "GDScript",
+"path": "res://src/game/skills/circling_laser/circling_laser.gd"
+}, {
 "base": "Node2D",
 "class": "Enemy",
 "language": "GDScript",
@@ -83,6 +88,11 @@ _global_script_classes=[ {
 "class": "HurtBox",
 "language": "GDScript",
 "path": "res://src/game/hurtbox.gd"
+}, {
+"base": "Line2D",
+"class": "Laser",
+"language": "GDScript",
+"path": "res://src/game/skills/circling_laser/laser.gd"
 }, {
 "base": "Augment",
 "class": "MajorAugment",
@@ -180,6 +190,7 @@ _global_script_class_icons={
 "AugmentSelectionAugmentDisplay": "",
 "AugmentSelectionDialog": "",
 "BasicCache": "",
+"CirclingLaser": "",
 "Enemy": "",
 "EnemyBatEye": "",
 "ExpDisplay": "",
@@ -190,6 +201,7 @@ _global_script_class_icons={
 "HitBox": "",
 "HpBar": "",
 "HurtBox": "",
+"Laser": "",
 "MajorAugment": "",
 "MajorAugmentArcEndOfChainExplosion": "",
 "MajorAugmentFireballProjectileCount": "",

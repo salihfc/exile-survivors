@@ -61,7 +61,7 @@ func _explode() -> void:
 func _hit() -> void:
 	var overlap = hitBox.get_overlapping_areas()
 	for area in overlap:
-		var unit = area.get_parent()
+		var unit = area.get_node(area.parent_path)
 		unit.take_damage(_damage)
 
 	yield(get_tree().create_timer(0.3), "timeout")

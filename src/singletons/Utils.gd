@@ -69,9 +69,13 @@ func test_random_unit_vec2() -> void:
 	get_tree().quit()
 
 
+func angle_to_vec2(theta) -> Vector2:
+	return Vector2(cos(theta), sin(theta)).normalized()
+
+
 func random_unit_vec2() -> Vector2:
 	var theta = rand_range(0, 2 * PI)
-	return Vector2(cos(theta), sin(theta))
+	return angle_to_vec2(theta)
 
 
 func check(p : float) -> bool:

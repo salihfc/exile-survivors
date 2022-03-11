@@ -32,7 +32,10 @@ export(NodePath) var parent_path
 
 
 ### PUBLIC FUNCTIONS ###
-
+func disable(disable := true) -> void:
+	if get_child_count():
+		for shape in get_children():
+			shape.disabled = disable
 
 ### PRIVATE FUNCTIONS ###
 

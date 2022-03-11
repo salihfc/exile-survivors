@@ -60,14 +60,18 @@ func _ready() -> void:
 
 # warning-ignore:unused_argument
 func _process(delta: float) -> void:
-	if abs(_velocity.x) > FLIP_THRESHOLD:
-		animSprite.flip_h = _velocity.x < 0.0
+#	if abs(_velocity.x) > FLIP_THRESHOLD:
+#		animSprite.flip_h = _velocity.x < 0.0
 
+	if _target:
+		var diff = (_target.global_position.x - global_position.x)
+		if abs(diff) > FLIP_THRESHOLD:
+			animSprite.flip_h = diff < 0.0
 
 ### PUBLIC FUNCTIONS ###
 # Overriding Enemy.take_damage
-func take_damage(amount : float) -> void:
-	.take_damage(amount)
+func take_damage(amount : float, push_force := Vector2.ZERO) -> void:
+	.take_damage(amount, push_force)
 	
 #	animTween.remove_all()
 

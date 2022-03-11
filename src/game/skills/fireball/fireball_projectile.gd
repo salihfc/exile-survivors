@@ -12,6 +12,7 @@ class_name Projectile
 
 ### CONST ###
 const FADE_DURATION = 0.4
+const FORCE_FACTOR = 0.1
 
 ### EXPORT ###
 
@@ -24,6 +25,7 @@ var _velocity := Vector2.ZERO
 var _damage := 0.0
 var _max_pierce := 0
 var _remaining_pierce := 0
+var _force := 0.0
 
 ### ONREADY VAR ###
 onready var animSprite = $Rotation/AnimatedSprite as AnimatedSprite
@@ -41,16 +43,21 @@ func _physics_process(delta: float) -> void:
 	
 	
 ### PUBLIC FUNCTIONS ###
-func init(velocity, damage, max_pierce) -> void:
+func init(velocity, damage, max_pierce, force) -> void:
 	LOG.pr(1, "New Fireball proj (%s) (%s, %s)" % [velocity, damage, max_pierce])
 	_velocity = velocity
 	_damage = damage
 	_max_pierce = max_pierce
 	_remaining_pierce = max_pierce
+	_force = force
 
 
 func get_projectile_damage():
 	return _damage
+
+
+func get_push_force():
+	return _velocity * _force * FORCE_FACTOR
 
 
 func hit_target() -> void:
@@ -65,7 +72,7 @@ func hit_target() -> void:
 func _destroy() -> void:
 	LOG.pr(1, "Projectile Destroyed")
 	animSprite.animation = "end"
-	_velocity *= 0.01
+	_velocity *= 0.1
 	
 	tween.interpolate_property(
 			self, "modulate",
