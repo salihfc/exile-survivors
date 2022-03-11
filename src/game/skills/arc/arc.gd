@@ -163,6 +163,8 @@ func _cast_starting_from(closest):
 
 #	LOG.pr(1, "ARC CASTED WITH LINES: (%s) -> (%s)" % [all_enemies.size(), edges.size()])
 	
+#	AUDIO.play(AUDIO.SFX.ARC)
+	
 	var appearing_time = 0.02
 	var disappering_time = 0.03
 #	var single_line_completion_time = appearing_time

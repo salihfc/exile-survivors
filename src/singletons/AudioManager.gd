@@ -13,12 +13,14 @@ const base_sfx_volume := -10.0 # Db
 
 
 enum SFX {
+	ARC,
 }
 
 const SFX_start = {
 }
 
 const SFX_array = [
+	preload("res://assets/sfx/skills/arc/Swish-NanoChopper.wav"),
 ]
 
 var bgm_on = true
@@ -38,7 +40,7 @@ func _ready() -> void:
 #	BGMplayer.stream = AudioStreamRandomPitch.new()
 #	BGMplayer.stream.audio_stream = BGM
 
-	set_sfx_volume(10)
+	set_sfx_volume(-1)
 	set_bgm_volume(10)
 
 #	BGMplayer.play()
@@ -74,9 +76,8 @@ func play(sfx_id : int) -> void:
 
 func get_db_equivalent(val : float) -> float:
 	var res = 0.0
-	res = 10.0 * (log(val / 100.0) / log(10.0))
-	res -= 15.0
-	res = clamp(res, MIN_VOLUME, MAX_VOLUME)
+	res = inverse_lerp(MIN_VOLUME, MAX_VOLUME, val)
+	res = linear2db(res)
 	return res
 
 
