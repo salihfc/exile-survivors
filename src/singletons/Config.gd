@@ -1,8 +1,8 @@
 extends Node
 
 const SHOW_HEALTH_BARS := true
-const PLAYER_INVINCIBLE := true
-const AUTO_RANDOM_UPDATE := false
+const PLAYER_INVINCIBLE := false
+const AUTO_RANDOM_UPDATE := true
 # warning-ignore:unused_class_variable
 var SHOW_DAMAGE_NUMBERS := false
 

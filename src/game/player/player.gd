@@ -12,7 +12,7 @@ class_name Player
 
 ### CONST ###
 const IDLE_THRESHOLD = 10.0
-const MAX_VEL = 600.0
+const MAX_VEL = 400.0
 const RUN_ANIM_SPEED_APPROX = 300.0
 const ACC = 200.0
 const DAMP = 0.80
@@ -63,7 +63,7 @@ func _process(delta: float) -> void:
 		
 		#
 		anim_sprite.animation = "idle" if _velocity.length() < IDLE_THRESHOLD else "run"
-
+		anim_sprite.material.set_shader_param("velocity", _velocity)
 		
 #		LOG.pr(1, "(%s)" % [camera.global_position])
 

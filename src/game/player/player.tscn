@@ -19,6 +19,15 @@ shader_type canvas_item;
 render_mode blend_mix;
 
 uniform vec4 outline_color : hint_color = vec4(0.0);
+uniform vec2 velocity = vec2(100.0, 100.0);
+
+vec4 trail(sampler2D tex, vec2 uv, vec2 vel)
+{
+	vel.x = abs(vel.x);
+	vec2 T = vec2(0.5) / vec2(60000.0, 10000.0);
+	vec4 forward = texture(tex, uv + vel * T);
+	return forward;
+}
 
 float outline(sampler2D tex, vec2 uv)
 {
@@ -42,12 +51,22 @@ void fragment()
 	vec4 base_color = texture(TEXTURE, UV);
 	float out_weight = outline(TEXTURE, UV);
 	base_color.rgb = mix(base_color, outline_color, out_weight * (outline_color.a)).rgb;
+
+	vec4 tr = trail(TEXTURE, UV, velocity);
+	
+	base_color.rgba = mix(base_color.rgba, tr.rgba, out_weight);
+	
+	float t = 1.4 - out_weight;
+	t = smoothstep(0.35, 0.5, t);
+	base_color.a *= t;
+	
 	COLOR = base_color;
 }"
 
 [sub_resource type="ShaderMaterial" id=20]
 shader = SubResource( 19 )
 shader_param/outline_color = Color( 0, 0, 0, 1 )
+shader_param/velocity = Vector2( 100, 100 )
 
 [sub_resource type="AtlasTexture" id=4]
 flags = 4
@@ -169,11 +188,11 @@ material = SubResource( 20 )
 position = Vector2( 1, -16 )
 frames = SubResource( 10 )
 animation = "idle"
-frame = 2
 playing = true
 offset = Vector2( 6, 3 )
 
 [node name="Hurtbox" parent="." instance=ExtResource( 3 )]
+visible = false
 position = Vector2( 0, 20 )
 collision_layer = 32
 collision_mask = 1024
@@ -183,6 +202,7 @@ parent_path = NodePath("..")
 shape = SubResource( 1 )
 
 [node name="Hp_bar" parent="." instance=ExtResource( 4 )]
+visible = false
 margin_left = -51.0
 margin_top = -75.0
 margin_right = 54.0
@@ -190,11 +210,13 @@ margin_bottom = -63.0
 custom_styles/fg = SubResource( 2 )
 
 [node name="SoftBody2D" parent="." instance=ExtResource( 5 )]
+visible = false
 position = Vector2( 0, 20 )
 parent_path = NodePath("..")
 body_shape = SubResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 current = true
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
@@ -204,23 +226,24 @@ editor_draw_drag_margin = true
 
 [node name="Skills" type="Node2D" parent="."]
 
-[node name="CirclingLaser" parent="Skills" instance=ExtResource( 11 )]
-position = Vector2( 0, -113 )
+[node name="Arc" parent="Skills" instance=ExtResource( 8 )]
+base_damage = 40.0
+chain_range = 200.0
+max_chain = 4.0
 
 [node name="InactiveSkills" type="Node2D" parent="."]
 
+[node name="CirclingLaser" parent="InactiveSkills" instance=ExtResource( 11 )]
+visible = false
+position = Vector2( 0, -113 )
+
 [node name="Fireball" parent="InactiveSkills" instance=ExtResource( 9 )]
+visible = false
 z_index = 2
 base_damage = 75.0
 cd = 3.0
 speed = 800.0
 max_pierce = 1
-
-[node name="Arc" parent="InactiveSkills" instance=ExtResource( 8 )]
-visible = false
-base_damage = 40.0
-chain_range = 200.0
-max_chain = 4.0
 
 [node name="MineGenerator" parent="InactiveSkills" instance=ExtResource( 10 )]
 visible = false
