@@ -11,32 +11,12 @@ class_name EnemyBatEye
 
 
 ### CONST ###
-const SHADER_PARAM_DAMAGE_TAKEN_MODULATE = "damage_taken_modulate"
-const SHADER_PARAM_OUTLINE_COLOR = "outline_color"
 
-var TIER_COLORS = [
-	Color.black,
-	Color.aquamarine,
-	Color.greenyellow,
-	Color.orangered,
-]
-
-const TIER_SCALES = [
-	1.0,
-	1.1,
-	1.3,
-	1.6,
-]
-
-var tier_selection_weighted_random = WeightedRandom.new([10.0, 2.0, 1.0, 1.1])
 
 
 ### EXPORT ###
-export(Color) var frozen_modulate;
-export(Color) var damage_taken_modulate;
 
-# warning-ignore:unused_class_variable
-export(int) var tier := 0 # 0 is normal 1,2,3.. -> elite enemies with tiers
+
 ### PUBLIC VAR ###
 
 
@@ -44,33 +24,10 @@ export(int) var tier := 0 # 0 is normal 1,2,3.. -> elite enemies with tiers
 
 
 ### ONREADY VAR ###
-onready var animSprite = $VisualBodyCenter/AnimatedSprite as AnimatedSprite
-onready var animTween = $AnimTween as Tween
-onready var animPlayer = $AnimationPlayer as AnimationPlayer
 
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
-func _ready() -> void:
-	_main_sprite = animSprite
-	animSprite.material = animSprite.material.duplicate()
-	
-	# set random tier
-	tier = tier_selection_weighted_random.rand()
-	
-	# Give Elite enemy outlines via shader
-	_set_scaled_stats()
 
-	LOG.pr(1, "Enemy (%s) created" % [tier])
-
-# warning-ignore:unused_argument
-func _process(delta: float) -> void:
-#	if abs(_velocity.x) > FLIP_THRESHOLD:
-#		animSprite.flip_h = _velocity.x < 0.0
-
-	if _target:
-		var diff = (_target.global_position.x - global_position.x)
-		if abs(diff) > FLIP_THRESHOLD:
-			animSprite.flip_h = diff < 0.0
 
 ### PUBLIC FUNCTIONS ###
 # Overriding Enemy.take_damage

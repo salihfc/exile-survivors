@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://src/game/enemies/enemy.gd" type="Script" id=1]
 [ext_resource path="res://src/game/enemies/hp_bar.tscn" type="PackedScene" id=3]
@@ -13,7 +13,66 @@ radius = 49.0102
 radius = 42.0119
 
 [sub_resource type="CircleShape2D" id=4]
-radius = 32.0
+radius = 40.0
+
+[sub_resource type="Animation" id=16]
+resource_name = "damage_taken_test"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/DAMAGE_TAKEN_COLOR")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 0.258816, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.890196, 0.0196078, 0.0196078, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=23]
+resource_name = "death"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/dissolve_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/outline_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=18]
+resource_name = "frozen_test"
+tracks/0/type = "value"
+tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/FROZEN_COLOR")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 1 ),
+"transitions": PoolRealArray( 0.0647041, 2.2974, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.156863, 0.301961, 0.870588, 1 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="Enemy" type="Node2D"]
 script = ExtResource( 1 )
@@ -49,6 +108,8 @@ body_shape = SubResource( 4 )
 [node name="VisualBodyCenter" type="Position2D" parent="."]
 position = Vector2( 0, -32 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="VisualBodyCenter"]
+
 [node name="Timers" type="Node" parent="."]
 
 [node name="HitTimer" type="Timer" parent="Timers"]
@@ -68,6 +129,13 @@ margin_left = -53.0
 margin_top = -89.0
 margin_right = 52.0
 margin_bottom = -77.0
+
+[node name="AnimTween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/damage_taken_test = SubResource( 16 )
+anims/death = SubResource( 23 )
+anims/frozen_test = SubResource( 18 )
 
 [connection signal="area_entered" from="Areas/Hurtbox" to="." method="_on_Hurtbox_area_entered"]
 [connection signal="area_entered" from="Areas/HitBox" to="." method="_on_HitBox_area_entered"]

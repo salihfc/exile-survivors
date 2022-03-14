@@ -24,10 +24,10 @@ var _data = {}
 
 ### ONREADY VAR ###
 
-
-
-
 ### VIRTUAL FUNCTIONS (_init ...) ###
+func _ready() -> void:
+# warning-ignore:unsafe_method_access
+	LOG.pr(3, "TIMER_ALLOCATOR READY")
 
 
 ### PUBLIC FUNCTIONS ###

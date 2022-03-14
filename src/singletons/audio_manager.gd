@@ -85,7 +85,7 @@ func get_db_equivalent(val : float) -> float:
 
 func set_sfx_player_count(count : int) -> void:
 	var delta = count - SFXplayers.get_child_count()
-	prints("delta[%s]" % [delta])
+#	prints("delta[%s]" % [delta])
 
 	if delta > 0: # Add new
 		for _i in range(delta):

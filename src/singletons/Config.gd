@@ -1,7 +1,7 @@
 extends Node
 
-const SHOW_HEALTH_BARS := true
-const PLAYER_INVINCIBLE := false
+const SHOW_HEALTH_BARS := false
+const PLAYER_INVINCIBLE := true
 const AUTO_RANDOM_UPDATE := true
 # warning-ignore:unused_class_variable
 var SHOW_DAMAGE_NUMBERS := false
@@ -34,6 +34,7 @@ func free_orphans() -> void:
 
 
 func _ready() -> void:
+	LOG.pr(3, "CONFIG READY")
 	OS.center_window()
 	Engine.target_fps = 60
 	randomize()
@@ -50,3 +51,14 @@ func _process(delta: float) -> void:
 		for node in all_main_nodes:
 			node.queue_free()
 		get_tree().call_deferred("quit")
+
+
+
+#func _physics_process(_delta: float) -> void:
+#	var enemies = get_tree().get_nodes_in_group("enemy")
+#	var ct = 0
+#	for enemy in enemies:
+#		var bodies = enemy.softBody._get_soft_bodies_inside()
+#		ct += bodies.size()
+#
+#	print ("SOFTBODY CHECKS: ( %s )" % [ct])

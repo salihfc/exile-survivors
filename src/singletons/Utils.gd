@@ -3,6 +3,10 @@ class_name Utils
 
 const DelayedCall = preload("res://src/delayed_call.tscn")
 
+func _ready() -> void:
+# warning-ignore:unsafe_method_access
+	LOG.pr(3, "UTILS READY")
+
 func bind(
 		source_node : Object, signal_name : String,
 		target_node : Object, method_name : String,
@@ -10,8 +14,11 @@ func bind(
 
 	var err = source_node.connect(signal_name, target_node, method_name, binds)
 	if err != OK:
-		push_error("CANNOT BIND SIGNAL")
-
+		LOG.err("CANNOT BIND SIGNAL: (%s:%s) -> (%s:%s)" %\
+				[source_node, signal_name, target_node, method_name])
+	else:
+		LOG.pr(3, "Bind Signal: (%s:%s) -> (%s:%s)" %\
+				[source_node, signal_name, target_node, method_name])
 
 func eval(expression_string, param_names, param_values):
 	var expression = Expression.new()

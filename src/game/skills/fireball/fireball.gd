@@ -52,6 +52,9 @@ func _cast() -> void:
 	var pierce = _get_max_pierce()
 	var force = _get_push_force()
 	
+	if is_zero_approx(base_velocity.length()):
+		return
+	
 	if proj_count > 0:
 		_create_projectile(base_velocity, damage, pierce, force)
 
@@ -96,8 +99,11 @@ func _get_projectile_velocity() -> Vector2:
 	# Send a fireball towards closest enemy
 	var enemies = get_tree().get_nodes_in_group("enemy")
 	var closest_enemy = UTILS.get_closest_node(self, enemies)
-	var dir : Vector2 = closest_enemy.global_position - self.global_position
-	return dir.normalized() * _get_speed()
+	
+	if closest_enemy:
+		var dir : Vector2 = closest_enemy.global_position - self.global_position
+		return dir.normalized() * _get_speed()
+	return Vector2.ZERO
 
 
 func _get_max_pierce() -> int:

@@ -32,7 +32,8 @@ onready var effect = $ExplosionEffect
 ### PUBLIC FUNCTIONS ###
 func init(area_radius : float, hit_mask) -> void:
 	scale *= area_radius / 50.0
-	hitBox.collision_mask = hit_mask
+	
+	hitBox.set_deferred("collision_mask", hit_mask)
 
 
 func hit(damage : float) -> void:

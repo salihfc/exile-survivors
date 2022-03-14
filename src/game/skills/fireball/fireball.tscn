@@ -15,7 +15,13 @@ radius = 10000.0
 script = ExtResource( 2 )
 icon = ExtResource( 6 )
 possible_minor_augments = [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 3 ) ]
-possible_major_augments = [ ExtResource( 7 ) ]
+possible_major_augments = [ ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ]
+base_damage = 60.0
+cd = 2.0
+base_push_force = 2.0
+speed = 600.0
+max_pierce = 2
+projectile_count = 2
 spread_angle = 10.0
 
 [node name="CreatedProjectiles" type="Node2D" parent="." index="1"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://src/game/enemies/enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/game/enemies/enemy.gdshader" type="Shader" id=2]
@@ -42,92 +42,6 @@ shader_param/dissolve_ratio = 0.0
 shader_param/outline_color = Color( 0, 0, 0, 1 )
 shader_param/dissolve_noise = SubResource( 21 )
 
-[sub_resource type="Animation" id=22]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/dissolve_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ 0.0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/outline_color")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 0, 0, 0, 1 ) ]
-}
-
-[sub_resource type="Animation" id=16]
-resource_name = "damage_taken_test"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/DAMAGE_TAKEN_COLOR")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 0.258816, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 0.890196, 0.0196078, 0.0196078, 1 ), Color( 1, 1, 1, 1 ) ]
-}
-
-[sub_resource type="Animation" id=23]
-resource_name = "death"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/dissolve_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 0.0, 1.0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/outline_color")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 0, 0, 0, 0 ) ]
-}
-
-[sub_resource type="Animation" id=18]
-resource_name = "frozen_test"
-tracks/0/type = "value"
-tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/FROZEN_COLOR")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3, 1 ),
-"transitions": PoolRealArray( 0.0647041, 2.2974, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 0.156863, 0.301961, 0.870588, 1 ), Color( 1, 1, 1, 1 ) ]
-}
-
 [node name="EnemyBatEye" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 stats = SubResource( 24 )
@@ -137,21 +51,13 @@ damage_taken_modulate = Color( 1, 0.0313726, 0.0313726, 1 )
 [node name="VisualBodyCenter" parent="." index="1"]
 position = Vector2( 0, -15 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="VisualBodyCenter" index="0"]
+[node name="AnimatedSprite" parent="VisualBodyCenter" index="0"]
 material = SubResource( 19 )
 frames = ExtResource( 4 )
 animation = "fly"
-frame = 6
+frame = 2
 playing = true
 offset = Vector2( -4, -16 )
-
-[node name="AnimTween" type="Tween" parent="." index="4"]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5"]
-anims/RESET = SubResource( 22 )
-anims/damage_taken_test = SubResource( 16 )
-anims/death = SubResource( 23 )
-anims/frozen_test = SubResource( 18 )
 
 [connection signal="tween_completed" from="AnimTween" to="." method="_on_AnimTween_tween_completed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

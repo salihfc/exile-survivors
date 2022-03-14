@@ -16,9 +16,9 @@ const SCENES = {
 }
 
 #
-onready var tween = get_node("Control/Tween") as Tween
-onready var foreground = get_node("Control/Foreground") as ColorRect
-
+onready var tween = $Control/Tween as Tween
+onready var foreground = $Control/Foreground as ColorRect
+onready var sceneSlot = $CurrentSceneSlot as Control
 
 func _ready() -> void:
 	set_foreground_color(Color("0c0d1d"))
@@ -34,7 +34,7 @@ func set_foreground_color(new_color : Color) -> void:
 func change_scene(scene_id) -> void:
 	fade(1.0, FADE_MIN_DELAY)
 	var scene = SCENES[(scene_id)].instance()
-	$CurrentSceneSlot.add_child(scene)
+	sceneSlot.add_child(scene)
 	
 	# Should wait until scene fully loaded
 	yield(get_tree().create_timer(1.0), "timeout")

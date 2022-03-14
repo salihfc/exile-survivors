@@ -94,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/game/skills/circling_laser/laser.gd"
 }, {
+"base": "Node",
+"class": "Log",
+"language": "GDScript",
+"path": "res://src/singletons/log.gd"
+}, {
 "base": "Augment",
 "class": "MajorAugment",
 "language": "GDScript",
@@ -165,6 +170,11 @@ _global_script_classes=[ {
 "path": "res://src/game/ui/skill_selection_skill_display.gd"
 }, {
 "base": "Resource",
+"class": "SliceCounter",
+"language": "GDScript",
+"path": "res://src/resource_classes/slice_counter.gd"
+}, {
+"base": "Resource",
 "class": "Snippet",
 "language": "GDScript",
 "path": "res://addons/light_snippet/snippet.gd"
@@ -197,7 +207,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Utils",
 "language": "GDScript",
-"path": "res://src/singletons/Utils.gd"
+"path": "res://src/singletons/utils.gd"
 }, {
 "base": "Resource",
 "class": "WeightedRandom",
@@ -222,6 +232,7 @@ _global_script_class_icons={
 "HpBar": "",
 "HurtBox": "",
 "Laser": "",
+"Log": "",
 "MajorAugment": "",
 "MajorAugmentArcEndOfChainExplosion": "",
 "MajorAugmentFireballProjectileCount": "",
@@ -236,6 +247,7 @@ _global_script_class_icons={
 "Skill": "",
 "SkillSelectionDialog": "",
 "SkillSelectionSkillDisplay": "",
+"SliceCounter": "",
 "Snippet": "",
 "SoftBody2D": "",
 "Stats": "",
@@ -249,16 +261,18 @@ _global_script_class_icons={
 [application]
 
 config/name="Exile_Survivors"
-run/main_scene="res://src/SceneManager.tscn"
+run/main_scene="res://src/scene_manager.tscn"
+run/flush_stdout_on_print=true
 config/icon="res://icon.png"
 
 [autoload]
 
-CONFIG="*res://src/singletons/Config.gd"
-UTILS="*res://src/singletons/Utils.tscn"
-LOG="*res://src/singletons/Log.gd"
-AUDIO="*res://src/singletons/AudioManager.tscn"
+LOG="*res://src/singletons/log.gd"
+CONFIG="*res://src/singletons/config.gd"
+UTILS="*res://src/singletons/utils.tscn"
+AUDIO="res://src/singletons/audio_manager.tscn"
 TIMER_ALLOC="*res://src/singletons/timer_allocator.gd"
+TIME_SLICER="*res://src/singletons/time_slicer.gd"
 
 [debug]
 
@@ -326,6 +340,11 @@ debug_e={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+clear_enemies={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":88,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -337,6 +356,10 @@ debug_e={
 2d_physics/layer_9="enemy"
 2d_physics/layer_10="enemy_hurtbox"
 2d_physics/layer_11="enemy_hitbox"
+
+[logging]
+
+file_logging/enable_file_logging=true
 
 [physics]
 

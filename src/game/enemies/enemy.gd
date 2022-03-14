@@ -12,6 +12,24 @@ signal damage_taken(amount)
 
 
 ### CONST ###
+const SHADER_PARAM_DAMAGE_TAKEN_MODULATE = "damage_taken_modulate"
+const SHADER_PARAM_OUTLINE_COLOR = "outline_color"
+
+# warning-ignore:unused_class_variable
+var TIER_COLORS = [
+	Color.black,
+	Color.aquamarine,
+	Color.greenyellow,
+	Color.orangered,
+]
+
+const TIER_SCALES = [
+	1.0,
+	1.1,
+	1.3,
+	1.6,
+]
+
 # VISUAL
 const FLIP_THRESHOLD = 20.0
 
@@ -34,24 +52,46 @@ export(float) var base_damage := 10.0
 export(float) var base_exp := 2.0
 
 
+# warning-ignore:unused_class_variable
+export(Color) var frozen_modulate;
+# warning-ignore:unused_class_variable
+export(Color) var damage_taken_modulate;
+
+# warning-ignore:unused_class_variable
+export(int) var tier := 0 # 0 is normal 1,2,3.. -> elite enemies with tiers
 ### PUBLIC VAR ###
+# warning-ignore:unused_class_variable
+var tier_selection_weighted_random = WeightedRandom.new([10.0, 2.0, 1.0, 1.1])
+
 
 ### PRIVATE VAR ###
 # Physics
 var _velocity := Vector2.ZERO
 
 # warning-ignore:unused_class_variable
-var _main_sprite : CanvasItem
+var _main_sprite : AnimatedSprite
 var _target = null
 var _level = 0
 
 # FLAG
 var _frozen := false
 
+var time_id = 0
+
 ### ONREADY VAR ###
 onready var uiElementsContainer = $UiElements as Control
 onready var hpBar = $UiElements/Hp_bar as HpBar
+
+#
 onready var hitBox = $Areas/HitBox as HitBox
+onready var softBody = $Areas/SoftBody2D as SoftBody2D
+
+# warning-ignore:unused_class_variable
+onready var animSprite = $VisualBodyCenter/AnimatedSprite as AnimatedSprite
+onready var animTween = $AnimTween as Tween
+# warning-ignore:unused_class_variable
+onready var animPlayer = $AnimationPlayer as AnimationPlayer
+
 
 onready var hitTimer = $Timers/HitTimer as Timer
 onready var freezeTimer = $Timers/FreezeTimer as Timer
@@ -59,16 +99,33 @@ onready var freezeTimer = $Timers/FreezeTimer as Timer
 ### VIRTUAL FUNCTIONS (_init ...) ###
 func _ready() -> void:
 	add_to_group("enemy", true)
+	_main_sprite = animSprite
+	animSprite.material = animSprite.material.duplicate()
+	
+	# set random tier
+	tier = tier_selection_weighted_random.rand()
+#	time_id = TIME_SLICER.get_id_for_entity(self)
+	
+	# Give Elite enemy outlines via shader
+	_set_scaled_stats()
+
+	LOG.pr(1, "Enemy (%s) created" % [tier])
+
 
 
 func _process(delta: float) -> void:
 	if _target:
 		_seek(_target.global_position, delta)
+		var diff = (_target.global_position.x - global_position.x)
+		if abs(diff) > FLIP_THRESHOLD:
+			_main_sprite.flip_h = diff < 0.0
+
 
 
 func _physics_process(delta: float) -> void:
 	if not _frozen:
 		global_position += _velocity * delta
+
 
 
 ### PUBLIC FUNCTIONS ###
@@ -113,6 +170,10 @@ func attack(target) -> void:
 
 
 ### PRIVATE FUNCTIONS ###
+# Overridden by derived classes
+func _set_scaled_stats() -> void:
+	pass
+
 func _set_hp(new_hp) -> void:
 	stats.set_stat(Stats.HP, new_hp)
 	hpBar.set_bar(stats.get_hp_perc())
@@ -167,7 +228,7 @@ func _get_hp_scaling(level) -> float:
 
 func _get_scaled_def() -> float:
 	var base_def = stats.get_stat(Stats.DEF)
-	return base_def + _level
+	return base_def
 
 
 # DAMAGE CALC
