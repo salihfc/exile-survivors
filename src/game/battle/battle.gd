@@ -85,16 +85,14 @@ func _get_random_spawn_pos() -> Vector2:
 
 ### SIGNAL RESPONSES ###
 
-
 func _on_SpawnTimer_timeout() -> void:
 	var new_enemy = BatEyePrefab.instance()
 	$Env.add_child(new_enemy)
 	new_enemy.global_position = _get_random_spawn_pos()
 	new_enemy.set_target($Env/Player)
-	new_enemy.set_scaled_hp(_exp_system.get_level()) 
+	new_enemy.set_level(_exp_system.get_level()) 
 	UTILS.bind(new_enemy, "died", self, "_on_enemy_died")
 	UTILS.bind(new_enemy, "damage_taken", self, "_on_enemy_damage_taken")
-
 
 
 func _on_enemy_died(exp_reward) -> void:

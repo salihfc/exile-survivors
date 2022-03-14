@@ -1,9 +1,26 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://src/game/enemies/enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/game/enemies/enemy.gdshader" type="Shader" id=2]
 [ext_resource path="res://src/game/enemies/EnemyBatEye.gd" type="Script" id=3]
 [ext_resource path="res://tres/enemies/bateye/EnemyBatEye.tres" type="SpriteFrames" id=4]
+[ext_resource path="res://src/resource_classes/stats.gd" type="Script" id=5]
+
+[sub_resource type="Resource" id=24]
+resource_local_to_scene = true
+script = ExtResource( 5 )
+_max_hp = 1.0
+_hp = 1.0
+_def = 1.0
+_res_physical = 0.0
+_res_fire = 0.0
+_res_cold = 0.0
+_res_lightning = 0.0
+_res_dark = 0.0
+_res_light = 0.0
+_crit_rate = 0.0
+_crit_damage = 0.0
+_damage_multi = 1.0
 
 [sub_resource type="OpenSimplexNoise" id=20]
 seed = 444
@@ -113,6 +130,7 @@ tracks/0/keys = {
 
 [node name="EnemyBatEye" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
+stats = SubResource( 24 )
 frozen_modulate = Color( 0.227451, 0.772549, 0.862745, 1 )
 damage_taken_modulate = Color( 1, 0.0313726, 0.0313726, 1 )
 
@@ -123,7 +141,7 @@ position = Vector2( 0, -15 )
 material = SubResource( 19 )
 frames = ExtResource( 4 )
 animation = "fly"
-frame = 4
+frame = 6
 playing = true
 offset = Vector2( -4, -16 )
 

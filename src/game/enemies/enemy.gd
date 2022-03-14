@@ -27,21 +27,23 @@ const MAX_STEER_FORCE = 1000.0
 const ATTACK_CD = 1.0
 
 ### EXPORT ###
+export(Resource) var stats
+
 export(float) var base_max_hp := 100.0
 export(float) var base_damage := 10.0
 export(float) var base_exp := 2.0
 
+
 ### PUBLIC VAR ###
-var max_hp
 
 ### PRIVATE VAR ###
 # Physics
 var _velocity := Vector2.ZERO
-# Battle
-var _hp := 1.0
+
 # warning-ignore:unused_class_variable
 var _main_sprite : CanvasItem
 var _target = null
+var _level = 0
 
 # FLAG
 var _frozen := false
@@ -74,10 +76,13 @@ func set_target(target) -> void:
 	_target = target
 
 
-func set_scaled_hp(player_level) -> void:
-	max_hp = base_max_hp * _get_hp_scaling(player_level)
-	_set_hp(max_hp)
-	LOG.pr(1, "Enemy with (%s) created" % [max_hp])
+func set_level(player_level) -> void:
+	_level = player_level
+	var scaled_max_hp = base_max_hp * _get_hp_scaling(player_level)
+	stats.set_stat(Stats.MAX_HP, scaled_max_hp)
+	stats.set_stat(Stats.HP, scaled_max_hp)
+
+#	LOG.pr(1, "Enemy with (%s) created" % [max_hp])
 
 
 func apply_force(force : Vector2) -> void:
@@ -88,11 +93,13 @@ func apply_force(force : Vector2) -> void:
 func take_damage(amount : float, push_force := Vector2.ZERO) -> void:
 	apply_force(push_force)
 	emit_signal("damage_taken", global_position, amount)
-	_set_hp(_hp - amount)
+	
+	var reduced_amount = _apply_incoming_damage_modifiers(amount)
+	_set_hp(stats.get_stat(Stats.HP) - reduced_amount)
 
 
 func alive() -> bool:
-	return _hp > 0.0
+	return stats.get_stat(Stats.HP) > 0.0
 
 
 func can_attack() -> bool:
@@ -107,8 +114,8 @@ func attack(target) -> void:
 
 ### PRIVATE FUNCTIONS ###
 func _set_hp(new_hp) -> void:
-	_hp = new_hp
-	hpBar.set_bar(_hp / max_hp)
+	stats.set_stat(Stats.HP, new_hp)
+	hpBar.set_bar(stats.get_hp_perc())
 	if not alive():
 		_die()
 
@@ -153,9 +160,21 @@ func _get_entities_in_hitbox() -> Array:
 			entities.append(entity)
 	return entities
 
-
+# SCALING
 func _get_hp_scaling(level) -> float:
 	return pow(level, 2.0) / 40.0 + 1
+
+
+func _get_scaled_def() -> float:
+	var base_def = stats.get_stat(Stats.DEF)
+	return base_def + _level
+
+
+# DAMAGE CALC
+func _apply_incoming_damage_modifiers(amount : float) -> float:
+	amount -= _get_scaled_def()
+	return amount
+
 
 
 ### SIGNAL RESPONSES ###

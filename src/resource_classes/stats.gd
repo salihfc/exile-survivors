@@ -34,7 +34,7 @@ const STAT_NAMES = {
 	HP : "_hp",
 	MAX_HP : "_max_hp",
 	
-	DEF : "def",
+	DEF : "_def",
 	
 	RES_PHYSICAL : "_res_pyhsical",
 	RES_FIRE : "_res_fire",
