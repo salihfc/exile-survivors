@@ -1,15 +1,56 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://src/game/enemies/enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/game/enemies/enemy.gdshader" type="Shader" id=2]
 [ext_resource path="res://src/game/enemies/EnemyBatEye.gd" type="Script" id=3]
 [ext_resource path="res://tres/enemies/bateye/EnemyBatEye.tres" type="SpriteFrames" id=4]
 
+[sub_resource type="OpenSimplexNoise" id=20]
+seed = 444
+octaves = 5
+persistence = 0.732
+lacunarity = 4.0
+
+[sub_resource type="NoiseTexture" id=21]
+seamless = true
+as_normalmap = true
+bump_strength = 32.7
+noise = SubResource( 20 )
+
 [sub_resource type="ShaderMaterial" id=19]
 shader = ExtResource( 2 )
 shader_param/damage_taken_modulate = Color( 1, 1, 1, 1 )
 shader_param/frozen_modulate = Color( 1, 1, 1, 1 )
+shader_param/dissolve_ratio = 0.0
 shader_param/outline_color = Color( 0, 0, 0, 1 )
+shader_param/dissolve_noise = SubResource( 21 )
+
+[sub_resource type="Animation" id=22]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/dissolve_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/outline_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ) ]
+}
 
 [sub_resource type="Animation" id=16]
 resource_name = "damage_taken_test"
@@ -25,6 +66,34 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 0.258816, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.890196, 0.0196078, 0.0196078, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=23]
+resource_name = "death"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/dissolve_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("VisualBodyCenter/AnimatedSprite:material:shader_param/outline_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=18]
@@ -54,14 +123,17 @@ position = Vector2( 0, -15 )
 material = SubResource( 19 )
 frames = ExtResource( 4 )
 animation = "fly"
-frame = 6
+frame = 4
 playing = true
 offset = Vector2( -4, -16 )
 
 [node name="AnimTween" type="Tween" parent="." index="4"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5"]
+anims/RESET = SubResource( 22 )
 anims/damage_taken_test = SubResource( 16 )
+anims/death = SubResource( 23 )
 anims/frozen_test = SubResource( 18 )
 
 [connection signal="tween_completed" from="AnimTween" to="." method="_on_AnimTween_tween_completed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

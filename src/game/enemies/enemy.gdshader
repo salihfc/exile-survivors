@@ -6,7 +6,15 @@ render_mode blend_mix;
 uniform vec4 damage_taken_modulate : hint_color = vec4(1.0);
 uniform vec4 frozen_modulate : hint_color = vec4(1.0);
 
+uniform float dissolve_ratio = 0.0;
+
 uniform vec4 outline_color : hint_color;
+uniform sampler2D dissolve_noise;
+
+float dissolve(float a, float n)
+{
+	return a * smoothstep(dissolve_ratio, n, a);
+}
 
 float white_dist(vec4 col)
 {
@@ -42,5 +50,8 @@ void fragment()
 	
 	float out_weight = outline(TEXTURE, UV);
 	base_color.rgb = mix(base_color, outline_color, out_weight * (outline_color.a)).rgb;
+	
+	float n = texture(dissolve_noise, UV).r;
+	base_color.a = dissolve(base_color.a, n);
 	COLOR = base_color;
 }

@@ -47,6 +47,7 @@ var _target = null
 var _frozen := false
 
 ### ONREADY VAR ###
+onready var uiElementsContainer = $UiElements as Control
 onready var hpBar = $UiElements/Hp_bar as HpBar
 onready var hitBox = $Areas/HitBox as HitBox
 

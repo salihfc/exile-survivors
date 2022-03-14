@@ -1,6 +1,6 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
-[ext_resource path="res://assets/gfx/common/64x64_white.png" type="Texture" id=1]
+[ext_resource path="res://src/resource_classes/stats.gd" type="Script" id=1]
 [ext_resource path="res://src/game/player/player.gd" type="Script" id=2]
 [ext_resource path="res://src/game/hurtbox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/game/enemies/hp_bar.tscn" type="PackedScene" id=4]
@@ -11,6 +11,21 @@
 [ext_resource path="res://src/game/skills/fireball/fireball.tscn" type="PackedScene" id=9]
 [ext_resource path="res://src/game/skills/mine/mine_generator.tscn" type="PackedScene" id=10]
 [ext_resource path="res://src/game/skills/circling_laser/circling_laser.tscn" type="PackedScene" id=11]
+
+[sub_resource type="Resource" id=21]
+script = ExtResource( 1 )
+_max_hp = 100.0
+_hp = 1.0
+_def = 0.0
+_res_physical = 0.0
+_res_fire = 0.0
+_res_cold = 0.0
+_res_lightning = 0.0
+_res_dark = 0.0
+_res_light = 0.0
+_crit_rate = 0.0
+_crit_damage = 0.0
+_damage_multi = 1.0
 
 [sub_resource type="Shader" id=19]
 code = "// NOTE: Shader automatically converted from Godot Engine 3.4.stable's CanvasItemMaterial.
@@ -177,17 +192,14 @@ radius = 16.0
 
 [node name="Player" type="Node2D"]
 script = ExtResource( 2 )
-
-[node name="Sprite" type="Sprite" parent="."]
-visible = false
-self_modulate = Color( 0.105882, 0.486275, 0.027451, 1 )
-texture = ExtResource( 1 )
+stats = SubResource( 21 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 20 )
 position = Vector2( 1, -16 )
 frames = SubResource( 10 )
 animation = "idle"
+frame = 2
 playing = true
 offset = Vector2( 6, 3 )
 

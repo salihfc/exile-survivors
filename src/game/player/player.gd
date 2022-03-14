@@ -18,33 +18,34 @@ const ACC = 200.0
 const DAMP = 0.80
 
 ### EXPORT ###
-export(float) var max_hp := 100.0
+# warning-ignore:unused_class_variable
+export(Resource) var stats
+
 
 ### PUBLIC VAR ###
 
+
 ### PRIVATE VAR ###
 var _velocity := Vector2.ZERO
-var _hp := 1.0
+
 
 ### ONREADY VAR ###
 onready var hpBar = $Hp_bar as HpBar
 onready var anim_sprite = $AnimatedSprite as AnimatedSprite
-#onready var arc = $a as Arc
-#onready var fireball = $Skills/Fireball as Fireball
 onready var camera = $Camera2D as Camera2D
 onready var skillContainer = $Skills as Node2D
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
 
 func _ready() -> void:
-	_set_hp(max_hp)
+	_set_hp(stats.get_stat(Stats.MAX_HP))
+	camera.current = true
 	anim_sprite.speed_scale = MAX_VEL / RUN_ANIM_SPEED_APPROX
 	
 	for skill in skillContainer.get_children():
 		skill.user = self
 		skill.start()
 	
-	camera.current = true
 
 
 # warning-ignore:unused_argument
@@ -80,11 +81,11 @@ func apply_force(force : Vector2) -> void:
 
 func take_damage(amount : float) -> void:
 	if not CONFIG.PLAYER_INVINCIBLE:
-		_set_hp(_hp - amount)
+		_set_hp(stats.get_stat(Stats.HP) - amount)
 
 
 func alive() -> bool:
-	return _hp > 0.0
+	return stats.get_stat(Stats.HP) > 0.0
 
 
 func get_skills() -> Array:
@@ -97,8 +98,8 @@ func get_chance_to_freeze() -> float:
 
 ### PRIVATE FUNCTIONS ###
 func _set_hp(new_hp) -> void:
-	_hp = new_hp
-	hpBar.set_bar(_hp / max_hp)
+	stats.set_stat(Stats.HP, new_hp)
+	hpBar.set_bar(stats.get_hp_perc())
 	if not alive():
 #		queue_free()
 		get_tree().quit()

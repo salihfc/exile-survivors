@@ -175,6 +175,11 @@ _global_script_classes=[ {
 "path": "res://src/game/softbody2d.gd"
 }, {
 "base": "Resource",
+"class": "Stats",
+"language": "GDScript",
+"path": "res://src/resource_classes/stats.gd"
+}, {
+"base": "Resource",
 "class": "StatusEffect",
 "language": "GDScript",
 "path": "res://src/resource_classes/status_effects/status_effect.gd"
@@ -233,6 +238,7 @@ _global_script_class_icons={
 "SkillSelectionSkillDisplay": "",
 "Snippet": "",
 "SoftBody2D": "",
+"Stats": "",
 "StatusEffect": "",
 "StatusEffectFreeze": "",
 "StatusEffectManager": "",

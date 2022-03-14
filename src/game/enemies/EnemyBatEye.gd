@@ -11,6 +11,9 @@ class_name EnemyBatEye
 
 
 ### CONST ###
+const SHADER_PARAM_DAMAGE_TAKEN_MODULATE = "damage_taken_modulate"
+const SHADER_PARAM_OUTLINE_COLOR = "outline_color"
+
 var TIER_COLORS = [
 	Color.black,
 	Color.aquamarine,
@@ -43,6 +46,7 @@ export(int) var tier := 0 # 0 is normal 1,2,3.. -> elite enemies with tiers
 ### ONREADY VAR ###
 onready var animSprite = $VisualBodyCenter/AnimatedSprite as AnimatedSprite
 onready var animTween = $AnimTween as Tween
+onready var animPlayer = $AnimationPlayer as AnimationPlayer
 
 
 ### VIRTUAL FUNCTIONS (_init ...) ###
@@ -87,7 +91,7 @@ func take_damage(amount : float, push_force := Vector2.ZERO) -> void:
 
 
 func set_shader_damage_taken_color(color) -> void:
-	animSprite.material.set_shader_param("DAMAGE_TAKEN_COLOR", color)
+	animSprite.material.set_shader_param(SHADER_PARAM_DAMAGE_TAKEN_MODULATE, color)
 #	print ("called set shader param")
 
 
@@ -96,8 +100,13 @@ func _set_scaled_stats() -> void:
 	base_max_hp = base_max_hp * pow(1.25, tier)
 	base_damage = base_damage * pow(1.1, tier)
 	base_exp = base_exp * (float(tier) + 1.0)
-	animSprite.material.set_shader_param("outline_color", TIER_COLORS[tier])
+	animSprite.material.set_shader_param(SHADER_PARAM_OUTLINE_COLOR, TIER_COLORS[tier])
 	scale *= Vector2.ONE * TIER_SCALES[tier]
+
+
+func _die():
+	uiElementsContainer.hide()
+	animPlayer.play("death")
 
 
 ### SIGNAL RESPONSES ###
@@ -123,3 +132,8 @@ func _on_FreezeTimer_timeout() -> void:
 
 func _on_AnimTween_tween_completed(object: Object, key: NodePath) -> void:
 	animTween.remove(object, key)
+
+
+func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
+	if anim_name == "death":
+		._die()
